@@ -10,6 +10,8 @@
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.3",
     "sequelize-cli": "^6.5.2",
-    "socket.io": "^4.5.3"
+    "socket.io": "^4.5.3",
+    "swagger-autogen": "^2.22.0",
+    "swagger-ui-express": "^4.5.0"
   }
 }

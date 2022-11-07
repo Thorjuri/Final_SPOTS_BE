@@ -6,7 +6,7 @@ require("dotenv").config();
 class UsersService {
   usersRepository = new UsersRepository();
   //회원가입
-  createUser = async (loginId, password, nickname, gender, address, phone) => {
+  createUser = async (loginId, password, nickname, gender, phone) => {
     const checkId = await this.usersRepository.checkId(loginId); // id 중복확인
     if (checkId) {
       throw { code: -1 };
@@ -22,7 +22,7 @@ class UsersService {
     const salt = await bcrypt.genSalt(10);
     const enpryptedPW = bcrypt.hashSync(password, salt);
     password = enpryptedPW;
-    await this.usersRepository.createUser(loginId, password, nickname, gender, address, phone);
+    await this.usersRepository.createUser(loginId, password, nickname, gender, phone);
     return;
   };
   // ID 중복검사
@@ -36,7 +36,6 @@ class UsersService {
       nickname: checkId.nickname,
       gender: checkId.gender,
       phone: checkId.phone,
-      address: checkId.address,
       score: checkId.score,
     };
   };
@@ -71,7 +70,7 @@ class UsersService {
     return [user, accessToken];
   };
   // 회원 정보 수정
-  updateUser = async (loginId, password, nickname, address, gender, phone) => {
+  updateUser = async (loginId, password, nickname, gender, phone) => {
     if (nickname) {
       const checkNick = await this.usersRepository.checkNick(nickname);
       if (checkNick) {
@@ -89,7 +88,7 @@ class UsersService {
       const bryptedPW = bcrypt.hashSync(password, salt);
       password = bryptedPW;
     }
-    await this.usersRepository.updateUser(loginId, password, nickname, address, gender, phone);
+    await this.usersRepository.updateUser(loginId, password, nickname, gender, phone);
     const getUpdate = await this.checkId(loginId);
     return getUpdate;
   };

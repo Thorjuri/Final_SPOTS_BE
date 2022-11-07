@@ -2,8 +2,8 @@ const { Users } = require("../models");
 
 class UsersRepository {
   // 회원가입
-  createUser = async (loginId, password, nickname, gender, address, phone) => {
-    await Users.create({ loginId, password, nickname, gender, address, phone });
+  createUser = async (loginId, password, nickname, gender, phone) => {
+    await Users.create({ loginId, password, nickname, gender, phone });
     return;
   };
 
@@ -26,7 +26,7 @@ class UsersRepository {
   };
   // 유저 정보 수정
   updateUser = async (loginId, password, nickname, address, gender, phone) => {
-    await Users.update({ password, nickname, address, gender, phone }, { where: { loginId } });
+    await Users.update({ password, nickname, gender, phone }, { where: { loginId } });
     return;
   };
   // 회원탈퇴
