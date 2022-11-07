@@ -12,13 +12,16 @@ router.get('/me', authMiddleware, teamsController.getMyTeam)
 // 2. 전체 팀 조회
 router.get('/', teamsController.getAllTeams)
 
-// 3. 신규 팀 생성
+// 3. 팀 상세 조회
+router.get('/info', authMiddleware, teamsController.getTeamInfo)
+
+// 4. 신규 팀 생성
 router.post('/register', authMiddleware, teamsController.createTeam)
 
-// 4. 팀 수정 - 기존 팀 가입
+// 5. 팀 수정 - 기존 팀 가입
 router.put('/update', authMiddleware, teamsController.updateTeam)
 
-// 2. 팀 수정 - 기존 팀 탈퇴
+// 6. 팀 수정 - 기존 팀 탈퇴
 router.put('/drop', authMiddleware, teamsController.deleteTeam)
 
 
