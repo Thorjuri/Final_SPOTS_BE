@@ -25,14 +25,15 @@ module.exports = async (req, res, next) => {
       const userInfo = jwt.decode(tokenValue, process.env.SECRET_KEY);
       console.log("userInfo : " + userInfo);
       const userId = userInfo.userId;
+      console.log(userId);
       let refreshToken;
-      Users.findOne({ loginId }).then((user) => {
+      Users.findOne({ where: { userId } }).then((user) => {
         refreshToken = user.refreshToken;
         const myRefreshToken = verifyToken(refreshToken);
         if (myRefreshToken == "jwt expired") {
           res.send({ errorMessage: "로그인이 필요합니다." });
         } else {
-          const myNewToken = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, {
+          const myNewToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
             expiresIn: "600s",
           });
           res.send({ message: "new access token", myNewToken });
@@ -40,7 +41,7 @@ module.exports = async (req, res, next) => {
       });
     } else {
       const { userId } = jwt.verify(tokenValue, process.env.SECRET_KEY);
-      Users.findOne({ userId }).then((user) => {
+      Users.findOne({ where: { userId } }).then((user) => {
         res.locals.user = user;
         next();
       });

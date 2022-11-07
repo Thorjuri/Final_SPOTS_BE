@@ -54,6 +54,25 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      point: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      sports: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: {"team" : []}
+      },
+      favSports: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: {"team" : []}
+      },
+      recommendId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       refreshToken: {
         type: DataTypes.STRING,
         allowNull: true,

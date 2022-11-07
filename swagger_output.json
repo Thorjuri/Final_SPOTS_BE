@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -13,9 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -24,12 +22,8 @@
       "description": "any description..."
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/users/signup": {
       "post": {
@@ -49,17 +43,26 @@
                 "password": {
                   "example": "비밀번호"
                 },
+                "confirmPassword": {
+                  "example": "비밀번호확인"
+                },
                 "nickname": {
                   "example": "닉네임"
                 },
                 "gender": {
                   "example": "성별"
                 },
-                "address": {
-                  "example": "주소"
-                },
                 "phone": {
                   "example": "번호"
+                },
+                "sports": {
+                  "example": ["풋살", "테니스"]
+                },
+                "favSports": {
+                  "example": ["배드민턴"]
+                },
+                "recommendId": {
+                  "example": "aa"
                 }
               }
             }
@@ -209,6 +212,12 @@
                 },
                 "phone": {
                   "example": "번호"
+                },
+                "sports": {
+                  "example": ["풋살"]
+                },
+                "favSports": {
+                  "example": ["배드민턴"]
                 }
               }
             }
@@ -295,7 +304,7 @@
         "responses": {}
       }
     },
-      "/teams/info": {
+    "/teams/info": {
       "get": {
         "description": "팀 상세정보 조회",
         "tags": ["Teams"],
@@ -457,7 +466,7 @@
                 "matchId": {
                   "example": "221107t11"
                 },
-                "place": {  
+                "place": {
                   "example": "튼튼축구장"
                 },
                 "teamName": {
@@ -506,7 +515,7 @@
                 }
               }
             }
-          }          
+          }
         ],
         "responses": {
           "200": {
@@ -538,63 +547,6 @@
           }
         }
       }
-    }
-    },
-  "definitions": {
-    "signup": {
-      "type": "object",
-      "properties": {
-        "father": {
-          "type": "string",
-          "example": "Simon Doe"
-        },
-        "mother": {
-          "type": "string",
-          "example": "Marie Doe"
-        }
-      }
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "number",
-          "example": 1
-        },
-        "nickname": {
-          "type": "string",
-          "example": "aaa"
-        },
-        "password": {
-          "type": "string",
-          "example": "1111"
-        }
-      },
-      "required": [
-        "nickname",
-        "password"
-      ]
-    },
-    "AddUser": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Jhon Doe"
-        },
-        "age": {
-          "type": "number",
-          "example": 29
-        },
-        "about": {
-          "type": "string",
-          "example": ""
-        }
-      },
-      "required": [
-        "name",
-        "age"
-      ]
     }
   }
 }
