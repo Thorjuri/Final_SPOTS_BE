@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const usersRouter = require('./users.js');
 const placesRouter = require('./places.js');
+const teamsRouter = require('./teams.js');
 const mypagesRouter = require('./mypages.js');
 const reservationsRouter = require('./reservations.js');
 
@@ -11,6 +12,7 @@ const reservationsRouter = require('./reservations.js');
 
 router.use("/users", usersRouter);
 router.use("/places", placesRouter);
+router.use("/teams", teamsRouter);
 router.use('/mypages', mypagesRouter);
 router.use('/reservations', reservationsRouter);
 

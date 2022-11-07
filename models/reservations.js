@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            place: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             teamName: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -41,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            place: {
+            admin: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },

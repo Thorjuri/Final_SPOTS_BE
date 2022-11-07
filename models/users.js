@@ -39,10 +39,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       phone: {
         type: DataTypes.STRING,
         unique: true,
@@ -51,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       teamName: {
         type: DataTypes.JSON,
         allowNull: false,
-        defaultValue: {"team" : "아직 등록된 팀이 없습니다."}
+        defaultValue: {"team" : []}
       },
       score: {
         type: DataTypes.INTEGER,

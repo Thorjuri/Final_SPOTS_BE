@@ -6,13 +6,13 @@ class UsersController {
   //회원가입
   SignupUser = async (req, res, next) => {
     try {
-      const { loginId, password, nickname, gender, address, phone } = req.body; // 밸리데이션 필요
+      const { loginId, password, nickname, gender, phone } = req.body; // 밸리데이션 필요
       if (password.search(loginId) !== -1) {
         return res.status(412).send({
           errorMessage: "패스워드에 ID가 포함되어 있습니다.",
         });
       }
-      await this.usersService.createUser(loginId, password, nickname, gender, address, phone);
+      await this.usersService.createUser(loginId, password, nickname, gender, phone);
       return res.status(201).json({ message: "회원가입이 완료되었습니다." });
     } catch (err) {
       if (err.code === -1) {
@@ -115,12 +115,11 @@ class UsersController {
   updateUser = async (req, res, next) => {
     try {
       const { loginId } = res.locals.user;
-      const { password, nickname, address, gender, phone } = req.body;
+      const { password, nickname, gender, phone } = req.body;
       const updateUser = await this.usersService.updateUser(
         loginId,
         password,
         nickname,
-        address,
         gender,
         phone
       );
