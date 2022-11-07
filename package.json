@@ -16,7 +16,13 @@
     "qs": "^6.11.0",
     "sequelize": "^6.25.3",
     "sequelize-cli": "^6.5.2",
+<<<<<<< HEAD
     "session": "^0.1.0",
     "socket.io": "^4.5.3"
+=======
+    "socket.io": "^4.5.3",
+    "swagger-autogen": "^2.22.0",
+    "swagger-ui-express": "^4.5.0"
+>>>>>>> f7a8ec360d76d4a341282be011497a256909d5e4
   }
 }

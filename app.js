@@ -2,7 +2,9 @@ const express = require("express");
 const Http = require("http");
 const app = express();
 const http = Http.createServer(app);
-const port = 4000;
+const port = 3000;
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger_output.json");
 
 const Router = require("./routes");
 const cookieParser = require("cookie-parser");
@@ -27,8 +29,9 @@ app.use(
 );
 
 app.options("*", cors());
-
 app.use("/", Router);
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 // 에러 핸들러 (주석처리 후 마지막에 적용)
 // app.use(errorHandlerMiddleware);
 

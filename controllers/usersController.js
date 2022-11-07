@@ -32,6 +32,13 @@ class UsersController {
     try {
       const { loginId, password } = req.body;
       const user = await this.usersService.LoginUser(loginId, password);
+      if (user[0].drop) {
+        return res.status(202).json({
+          nickname: user[0].nickname,
+          accessToken: user[1],
+          message: "탈퇴한 계정",
+        });
+      }
       return res.status(200).json({
         nickname: user[0].nickname,
         accessToken: user[1],
