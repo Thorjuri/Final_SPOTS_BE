@@ -44,6 +44,11 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
+      teamName: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: {"team" : []}
+      },
       score: {
         type: DataTypes.INTEGER,
         allowNull: false,

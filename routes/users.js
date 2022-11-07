@@ -14,4 +14,5 @@ router.patch("/me", auth_middleware, usersController.updateUser);
 router.patch("/drop", auth_middleware, usersController.dropUser);
 router.patch("/cancelDrop", auth_middleware, usersController.cancelDrop);
 
+
 module.exports = router;
