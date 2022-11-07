@@ -13,7 +13,7 @@ const reservationsRouter = require('./reservations.js');
 router.use("/users", usersRouter);
 router.use("/places", placesRouter);
 router.use("/teams", teamsRouter);
-router.use('/mypages', mypagesRouter);
+// router.use('/mypages', mypagesRouter);
 router.use('/reservations', reservationsRouter);
 
 module.exports = router;
