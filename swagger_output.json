@@ -5,20 +5,12 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "ws-study.shop",
+  "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
       "name": "Users",
       "description": "회원정보API"
-    },
-    {
-      "name": "Teams",
-      "description": "팀API"
-    },
-    {
-      "name": "Reservation",
-      "description": "예약API"
     }
   ],
   "schemes": ["https"],
@@ -285,7 +277,8 @@
     },
     "/teams/me": {
       "get": {
-        "description": "",
+        "description": "나의 팀 조회",
+        "tags": ["Teams"],
         "parameters": [
           {
             "name": "authorization",
@@ -305,19 +298,74 @@
     },
     "/teams/": {
       "get": {
-        "description": "",
+        "description": "전체 팀 조회",
+        "tags": ["Teams"],
         "parameters": [],
         "responses": {}
       }
     },
-    "/teams/register": {
-      "post": {
-        "description": "",
+    "/teams/info": {
+      "get": {
+        "description": "팀 상세정보 조회",
+        "tags": ["Teams"],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamName": {
+                  "example": "신바람풋살회"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/teams/register": {
+      "post": {
+        "description": "신규 팀 생성",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamName": {
+                  "example": "팀 이름"
+                },
+                "state": {
+                  "example": "oo구"
+                },
+                "sports": {
+                  "example": "종목"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -332,12 +380,26 @@
     },
     "/teams/update": {
       "put": {
-        "description": "",
+        "description": "기존 팀 가입",
+        "tags": ["Teams"],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamName": {
+                  "example": "팀 이름"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -352,12 +414,26 @@
     },
     "/teams/drop": {
       "put": {
-        "description": "",
+        "description": "기존 팀 탈퇴",
+        "tags": ["Teams"],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamName": {
+                  "example": "팀 이름"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -372,12 +448,38 @@
     },
     "/reservations/register": {
       "post": {
-        "description": "",
+        "description": "매치 신청",
+        "tags": ["Reservations"],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "matchId": {
+                  "example": "221107t11"
+                },
+                "place": {
+                  "example": "튼튼축구장"
+                },
+                "teamName": {
+                  "example": "항해풋살회"
+                },
+                "member": {
+                  "example": "5 (숫자 인원)"
+                },
+                "date": {
+                  "example": "2022-11-07-13:00"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -390,12 +492,29 @@
         }
       },
       "get": {
-        "description": "",
+        "description": "매치 조회",
+        "tags": ["Reservations"],
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "matchId": {
+                  "example": "221107t11"
+                },
+                "place": {
+                  "example": "튼튼축구장"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -410,7 +529,8 @@
     },
     "/reservations/me": {
       "get": {
-        "description": "",
+        "description": "나의 매치 조회",
+        "tags": ["Reservations"],
         "parameters": [
           {
             "name": "authorization",
@@ -427,6 +547,57 @@
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "signup": {
+      "type": "object",
+      "properties": {
+        "father": {
+          "type": "string",
+          "example": "Simon Doe"
+        },
+        "mother": {
+          "type": "string",
+          "example": "Marie Doe"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "number",
+          "example": 1
+        },
+        "nickname": {
+          "type": "string",
+          "example": "aaa"
+        },
+        "password": {
+          "type": "string",
+          "example": "1111"
+        }
+      },
+      "required": ["nickname", "password"]
+    },
+    "AddUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Jhon Doe"
+        },
+        "age": {
+          "type": "number",
+          "example": 29
+        },
+        "about": {
+          "type": "string",
+          "example": ""
+        }
+      },
+      "required": ["name", "age"]
     }
   }
 }

@@ -11,7 +11,13 @@ class TeamsService {
     getAllTeams = async()=> {
         const data = await this.teamsRepository.getAllTeams();
         return data;
-    }
+    };
+
+    getTeamInfo = async(teamName)=> {
+        const data = await this.teamsRepository.getTeamInfo(teamName);
+        if(!data){ throw new Error('해당하는 팀을 찾을 수 없습니다.')}
+        return data;
+    };
 
     createTeam = async(teamName, sports, state, nickname)=> {
         const allTeams = await this.getAllTeams()

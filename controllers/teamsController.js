@@ -22,6 +22,16 @@ class TeamsController {
         };
     };
 
+    getTeamInfo = async(req, res, next)=>{
+        try{
+            const { teamName } = req.body;
+            const data = await this.teamsService.getTeamInfo(teamName);
+            res.send(data);
+        }catch(error){
+            res.status(401).json({error: error.message});
+        };
+    };
+
     createTeam = async(req, res, next)=> {
         try{
             const { nickname } = res.locals.user
