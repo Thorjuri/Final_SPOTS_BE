@@ -1,14 +1,13 @@
 const express = require('express');
 const app = express();
-
 const port = 3000;
-
 const Router = require('./routes/index');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandlerMiddleware = require('./middlewares/error_handler_middleware');
 const auth_middleware = require('./middlewares/auth_middleware');
 require('./models');
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -27,6 +26,7 @@ app.use(
 );
 
 app.options('*', cors());
+
 
 app.use('/', Router);
 

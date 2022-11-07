@@ -44,8 +44,12 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             phone: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 unique: true,
+                allowNull: false,
+            },
+            teamName: {
+                type: DataTypes.JSON,
                 allowNull: false,
             },
             score: {

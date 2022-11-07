@@ -34,6 +34,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            player: { //추가 논의
+                type: DataTypes.JSON,
+                allowNull: true,
+                defaultValue: {"player" : "팀원을 등록해 주세요."}
+            },
             state: {
                 type: DataTypes.STRING,
                 allowNull: false,

@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            member: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
             date: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -44,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
             result: {
                 type: DataTypes.STRING,
                 allowNull: true,
-                defaultValue: "승부 전"
+                defaultValue: "경기 전"
             }
         },
         {
