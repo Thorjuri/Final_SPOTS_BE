@@ -6,7 +6,7 @@ class TeamsRepository {
 
     getMyTeam = async(userId)=> {
         const data = await Users.findOne({
-            attributes: ['teamName', 'userId', 'nickname'],
+            attributes: ['teamName'],
             where: { userId }
         })
         const teams = data.teamName.team

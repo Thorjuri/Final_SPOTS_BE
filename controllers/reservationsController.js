@@ -5,8 +5,9 @@ class ReservationsController {
 
     createMatch = async(req, res, next)=> {
         try{
-            const {matchId, place, teamName, member, admin, date} = req.body;
-            const data = await this.reservationsService.createMatch(matchId, place, teamName, member, admin, date);
+            const {nickname} = res.locals.user;
+            const {matchId, place, teamName, member, date} = req.body;
+            const data = await this.reservationsService.createMatch(matchId, place, teamName, member, nickname, date);
             res.send(data);
         }catch(error) {
             res.status(401).json({error: error.message});
@@ -25,8 +26,8 @@ class ReservationsController {
 
     getReservations = async(req, res, next)=> {
         try{
-            const userId = res.locals.user;
-            const data = await this.reservationsService.getReservations(userId);
+            const {nickname} = res.locals.user;
+            const data = await this.reservationsService.getReservations(nickname);
             res.send(data)
         }catch(error) {
             res.status(401).json({error: error.message});

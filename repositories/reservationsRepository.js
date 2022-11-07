@@ -1,8 +1,9 @@
 const { Reservations, Users } = require('../models');
 
 class ReservationsRepository {
-    
-    createMatch = async(matchId, place, teamName, member, admin, date)=> {
+
+    createMatch = async(matchId, place, teamName, member, nickname, date)=> {
+        const admin = nickname
         const data = await Reservations.create({ matchId, place, teamName, member, admin, date });
         return {data: data, message : "매치 등록 완료"};
     };
@@ -12,14 +13,14 @@ class ReservationsRepository {
         return {data: data, message : "매치 조회 완료"};
     };
 
-    getReservations = async(userId)=> {
-        const user = await Users.findOne({ where : { userId }});
-        console.log(user)
-        const team = user.teamName.team;
-        const matchs = await team.map((val)=>{
-            const match = Reservations.findOne({ where: { teamName : val }})
-            return match
-        });
+    getReservations = async(nickname)=> { // 수정중. 빈 값 반환 문제 (map 비동기 문제인 듯)
+        const user = await Users.findOne({ where : { nickname }});
+        const team = user.teamName.team; 
+        let matchs = [];
+        for(let i = 0; i<team.length; i++){
+            let match = await Reservations.findOne({ where : { teamName : team[i]}});
+            matchs.push(match);      
+        }
         return matchs;
     };
 };
