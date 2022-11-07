@@ -21,9 +21,7 @@
       "description": "예약API"
     }
   ],
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -32,12 +30,8 @@
       "description": "any description..."
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/users/signup": {
       "post": {
@@ -57,17 +51,26 @@
                 "password": {
                   "example": "비밀번호"
                 },
+                "confirmPassword": {
+                  "example": "비밀번호확인"
+                },
                 "nickname": {
                   "example": "닉네임"
                 },
                 "gender": {
                   "example": "성별"
                 },
-                "address": {
-                  "example": "주소"
-                },
                 "phone": {
                   "example": "번호"
+                },
+                "sports": {
+                  "example": ["풋살", "테니스"]
+                },
+                "favSports": {
+                  "example": ["배드민턴"]
+                },
+                "recommendId": {
+                  "example": "aa"
                 }
               }
             }
@@ -217,6 +220,12 @@
                 },
                 "phone": {
                   "example": "번호"
+                },
+                "sports": {
+                  "example": ["풋살"]
+                },
+                "favSports": {
+                  "example": ["배드민턴"]
                 }
               }
             }
@@ -420,5 +429,4 @@
       }
     }
   }
-
 }

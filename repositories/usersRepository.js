@@ -2,8 +2,8 @@ const { Users } = require("../models");
 
 class UsersRepository {
   // 회원가입
-  createUser = async (loginId, password, nickname, gender, phone) => {
-    await Users.create({ loginId, password, nickname, gender, phone });
+  createUser = async (loginId, password, nickname, gender, phone, sports, favSports, recommendId) => {
+    await Users.create({ loginId, password, nickname, gender, phone, sports, favSports, recommendId });
     return;
   };
 
@@ -24,11 +24,19 @@ class UsersRepository {
     const checkPhone = await Users.findOne({ where: { phone } });
     return checkPhone;
   };
+
+  //휴대폰 중복확인
+  checkRecommend = async (recommendId) => {
+    const checkRecommend = await Users.findOne({ where: { loginId:recommendId } });
+    return checkRecommend;
+  };
+
   // 유저 정보 수정
-  updateUser = async (loginId, password, nickname, gender, phone) => {
-    await Users.update({ password, nickname, gender, phone }, { where: { loginId } });
+  updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
+    await Users.update({ loginId, password, nickname, gender, phone, sports, favSports }, { where: { loginId } });
     return;
   };
+
   // 회원탈퇴
   dropUser = async (loginId) => {
     await Users.update({ drop: true }, { where: { loginId } });
