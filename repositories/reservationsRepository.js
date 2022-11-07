@@ -14,6 +14,7 @@ class ReservationsRepository {
 
     getReservations = async(userId)=> {
         const user = await Users.findOne({ where : { userId }});
+        console.log(user)
         const team = user.teamName.team;
         const matchs = await team.map((val)=>{
             const match = Reservations.findOne({ where: { teamName : val }})
