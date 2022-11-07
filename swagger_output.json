@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -547,57 +547,6 @@
           }
         }
       }
-    }
-  },
-  "definitions": {
-    "signup": {
-      "type": "object",
-      "properties": {
-        "father": {
-          "type": "string",
-          "example": "Simon Doe"
-        },
-        "mother": {
-          "type": "string",
-          "example": "Marie Doe"
-        }
-      }
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "number",
-          "example": 1
-        },
-        "nickname": {
-          "type": "string",
-          "example": "aaa"
-        },
-        "password": {
-          "type": "string",
-          "example": "1111"
-        }
-      },
-      "required": ["nickname", "password"]
-    },
-    "AddUser": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Jhon Doe"
-        },
-        "age": {
-          "type": "number",
-          "example": 29
-        },
-        "about": {
-          "type": "string",
-          "example": ""
-        }
-      },
-      "required": ["name", "age"]
     }
   }
 }
