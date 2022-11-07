@@ -25,7 +25,7 @@ class UsersRepository {
     return checkPhone;
   };
   // 유저 정보 수정
-  updateUser = async (loginId, password, nickname, address, gender, phone) => {
+  updateUser = async (loginId, password, nickname, gender, phone) => {
     await Users.update({ password, nickname, gender, phone }, { where: { loginId } });
     return;
   };
