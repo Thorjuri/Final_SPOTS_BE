@@ -6,7 +6,16 @@ require("dotenv").config();
 class UsersService {
   usersRepository = new UsersRepository();
   //회원가입
-  createUser = async (loginId, password, nickname, gender, phone) => {
+  createUser = async (
+    loginId,
+    password,
+    nickname,
+    gender,
+    phone,
+    sports,
+    favSports,
+    recommendId
+  ) => {
     const checkId = await this.usersRepository.checkId(loginId); // id 중복확인
     if (checkId) {
       throw { code: -1 };
@@ -19,15 +28,32 @@ class UsersService {
     if (checkPhone) {
       throw { code: -3 };
     }
+    if (recommendId) {
+      // 추천인 ID 유무 확인
+      const checkRecommend = await this.usersRepository.checkRecommend(recommendId);
+      if (!checkRecommend) {
+        throw { code: -4 };
+      }
+    }
     const salt = await bcrypt.genSalt(10);
     const enpryptedPW = bcrypt.hashSync(password, salt);
     password = enpryptedPW;
-    await this.usersRepository.createUser(loginId, password, nickname, gender, phone);
+    await this.usersRepository.createUser(
+      loginId,
+      password,
+      nickname,
+      gender,
+      phone,
+      sports,
+      favSports,
+      recommendId
+    );
     return;
   };
-  // ID 중복검사
+  // ID 중복검사, 유저 정보 조회
   checkId = async (loginId) => {
     const checkId = await this.usersRepository.checkId(loginId);
+    console.log(checkId);
     if (!checkId) {
       return;
     }
@@ -37,6 +63,10 @@ class UsersService {
       gender: checkId.gender,
       phone: checkId.phone,
       score: checkId.score,
+      point: checkId.point,
+      teamName: checkId.teamName,
+      sports: checkId.sports,
+      favSports: checkId.favSports,
     };
   };
   // 닉네임 중복검사
@@ -70,7 +100,7 @@ class UsersService {
     return [user, accessToken];
   };
   // 회원 정보 수정
-  updateUser = async (loginId, password, nickname, gender, phone) => {
+  updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     if (nickname) {
       const checkNick = await this.usersRepository.checkNick(nickname);
       if (checkNick) {
@@ -88,7 +118,15 @@ class UsersService {
       const bryptedPW = bcrypt.hashSync(password, salt);
       password = bryptedPW;
     }
-    await this.usersRepository.updateUser(loginId, password, nickname, gender, phone);
+    await this.usersRepository.updateUser(
+      loginId,
+      password,
+      nickname,
+      gender,
+      phone,
+      sports,
+      favSports
+    );
     const getUpdate = await this.checkId(loginId);
     return getUpdate;
   };

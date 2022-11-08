@@ -6,21 +6,43 @@ class UsersController {
   //회원가입
   SignupUser = async (req, res, next) => {
     try {
-      const { loginId, password, nickname, gender, phone } = req.body; // 밸리데이션 필요
-      if (password.search(loginId) !== -1) {
-        return res.status(412).send({
-          errorMessage: "패스워드에 ID가 포함되어 있습니다.",
-        });
-      }
-      await this.usersService.createUser(loginId, password, nickname, gender, phone);
+      const {
+        loginId,
+        password,
+        confirmPassword,
+        nickname,
+        gender,
+        phone,
+        sports,
+        favSports,
+        recommendId,
+      } = req.body;
+
+      // if (password !== confirmPassword) {
+      //   throw { code: -5 };
+      // }
+      await this.usersService.createUser(
+        loginId,
+        password,
+        nickname,
+        gender,
+        phone,
+        sports,
+        favSports,
+        recommendId
+      );
       return res.status(201).json({ message: "회원가입이 완료되었습니다." });
     } catch (err) {
       if (err.code === -1) {
-        res.status(412).json({ errormessage: "사용 중인 ID입니다." });
+        res.status(412).json({ errormessage: "사용 중인 ID입니다.", code: -1 });
       } else if (err.code === -2) {
-        res.status(412).json({ errormessage: "사용 중인 닉네임입니다." });
+        res.status(412).json({ errormessage: "사용 중인 닉네임입니다.", code: -2 });
       } else if (err.code === -3) {
-        res.status(412).json({ errormessage: "사용 중인 번호입니다." });
+        res.status(412).json({ errormessage: "사용 중인 번호입니다.", code: -3 });
+      } else if (err.code === -4) {
+        res.status(412).json({ errormessage: "해당 아이디는 없습니다.", code: -4 });
+      } else if (err.code === -5) {
+        res.status(412).json({ errormessage: "비밀번호를 확인해 주세요.", code: -5 });
       } else {
         console.log(err);
         res.status(400).json({ errmessage: err });
@@ -122,20 +144,27 @@ class UsersController {
   updateUser = async (req, res, next) => {
     try {
       const { loginId } = res.locals.user;
-      const { password, nickname, gender, phone } = req.body;
+      const { password, confirmPassword, nickname, gender, phone, sports, favSports } = req.body;
+      if (password !== confirmPassword) {
+        throw { code: -3 };
+      }
       const updateUser = await this.usersService.updateUser(
         loginId,
         password,
         nickname,
         gender,
-        phone
+        phone,
+        sports,
+        favSports
       );
       res.status(200).json({ user: updateUser });
     } catch (err) {
       if (err.code === -1) {
-        res.status(412).json({ errormessage: "중복된 닉네임입니다." });
+        res.status(412).json({ errormessage: "중복된 닉네임입니다.", code: -1 });
       } else if (err.code === -2) {
-        res.status(412).json({ errormessage: "중복된 번호입니다." });
+        res.status(412).json({ errormessage: "중복된 번호입니다.", code: -2 });
+      } else if (err.code === -3) {
+        res.status(412).json({ errormessage: "비밀번호를 확인해 주세요", code: -3 });
       } else {
         console.log(err);
         res.status(400).json({ errmessage: err });
