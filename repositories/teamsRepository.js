@@ -34,6 +34,11 @@ class TeamsRepository {
         return data;
     };
 
+    getSportsTeams = async(sports)=> {
+        const data =  await Teams.findAll({ where : { sports }});
+        return data;
+    };
+
     getTeamInfo = async(teamName)=>{
         const data = await Teams.findOne({ where : { teamName }});
         return data;
