@@ -5,7 +5,6 @@ const development = {
   password: process.env.DB_PASSWORD,
   database: "Final",
   host: process.env.DB_ENDPOINT,
-  port: process.env.DB_PORT,
   dialect: "mysql",
 };
 const test = {

@@ -13,7 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["https"],
+  "schemes": ["https", "http"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
