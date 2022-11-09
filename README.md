@@ -5,7 +5,7 @@
 ### 2. 프로젝트 기간 
  - [ 2022. 11. 4 ~ 22. 12. 13 ]
 ### 3. 팀 구성
- - Backend 3명a
+ - Backend 3명
  - Frontend 3명
  - UX/UI designer 1명
 ### 4. 기술 스택
