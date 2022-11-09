@@ -18,9 +18,10 @@ class UsersController {
         recommendId,
       } = req.body;
 
-      // if (password !== confirmPassword) {
-      //   throw { code: -5 };
-      // }
+      if (password !== confirmPassword) {
+        throw { code: -5 };
+      }
+
       await this.usersService.createUser(
         loginId,
         password,
