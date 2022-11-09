@@ -3,7 +3,7 @@ require("dotenv").config();
 const development = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: "Final",
+  database: "8weeks",
   host: process.env.DB_ENDPOINT,
   port: process.env.DB_PORT,
   dialect: "mysql",

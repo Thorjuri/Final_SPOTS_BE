@@ -17,9 +17,16 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 type: DataTypes.INTEGER,
             },
+            lat: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },    
+            lng: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },    
             place: {
                 type: DataTypes.STRING,
-                unique: true,
                 allowNull: false,
             },
             sports: {
@@ -35,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             phone: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 unique: true,
                 allowNull: false,
             },
