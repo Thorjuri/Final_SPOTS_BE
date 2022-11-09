@@ -37,16 +37,10 @@ module.exports = (sequelize, DataTypes) => {
             member: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                defaultValue: 0
             },
-            player: { 
-                type: DataTypes.JSON,
-                allowNull: true,
-                defaultValue: {"player" : []}
-            },
-            state: {
+            image: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             score: {
                 type: DataTypes.INTEGER,

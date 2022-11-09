@@ -4,19 +4,9 @@ class TeamsController {
     teamsService = new TeamsService();
 
     getMyTeam = async(req, res)=> {
-        const {userId} = res.locals.user;
-        const data = await this.teamsService.getMyTeam(userId);
-        res.send(data);
-    };
-
-    getAllTeams = async(req, res)=> {
-        const data = await this.teamsService.getAllTeams();
-        res.send(data);
-    };
-
-    getSportsTeams = async(req, res)=> {
-        const {sports} = req.params;
-        const data = await this. teamsService.getSportsTeams(sports);
+        const {nickname} = res.locals.user;
+        console.log(nickname)
+        const data = await this.teamsService.getMyTeam(nickname);
         res.send(data);
     };
 
@@ -28,16 +18,10 @@ class TeamsController {
 
     createTeam = async(req, res)=> {
         const { nickname } = res.locals.user
-        const {teamName, sports, state} = req.body;
-        const data = await this.teamsService.createTeam(teamName, sports, state, nickname);
-        res.send(data);
-    };
-
-
-    updateTeam = async(req, res)=> {
-        const {nickname} = res.locals.user;
-        const {teamName} = req.body;
-        const data = await this.teamsService.updateTeam(nickname, teamName);
+        const { teamName, sports, member} = req.body;
+        const image = req.file.location
+            console.log(req.file, req.body)
+        const data = await this.teamsService.createTeam(nickname, teamName, sports, member, image);
         res.send(data);
     };
 
