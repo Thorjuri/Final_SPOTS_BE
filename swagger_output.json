@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "sparta4.shop",
+  "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
@@ -13,7 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["https"],
+  "schemes": ["http"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -22,8 +22,8 @@
       "description": "any description..."
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
   "paths": {
     "/users/signup": {
       "post": {
@@ -355,7 +355,17 @@
                 },
                 "sports": {
                   "example": "종목"
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "schema": {
+              "type": "file",
+              "properties": {
                 "image": {
                   "example": "이미지파일 (2MB 이하,720*720 이하)"
                 }

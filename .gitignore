@@ -2,4 +2,4 @@
 /.env
 /.idea
 /.login.html
-package-lock.json
+/package-lock.json
