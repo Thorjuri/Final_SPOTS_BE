@@ -3,7 +3,7 @@ const router = express.Router();
 const usersRouter = require('./users.js');
 const placesRouter = require('./places.js');
 const teamsRouter = require('./teams.js');
-const mypagesRouter = require('./mypages.js');
+//const mypagesRouter = require('./mypages.js');
 const reservationsRouter = require('./reservations.js');
 
 
