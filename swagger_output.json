@@ -296,14 +296,6 @@
         }
       }
     },
-    "/teams/": {
-      "get": {
-        "description": "전체 팀 조회",
-        "tags": ["Teams"],
-        "parameters": [],
-        "responses": {}
-      }
-    },
     "/teams/info": {
       "get": {
         "description": "팀 상세정보 조회",
@@ -358,45 +350,14 @@
                 "teamName": {
                   "example": "팀 이름"
                 },
-                "state": {
-                  "example": "oo구"
+                "member": {
+                  "example": 5
                 },
                 "sports": {
                   "example": "종목"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/teams/update": {
-      "put": {
-        "description": "기존 팀 가입",
-        "tags": ["Teams"],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "teamName": {
-                  "example": "팀 이름"
+                },
+                "image": {
+                  "example": "이미지파일 (2MB 이하,720*720 이하)"
                 }
               }
             }
