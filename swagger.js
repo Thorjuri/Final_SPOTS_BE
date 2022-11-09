@@ -7,8 +7,10 @@ const doc = {
     title: "Spots",
     description: "",
   },
+
   host: "ws-study.shop",
   schemes: ["https"],
+
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [
