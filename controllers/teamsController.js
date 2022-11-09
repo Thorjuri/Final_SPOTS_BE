@@ -19,8 +19,8 @@ class TeamsController {
     createTeam = async(req, res)=> {
         const { nickname } = res.locals.user
         const { teamName, sports, member} = req.body;
-        const image = req.file.location
-            console.log(req.file, req.body)
+        let image = ''
+        req.hasOwnProperty('file')===false?  image = null : image = req.file.location
         const data = await this.teamsService.createTeam(nickname, teamName, sports, member, image);
         res.send(data);
     };
