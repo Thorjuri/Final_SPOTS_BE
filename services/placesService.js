@@ -37,7 +37,7 @@ class PlacesService {
     };
 
     
-    getFootsal = async (sports) => {   //풋살장만 보여주기
+    getSports = async (sports) => {   //종목별 조회
 
         // try {
             const findFootsal = await this.placesRepository.getSports(sports);
@@ -49,29 +49,7 @@ class PlacesService {
         // }
     };
 
-    getTennis = async (sports) => {   //테니스장만 보여주기
-
-        // try {
-            const findFootsal = await this.placesRepository.getSports(sports);
-
-            return findFootsal;
-        // } catch (error) {
-        //     console.error(error);
-        //     return (error.status || 400);
-        // }
-    };
-
-    getBadminton = async (sports) => {   //배드민턴장만 보여주기
-
-        // try {
-            const findFootsal = await this.placesRepository.getSports(sports);
-
-            return findFootsal;
-        // } catch (error) {
-        //     console.error(error);
-        //     return (error.status || 400);
-        // }
-    };
+    
 }
 
 module.exports = PlacesService;

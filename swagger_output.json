@@ -5,7 +5,9 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",
+
+  "host": "ws-study.shop",
+
   "basePath": "/",
   "tags": [
     {
@@ -13,7 +15,9 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["http"],
+
+  "schemes": ["https", "http"],
+
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -507,6 +511,105 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places": {
+      "post": {
+        "description": "시설 등록",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type" : "string",
+                  "example": "위도"
+                },
+                "lng": {
+                  "type" : "string",
+                  "example": "경도"
+                },
+                "place": {
+                  "type" : "string",
+                  "example": "시설이름"
+                },
+                "sports": {
+                  "type" : "string",
+                  "example": "종목"
+                },
+                "address": {
+                  "type" : "string",
+                  "example": "주소"
+                },
+                "state": {
+                  "type" : "string",
+                  "example": "구(강서구)"
+                },
+                "phone": {
+                  "type" : "string",
+                  "example": "전화번호"
+                },
+                "review": {
+                  "type" : "string",
+                  "example": "후기"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "description": "전체 시설 조회",
+        "tags": ["Places"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/{sports}": {
+      "get": {
+        "description": "종목별 조회",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "sports",
+            "in": "path",
+            "type": "string",
+            "schema": {
+              "properties": {
+                "sports": {
+                  "type": "string"
+                }
+              }
+            }      
           }
         ],
         "responses": {

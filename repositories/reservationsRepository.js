@@ -2,13 +2,13 @@ const { Reservations, Users, Teams } = require('../models');
 const mysql2 = require('mysql2');  
 require("dotenv").config();
 
-const db = mysql2.createConnection({  
-    host     : process.env.DB_ENDPOINT,
-    user     : process.env.DB_USERNAME,
-    password : process.env.DB_PASSWORD,
-    database : "Final"
-});
-db.connect();
+// const db = mysql2.createConnection({  
+//     host     : process.env.DB_ENDPOINT,
+//     user     : process.env.DB_USERNAME,
+//     password : process.env.DB_PASSWORD,
+//     database : "Final"
+// });
+// db.connect();
 
 
 class ReservationsRepository {
