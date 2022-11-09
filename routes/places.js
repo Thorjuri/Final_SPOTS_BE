@@ -13,15 +13,8 @@ router.post('/', placesController.createPlace)
  //전체 조회 
 router.get('/', placesController.findAllPlaces)
 
-//  풋살 조회 
-router.get('/:sports', placesController.getFootsal)
-
-//  테니스 조회 
-router.get('/:sports', placesController.getTennis)
-
-//  배드민턴 조회 
-router.get('/:sports', placesController.getBadminton)
-
+//  종목 조회 
+router.get('/:sports', placesController.getSports)
 
 
 module.exports = router;

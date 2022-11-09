@@ -43,44 +43,17 @@ class PlacesController {
         // }
     };
 
-    getFootsal = async (req, res, next) => {  //풋살장만 보이게하기
+    getSports = async (req, res, next) => {  //종목별 조회
         // try {
             const {sports} = req.params;
-            const places = await this.placesService.getFootsal(sports);
+            const places = await this.placesService.getSports(sports);
 
             res.json({data: places});
         // } catch (error) {
         //     res.status(400).json({errorMessage: error.message});
         // }
     };
-
-    getTennis = async (req, res, next) => {  //테니스장만 보이게하기
-        // try {
-            const {sports} = req.params;
-            const places = await this.placesService.getTennis(sports);
-
-            res.json({data: places});
-        // } catch (error) {
-        //     res.status(400).json({errorMessage: error.message});
-        // }
-    };
-
-    getBadminton = async (req, res, next) => {  //배드민턴장만 보이게하기
-        // try {
-            const {sports} = req.params;
-            const places = await this.placesService.getBadminton(sports);
-
-            res.json({data: places});
-        // } catch (error) {
-        //     res.status(400).json({errorMessage: error.message});
-        // }
-    };
-
-   
-
-   
-
-
+  
 }
 
 module.exports = PlacesController;

@@ -8,7 +8,7 @@ const doc = {
     description: "",
   },
   host: "localhost:3000",
-  schemes: ["https"],
+  schemes: ["http"],  //
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [
