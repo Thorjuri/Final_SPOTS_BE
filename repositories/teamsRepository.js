@@ -21,11 +21,8 @@ class TeamsRepository {
         return {players, members};
     }
 
-    getMyTeam = async(userId)=> {
-        const data = await Users.findOne({
-            attributes: ['teamName'],
-            where: { userId }
-        })
+    getMyTeam = async(nickname)=> {
+        const data = await Teams.findAll({ where: { admin : nickname } })
         return data;
     };
 
@@ -44,9 +41,9 @@ class TeamsRepository {
         return data;
     };
 
-    createTeam = async(teamName, sports, state, nickname)=> {
+    createTeam = async(nickname, teamName, sports, member, image)=> {
         const admin = nickname;
-        const data = await Teams.create({teamName, sports, state, admin});
+        const data = await Teams.create({admin, teamName, sports, member, image});
         return {data : data, message: "신규 팀 생성 완료."};
     };
 
@@ -58,11 +55,9 @@ class TeamsRepository {
     };
 
     
-    deleteTeam = async(nickname, teamName, newTeam, newMember, newPlayer)=> {
-        await Users.update({ teamName: newTeam }, { where: { nickname } });
-        await Teams.update({ player: newPlayer, member: newMember }, { where: { teamName } });
-
-        return {team : newTeam, player: newPlayer, message: "팀 탈퇴 완료."};
+    deleteTeam = async(nickname, teamName)=> {
+        await Teams.destroy({ where : { admin : nickname, teamName : teamName}});
+        return {message : '팀이 삭제되었습니다.'}
     };
 
 };

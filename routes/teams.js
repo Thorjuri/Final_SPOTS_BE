@@ -5,27 +5,19 @@ const TeamsController = require('../controllers/teamsController.js');
 const teamsController = new TeamsController();
 const authMiddleware = require('../middlewares/auth_middleware');
 const wrapAsyncController = require('../middlewares/wrapAsyncController');
+const upload = require('../middlewares/multerS3_middleware.js')
 
 
 // 1. 나의 팀 조회
 router.get('/me', authMiddleware, wrapAsyncController(teamsController.getMyTeam))
 
-// 2. 전체 팀 조회
-router.get('/', wrapAsyncController(teamsController.getAllTeams))
-
-// 3. 종목 별 팀 조회
-router.get('/:sports', wrapAsyncController(teamsController.getSportsTeams))
-
-// 4. 팀 상세 조회
+// 2. 팀 상세 조회
 router.get('/info', authMiddleware, wrapAsyncController(teamsController.getTeamInfo))
 
-// 5. 신규 팀 생성
-router.post('/register', authMiddleware, wrapAsyncController(teamsController.createTeam))
+// 3. 팀 등록
+router.post('/register', authMiddleware, upload.single('image'), wrapAsyncController(teamsController.createTeam))
 
-// 6. 팀 수정 - 기존 팀 가입
-router.put('/update', authMiddleware, wrapAsyncController(teamsController.updateTeam))
-
-// 7. 팀 수정 - 기존 팀 탈퇴
+// 4. 팀 삭제
 router.put('/drop', authMiddleware, wrapAsyncController(teamsController.deleteTeam))
 
 
