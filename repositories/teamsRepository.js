@@ -36,8 +36,8 @@ class TeamsRepository {
         return data;
     };
 
-    getTeamInfo = async(teamName)=>{
-        const data = await Teams.findOne({ where : { teamName }});
+    getTeamInfo = async(teamId)=>{
+        const data = await Teams.findOne({ where : { teamId }});
         return data;
     };
 

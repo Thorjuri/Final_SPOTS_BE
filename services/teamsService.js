@@ -9,8 +9,8 @@ class TeamsService {
         return data;
     };
 
-    getTeamInfo = async(teamName)=> {
-        const data = await this.teamsRepository.getTeamInfo(teamName);
+    getTeamInfo = async(teamId)=> {
+        const data = await this.teamsRepository.getTeamInfo(teamId);
         if(!data){ throw new Error('해당하는 팀을 찾을 수 없습니다.')}
         return data;
     };
