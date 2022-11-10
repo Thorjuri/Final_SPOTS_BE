@@ -15,9 +15,10 @@ AWS.config.update({
     storage: multerS3({
        s3: new AWS.S3(),
        bucket: process.env.S3_BUCEKT_NAME,
-    //    acl: "public-read",
+      //  acl: 'public-read-write',
        contentType: multerS3.AUTO_CONTENT_TYPE,
        key(req, file, cb) {
+         console.log(file)
           cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`) // original 폴더안에다 파일을 저장
        },
     }),

@@ -7,7 +7,7 @@ const doc = {
     title: "Spots",
     description: "",
   },
-  host: "https://ws-study.shop/swagger",
+  host: "https://ws-study.shop",
   schemes: ["https"],  
   consumes: ["application/json"],
   produces: ["application/json"],

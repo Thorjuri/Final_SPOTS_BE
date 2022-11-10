@@ -11,7 +11,7 @@ class TeamsController {
     };
 
     getTeamInfo = async(req, res)=>{
-        const { teamName } = req.body;
+        const { teamName } = req.params;
         const data = await this.teamsService.getTeamInfo(teamName);
         res.send(data);
     };
