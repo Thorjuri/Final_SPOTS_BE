@@ -5,26 +5,28 @@ class PlacesController {
 
     createPlace = async (req, res, next) => {   //시설 등록
         //try {
+
             const {
-                lat,
-                lng,
-                place,
                 sports,
+                place,
+                spot,
                 address,
-                state,
-                phone,
-                review
+                comforts,
+                hours,
+                price,
+                desc
+                
             } = req.body;
 
             await this.placesService.createPlace(
-                lat,
-                lng,
-                place,
                 sports,
+                place,
+                spot,
                 address,
-                state,
-                phone,
-                review
+                comforts,
+                hours,
+                price,
+                desc
             );
 
             return res.status(201).json({ message: "시설 등록이 완료되었습니다." });

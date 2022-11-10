@@ -17,11 +17,7 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 type: DataTypes.INTEGER,
             },
-            lat: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },    
-            lng: {
+            sports: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },    
@@ -29,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            sports: {
+            spot: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -37,18 +33,23 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            state: {
+            comforts: {
+                type: DataTypes.JSON,
+                allowNull: false,
+                defaultValue: {"comforts" : []}
+            },
+            hours: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            phone: {
+            price: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            review: {
+            desc: {
                 type: DataTypes.STRING,
                 allowNull: true,
-                defaultValue: "등록된 리뷰가 없습니다."
+                defaultValue: "설명을 적어주세요."
             }
         },
         {

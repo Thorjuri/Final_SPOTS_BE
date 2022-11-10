@@ -5,9 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-
-  "host": "localhost:4000",
-
+  "host": "https://ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -15,9 +13,7 @@
       "description": "회원정보API"
     }
   ],
-
-  "schemes": ["https", "http"],
-
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -535,37 +531,38 @@
             "schema": {
               "type": "object",
               "properties": {
-                "lat": {
+                
+                "sports": {
                   "type" : "string",
-                  "example": "위도"
-                },
-                "lng": {
-                  "type" : "string",
-                  "example": "경도"
+                  "example": "종목"
                 },
                 "place": {
                   "type" : "string",
                   "example": "시설이름"
                 },
-                "sports": {
+                "spot": {
                   "type" : "string",
-                  "example": "종목"
+                  "example": "시설이름"
                 },
                 "address": {
                   "type" : "string",
                   "example": "주소"
                 },
-                "state": {
-                  "type" : "string",
-                  "example": "구(강서구)"
+                "comforts": {
+                  "type" : "json",
+                  "example": "편의"
                 },
-                "phone": {
+                "hours": {
                   "type" : "string",
-                  "example": "전화번호"
+                  "example": "시간당"
                 },
-                "review": {
+                "price": {
                   "type" : "string",
-                  "example": "후기"
+                  "example": "가격"
+                },
+                "desc": {
+                  "type" : "string",
+                  "example": "설명"
                 }
               }
             }
