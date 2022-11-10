@@ -5,23 +5,21 @@ class PlacesService {
 
     createPlace = async (
         sports,
-                place,
-                spot,
-                address,
-                comforts,
-                hours,
-                price,
-                desc
+        spotName,
+        spotKind,
+        address,
+        comforts,
+        price,
+        desc
     ) => {  // 시설등록
            await this.placesRepository.createPlace(
             sports,
-                place,
-                spot,
-                address,
-                comforts,
-                hours,
-                price,
-                desc
+            spotName,
+            spotKind,
+            address,
+            comforts,
+            price,
+            desc
             );
 
             return;

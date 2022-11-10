@@ -8,11 +8,10 @@ class PlacesController {
 
             const {
                 sports,
-                place,
-                spot,
+                spotName,
+                spotKind,
                 address,
                 comforts,
-                hours,
                 price,
                 desc
                 
@@ -20,11 +19,10 @@ class PlacesController {
 
             await this.placesService.createPlace(
                 sports,
-                place,
-                spot,
+                spotName,
+                spotKind,
                 address,
                 comforts,
-                hours,
                 price,
                 desc
             );

@@ -38,10 +38,6 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: {"comforts" : []}
             },
-            hours: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             price: {
                 type: DataTypes.STRING,
                 allowNull: false,

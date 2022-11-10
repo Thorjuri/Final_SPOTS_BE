@@ -536,13 +536,13 @@
                   "type" : "string",
                   "example": "종목"
                 },
-                "place": {
+                "spotName": {
                   "type" : "string",
                   "example": "시설이름"
                 },
-                "spot": {
+                "spotKind": {
                   "type" : "string",
-                  "example": "시설이름"
+                  "example": "스팟종류"
                 },
                 "address": {
                   "type" : "string",
@@ -550,11 +550,10 @@
                 },
                 "comforts": {
                   "type" : "json",
-                  "example": "편의"
-                },
-                "hours": {
-                  "type" : "string",
-                  "example": "시간당"
+                  "example": [
+                    "화장실",
+                    "장비대여"
+                  ]
                 },
                 "price": {
                   "type" : "string",
@@ -562,7 +561,7 @@
                 },
                 "desc": {
                   "type" : "string",
-                  "example": "설명"
+                  "example": "스팟설명"
                 }
               }
             }
