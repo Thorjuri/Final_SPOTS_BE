@@ -12,7 +12,7 @@ const upload = require('../middlewares/multerS3_middleware.js')
 router.get('/me', authMiddleware, wrapAsyncController(teamsController.getMyTeam))
 
 // 2. 팀 상세 조회
-router.get('/info', authMiddleware, wrapAsyncController(teamsController.getTeamInfo))
+router.get('/info/:teamName', authMiddleware, wrapAsyncController(teamsController.getTeamInfo))
 
 // 3. 팀 등록
 router.post('/register', authMiddleware, upload.single('image'), wrapAsyncController(teamsController.createTeam))
