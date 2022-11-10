@@ -3,24 +3,22 @@ const {Places} = require('../models');
 class PlacesRepository {
 
     createPlace = async (   //시설등록
-        lat,
-        lng,
-        place,
         sports,
+        spotName,
+        spotKind,
         address,
-        state,
-        phone,
-        review
+        comforts,
+        price,
+        desc
     ) => {  
         const createPlaceData = await Places.create({
-            lat,
-            lng,
-            place,
             sports,
+            spotName,
+            spotKind,
             address,
-            state,
-            phone,
-            review
+            comforts,
+            price,
+            desc
         });
 
         return createPlaceData;

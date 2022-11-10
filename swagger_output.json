@@ -5,9 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-
-  "host": "localhost:4000",
-
+  "host": "https://ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -15,9 +13,7 @@
       "description": "회원정보API"
     }
   ],
-
-  "schemes": ["https", "http"],
-
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -535,37 +531,37 @@
             "schema": {
               "type": "object",
               "properties": {
-                "lat": {
-                  "type" : "string",
-                  "example": "위도"
-                },
-                "lng": {
-                  "type" : "string",
-                  "example": "경도"
-                },
-                "place": {
-                  "type" : "string",
-                  "example": "시설이름"
-                },
+                
                 "sports": {
                   "type" : "string",
                   "example": "종목"
+                },
+                "spotName": {
+                  "type" : "string",
+                  "example": "시설이름"
+                },
+                "spotKind": {
+                  "type" : "string",
+                  "example": "스팟종류"
                 },
                 "address": {
                   "type" : "string",
                   "example": "주소"
                 },
-                "state": {
-                  "type" : "string",
-                  "example": "구(강서구)"
+                "comforts": {
+                  "type" : "json",
+                  "example": [
+                    "화장실",
+                    "장비대여"
+                  ]
                 },
-                "phone": {
-                  "type" : "string",
-                  "example": "전화번호"
+                "price": {
+                  "type" : "integer",
+                  "example": 0
                 },
-                "review": {
+                "desc": {
                   "type" : "string",
-                  "example": "후기"
+                  "example": "스팟설명"
                 }
               }
             }

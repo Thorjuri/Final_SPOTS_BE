@@ -7,12 +7,10 @@ const doc = {
     title: "Spots",
     description: "",
   },
-
-  host: "localhost:4000",
-  schemes: ["https", "http"],
-
-  consumes: ["application/json", "multipart/form-data"],
-  produces: ["application/json", "multipart/form-data"],
+  host: "https://ws-study.shop",
+  schemes: ["https"],  
+  consumes: ["application/json"],
+  produces: ["application/json"],
   tags: [
     {
       name: "Users",

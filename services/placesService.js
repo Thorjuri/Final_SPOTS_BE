@@ -4,28 +4,24 @@ class PlacesService {
     placesRepository = new PlacesRepository();
 
     createPlace = async (
-        lat,
-        lng,
-        place,
         sports,
+        spotName,
+        spotKind,
         address,
-        state,
-        phone,
-        review
+        comforts,
+        price,
+        desc
     ) => {  // 시설등록
            await this.placesRepository.createPlace(
-                lat,
-                lng,
-                place,
-                sports,
-                address,
-                state,
-                phone,
-                review
+            sports,
+            spotName,
+            spotKind,
+            address,
+            comforts,
+            price,
+            desc
             );
-
             return;
-
     };
 
     findAllPlaces = async () => {  // 장소 전체 조회
