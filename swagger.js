@@ -8,11 +8,11 @@ const doc = {
     description: "",
   },
 
-  host: "ws-study.shop",
-  schemes: ["https"],
+  host: "localhost:4000",
+  schemes: ["https", "http"],
 
-  consumes: ["application/json"],
-  produces: ["application/json"],
+  consumes: ["application/json", "multipart/form-data"],
+  produces: ["application/json", "multipart/form-data"],
   tags: [
     {
       name: "Users",
