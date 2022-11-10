@@ -2,7 +2,7 @@ const express = require("express");
 const Http = require("http");
 const app = express();
 const http = Http.createServer(app);
-const port = 4000;
+const port = 3000;
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 
