@@ -5,22 +5,20 @@ class PlacesRepository {
     createPlace = async (   //시설등록
         
         sports,
-        place,
-        spot,
+        spotName,
+        spotKind,
         address,
         comforts,
-        hours,
         price,
         desc
     ) => {  
         const createPlaceData = await Places.create({
             
             sports,
-            place,
-            spot,
+            spotName,
+            spotKind,
             address,
             comforts,
-            hours,
             price,
             desc
         });
