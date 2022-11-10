@@ -6,7 +6,7 @@
     "description": ""
   },
 
-  "host": "ws-study.shop",
+  "host": "localhost:4000",
 
   "basePath": "/",
   "tags": [
