@@ -14,7 +14,6 @@ class PlacesController {
                 comforts,
                 price,
                 desc
-                
             } = req.body;
 
             await this.placesService.createPlace(

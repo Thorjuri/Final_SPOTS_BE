@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },    
-            place: {
+            spotName: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            spot: {
+            spotKind: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: {"comforts" : []}
             },
             price: {
-                type: DataTypes.STRING,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             desc: {
