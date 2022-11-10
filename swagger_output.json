@@ -556,8 +556,8 @@
                   ]
                 },
                 "price": {
-                  "type" : "string",
-                  "example": "가격"
+                  "type" : "integer",
+                  "example": 0
                 },
                 "desc": {
                   "type" : "string",

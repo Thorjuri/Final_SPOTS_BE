@@ -21,7 +21,6 @@ class PlacesService {
             price,
             desc
             );
-
             return;
     };
 
