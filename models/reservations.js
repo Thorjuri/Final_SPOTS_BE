@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            isDouble: {
+                type: DataTypes.BOOLEAN,
+                allowNull: true,
+            },
             teamName: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -47,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
             },
             admin: {
                 type: DataTypes.STRING,
+                allowNull: false,
+            },
+            price: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             result: {

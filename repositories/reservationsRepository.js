@@ -1,14 +1,31 @@
 const { Reservations, Users, Teams } = require('../models');
-const mysql2 = require('mysql2');  
 require("dotenv").config();
 
 
 class ReservationsRepository {
 
-    createMatch = async(matchId, place, teamName, member, nickname, date)=> {
+    // 현재 보유 포인트조회
+    checkPoint = async(nickname)=> {
+        const data = await Users.findOne({
+            attributes: ['point'],
+            where : { nickname }
+        });
+        return data;
+    };
+
+    // 포인트 결제 (포인트 차감)
+    createPayment = async(nickname, price)=> {
+        const points = await this.checkPoint(nickname);
+        const newPoints = points.point - price;
+        await Users.update({ point : newPoints}, { where : { nickname }});
+        return newPoints;
+    }
+
+    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
         const admin = nickname
-        const data = await Reservations.create({ matchId, place, teamName, member, admin, date });
-        return {data: data, message : "매치 등록 완료"};
+        const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트를 반환함
+        const data = await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
+        return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`};
     };
 
     checkTeam = async(teamName)=> {
