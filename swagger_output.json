@@ -296,7 +296,7 @@
         }
       }
     },
-    "/teams/info": {
+    "/teams/info/{teamId}": {
       "get": {
         "description": "팀 상세정보 조회",
         "tags": ["Teams"],
@@ -307,14 +307,14 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "type": "string",
+            "name": "teamId",
+            "in": "path",
+            "type": "integer",
             "schema": {
               "type": "object",
               "properties": {
-                "teamName": {
-                  "example": "신바람풋살회"
+                "teamId": {
+                  "example": 2
                 }
               }
             }
@@ -435,19 +435,25 @@
               "type": "object",
               "properties": {
                 "matchId": {
-                  "example": "221107t11"
+                  "example": "221111t15"
                 },
                 "place": {
-                  "example": "튼튼축구장"
+                  "example": "아스가르드"
                 },
                 "teamName": {
-                  "example": "항해풋살회"
+                  "example": "토르테니스단"
                 },
                 "member": {
-                  "example": "5 (숫자 인원)"
+                  "example": 5
                 },
                 "date": {
                   "example": "2022-11-07-13:00"
+                },
+                "isDouble": {
+                  "example": true
+                },
+                "price": {
+                  "example": 5000
                 }
               }
             }
