@@ -532,6 +532,14 @@
               "type": "object",
               "properties": {
                 
+                "x": {
+                  "type" : "string",
+                  "example": "위도"
+                },
+                "y": {
+                  "type" : "string",
+                  "example": "경도"
+                },
                 "sports": {
                   "type" : "string",
                   "example": "종목"
@@ -602,7 +610,81 @@
             "schema": {
               "properties": {
                 "sports": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "footsal"
+                }
+              }
+            }      
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/open": {
+      "get": {
+        "description": "open api 전체 시설 조회",
+        "tags": ["Places"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/open/{minclassnm}": {
+      "get": {
+        "description": "소분류명 조회",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "minclassnm",
+            "in": "path",
+            "type": "string",
+            "schema": {
+              "properties": {
+                "minclassnm": {
+                  "type": "string",
+                  "example": "테니스장"
+                }
+              }
+            }      
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/opens/{areanm}": {
+      "get": {
+        "description": "지역명 조회",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "areanm",
+            "in": "path",
+            "type": "string",
+            "schema": {
+              "properties": {
+                "areanm": {
+                  "type": "string",
+                  "example": "동작구"
                 }
               }
             }      
@@ -619,4 +701,6 @@
       }
     }
   }
+  
 }
+
