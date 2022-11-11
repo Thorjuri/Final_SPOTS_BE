@@ -24,10 +24,10 @@ class ReservationsController {
         }
     };
 
-    getReservations = async(req, res, next)=> {
+    getMyMatch = async(req, res, next)=> {
         try{
             const {nickname} = res.locals.user;
-            const data = await this.reservationsService.getReservations(nickname);
+            const data = await this.reservationsService.getMyMatch(nickname);
             res.send(data)
         }catch(error) {
             res.status(401).json({error: error.message});

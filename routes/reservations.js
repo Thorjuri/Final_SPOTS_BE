@@ -12,7 +12,7 @@ router.post('/register', authMiddleware, reservationsController.createMatch)
 router.get('/register', authMiddleware, reservationsController.getMatch)
 
 //3. 나의 매치 예약현황 조회
-router.get('/me', authMiddleware, reservationsController.getReservations)
+router.get('/me', authMiddleware, reservationsController.getMyMatch)
 
 
 
