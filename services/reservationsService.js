@@ -20,8 +20,9 @@ class ReservationsService {
         return data;
     };
 
-    getReservations = async(nickname)=> {
-        const data =  await this.reservationsRepository.getReservations(nickname);
+    getMyMatch = async(nickname)=> {
+        const admin = nickname;
+        const data =  await this.reservationsRepository.getMyMatch(admin);
         return data;
     };
     

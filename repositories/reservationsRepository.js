@@ -47,15 +47,9 @@ class ReservationsRepository {
     };
 
 
-    getReservations = async(nickname)=> { // 수정중. 빈 값 반환 문제 (map 비동기 문제인 듯)
-        const user = await Users.findOne({ where : { nickname }});
-        const team = user.teamName.team; 
-        let matchs = [];
-        for(let i = 0; i<team.length; i++){
-            let match = await Reservations.findOne({ where : { teamName : team[i]}});
-            matchs.push(match);      
-        }
-        return matchs;
+    getMyMatch = async(admin)=> { // 수정중. 빈 값 반환 문제 (map 비동기 문제인 듯)
+        const data = await Reservations.findAll({ where : { admin }});
+        return data;
     };
 };
 
