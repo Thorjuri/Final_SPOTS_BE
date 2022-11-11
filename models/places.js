@@ -17,6 +17,14 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true,
                 type: DataTypes.INTEGER,
             },
+            x: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },   
+            y: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },   
             sports: {
                 type: DataTypes.STRING,
                 allowNull: false,
