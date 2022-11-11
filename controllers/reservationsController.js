@@ -16,8 +16,8 @@ class ReservationsController {
 
     getMatch = async(req, res, next)=> {
         try{
-            const {matchId, place} = req.body;
-            const data = await this.reservationsService.getMatch(matchId, place);
+            const {place, date} = req.body;
+            const data = await this.reservationsService.getMatch(place, date);
             res.send(data);
         }catch(error) {
             res.status(401).json({error: error.message});
