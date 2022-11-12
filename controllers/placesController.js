@@ -6,11 +6,12 @@ class PlacesController {
   createPlace = async (req, res, next) => {
     //시설 등록
     //try {
-
+    const {loginId} = res.locals.user;  
     const { x,y,sports, spotName, spotKind, address, comforts, price, desc } =
       req.body;
 
     await this.placesService.createPlace(
+      loginId,
       x,
       y,  
       sports,
@@ -37,7 +38,22 @@ class PlacesController {
     // } catch (error) {
     //     res.status(400).json({errorMessage: error.message});
     // }
+    //};  
   };
+
+  findGetPlaces = async (req, res, next) => {
+    // 본인이 등록한 시설만 조회
+    // try {
+    const {loginId} = res.locals.user;
+    const places = await this.placesService.findGetPlaces(loginId);
+
+    res.json({ data: places });
+    // } catch (error) {
+    //     res.status(400).json({errorMessage: error.message});
+    // }
+  };
+
+
 
   getSports = async (req, res, next) => {
     // 종목별 조회
@@ -50,6 +66,53 @@ class PlacesController {
     //     res.status(400).json({errorMessage: error.message});
     // }
   };
+
+  updatePlaces = async (req, res, next) => {   // 시설정보 수정
+    // try {
+        const {placesId} = req.params;
+        const {loginId} = res.locals.user;
+        const {x,y,sports,spotName,spotKind,address,comforts,price,desc} = req.body;
+
+        const updateresult = await this.placesService.updatePlaces(
+            placesId,
+            loginId,
+            x,y,sports,spotName,spotKind,address,comforts,price,desc
+        );
+
+        res.json({data: updateresult.message});
+    // } catch (error) {
+    //     res.status(error.status || 400).json({errorMessage: error.message});
+    // }
+};
+
+
+
+deletePlaces = async (req, res, next) => {   // 시설 삭제
+  try {
+      const {placesId} = req.params;
+      const {loginId} = res.locals.user;
+
+      const deleteresult = await this.placesService.deletePlaces(
+          placesId,
+          loginId,
+      );
+
+
+      res.json({data: deleteresult.message});
+
+  } catch (error) {
+      res.status(error.status || 400).json({errorMessage: error.message});
+  }
+};
+
+
+
+
+
+
+
+
+
 
   findAllOpens = async (req, res, next) => {  // open api 전체 불러오기
     

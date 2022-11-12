@@ -3,8 +3,11 @@ const router = express.Router();
 const usersRouter = require('./users.js');
 const placesRouter = require('./places.js');
 const teamsRouter = require('./teams.js');
+const openPlacesRouter = require('./openPlaces.js');
 //const mypagesRouter = require('./mypages.js');
 const reservationsRouter = require('./reservations.js');
+
+
 
 
 //전역 미들웨어
