@@ -162,6 +162,53 @@
         "responses": {}
       }
     },
+    "/users/findId": {
+      "post": {
+        "description": "아이디 찾기",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "phone": {
+                  "example": "번호"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/findPW": {
+      "post": {
+        "description": "비밀번호 찾기",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "loginId": {
+                  "example": "아이디"
+                },
+                "phone": {
+                  "example": "번호"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/users/me": {
       "get": {
         "description": "회원정보 조회",
@@ -505,7 +552,6 @@
               }
             }
           }
-
         ],
         "responses": {
           "200": {
