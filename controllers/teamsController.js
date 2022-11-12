@@ -25,6 +25,13 @@ class TeamsController {
         res.send(data);
     };
 
+    updateTeam = async(req, res)=> {
+        const { teamName, newAdmin, newMember } = req.body;
+        const { nickname } = res.locals.user;
+        const data = await this.teamsService.updateTeam(nickname, teamName, newAdmin, newMember);
+        res.send(data);
+    };
+
     deleteTeam = async(req, res)=> {
         const {nickname} = res.locals.user;
         const {teamName} = req.body;
