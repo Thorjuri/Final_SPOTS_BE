@@ -7,15 +7,12 @@ const openPlacesRouter = require('./openPlaces.js');
 //const mypagesRouter = require('./mypages.js');
 const reservationsRouter = require('./reservations.js');
 
-const { Opens } = require("../models");
+
 
 
 //전역 미들웨어
 
-router.get("/openPlaces", openPlacesRouter, async (req, res) => {
-    await Opens.findAll();
-    return;
-})
+
 router.use("/users", usersRouter);
 router.use("/places", placesRouter);
 router.use("/teams", teamsRouter);

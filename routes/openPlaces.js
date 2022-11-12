@@ -4,16 +4,11 @@ const express = require("express");
 
 const router = express.Router();
 
-//const {minclassnm, SVCSTATNM, SVCNM,placenm,svcurl,x,y,areanm,imgurl} = req.query; 
-
-
-// let conn = Opens.createConnection({});
-//  openPlaces = async (req, res, next) => {    
     
 
 
-    let request = require("request");     //%ED%85%8C%EB%8B%88%EC%8A%A4%EC%9E%A5 테니스장     %ED%92%8B%EC%82%B4%EC%9E%A5 풋살장
-    let options = {                         //%EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5 배드민턴장
+    let request = require("request");     // %ED%85%8C%EB%8B%88%EC%8A%A4%EC%9E%A5 테니스장     %ED%92%8B%EC%82%B4%EC%9E%A5 풋살장
+    let options = {                         // %EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5 배드민턴장
       method: "GET",
       url: "http://openapi.seoul.go.kr:8088/554950534b7268613131624d597145/json/ListPublicReservationSport/1/30/%EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5",
       headers: {},
@@ -44,37 +39,38 @@ const router = express.Router();
         let IMGURL = rows[i]["IMGURL"]; //이미지경로 
 
         
-        await Opens.create({minclassnm:MINCLASSNM, svcstatnm:SVCSTATNM, svcnm:SVCNM,placenm:PLACENM,svcurl:SVCURL,x:X,y:Y,areanm:AREANM,imgurl:IMGURL});
+        //await Opens.create({minclassnm:MINCLASSNM, svcstatnm:SVCSTATNM, svcnm:SVCNM,placenm:PLACENM,svcurl:SVCURL,x:X,y:Y,areanm:AREANM,imgurl:IMGURL});
         
 
         
   
 
 
-        console.log(
-          "소분류명: " +
-            MINCLASSNM +
-            "\n서비스상태: " +
-            SVCSTATNM +
-            "\n장소명: " +
-            SVCNM +
-            "\n서비스명: " +
-            PLACENM +
-            "\n바로가기URL: " +
-            SVCURL +
-            "\nX좌표: " +
-            X +
-            "\nY좌표: " +
-            Y +
-            "\n이미지 경로: " +
-            IMGURL +
-            "\n지역명: " +
-            AREANM
-          );
+        // console.log(
+        //   "소분류명: " +
+        //     MINCLASSNM +
+        //     "\n서비스상태: " +
+        //     SVCSTATNM +
+        //     "\n장소명: " +
+        //     SVCNM +
+        //     "\n서비스명: " +
+        //     PLACENM +
+        //     "\n바로가기URL: " +
+        //     SVCURL +
+        //     "\nX좌표: " +
+        //     X +
+        //     "\nY좌표: " +
+        //     Y +
+        //     "\n이미지 경로: " +
+        //     IMGURL +
+        //     "\n지역명: " +
+        //     AREANM
+        //   );
 
           
         
-            console.log("=========================================");
+            //console.log("=========================================");
+
         //let sql = "INSERT INTO Opens (MINCLASSNM,SVCSTATNM,SVCNM,PLACENM,SVCURL,X,Y,AREANM,IMGURL) VALUES ? ";
         // Opens.query(sql, [values], function(err) {
         //   if (err) throw err;

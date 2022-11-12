@@ -4,6 +4,7 @@ class PlacesService {
   placesRepository = new PlacesRepository();
 
   createPlace = async (
+    loginId,
     x,
     y,
     sports,
@@ -16,6 +17,7 @@ class PlacesService {
   ) => {
     // 시설등록
     await this.placesRepository.createPlace(
+      loginId,
       x,
       y,
       sports,
@@ -37,6 +39,19 @@ class PlacesService {
     return findAllPlace;
   };
 
+  findGetPlaces = async (loginId) => {
+    // 본인이 등록한 시설만 조회
+
+    // try {
+    const findPlaces = await this.placesRepository.findGetPlaces(loginId);
+
+    return findPlaces;
+    // } catch (error) {
+    //     console.error(error);
+    //     return (error.status || 400);
+    // }
+  };
+
   getSports = async (sports) => {
     //종목별 조회
 
@@ -49,6 +64,55 @@ class PlacesService {
     //     return (error.status || 400);
     // }
   };
+
+   // 수정
+  updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc) => {
+    const findcommentId = await this.placesRepository.updatePlaces(placesId);
+
+    // try {
+
+        await this.placesRepository.updatePlaces(placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc);
+
+        return {'message': '시설 정보 수정이 완료 되었습니다'};
+
+    // } catch (error) {
+    //     console.error(error);
+    //     return (error.status || 400);
+    // }
+};
+
+  //삭제
+  deletePlaces = async (placesId, loginId) => { 
+
+    try {
+    const findPlacesId = await this.placesRepository.findPlacesId(placesId); //repository에서 placesId 불러오기
+
+        //해당하는 데이터가 없으면
+        if (findPlacesId === null) {
+            return {'message': '삭제할 시설이 없습니다.'};
+        }
+
+        //댓글을 삭제하려는 userId와 댓글을 작성한 userId가 다를때
+        if (loginId !== findPlacesId.dataValues.loginId) {
+            return {'message': '시설을 삭제할 권한이 없습니다.'};
+        }
+
+        await this.placesRepository.deletePlaces(placesId, loginId);
+
+        return {'message': '시설 삭제가 완료 되었습니다'};
+
+    } catch (error) {
+        console.error(error);
+        return (error.status || 400);
+    }
+
+};
+
+
+
+
+
+
 
   findAllOpens = async () => {
     // open api 전체조회
