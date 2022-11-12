@@ -21,7 +21,6 @@ class UsersController {
       if (password !== confirmPassword) {
         throw { code: -5 };
       }
-
       await this.usersService.createUser(
         loginId,
         password,
@@ -32,6 +31,7 @@ class UsersController {
         favSports,
         recommendId
       );
+
       return res.status(201).json({ message: "회원가입이 완료되었습니다." });
     } catch (err) {
       if (err.code === -1) {
@@ -50,32 +50,7 @@ class UsersController {
       }
     }
   };
-  // 로그인
-  LoginUser = async (req, res, next) => {
-    try {
-      const { loginId, password } = req.body;
-      const user = await this.usersService.LoginUser(loginId, password);
-      if (user[0].drop) {
-        return res.status(202).json({
-          nickname: user[0].nickname,
-          accessToken: user[1],
-          message: "탈퇴한 계정",
-        });
-      }
-      return res.status(200).json({
-        nickname: user[0].nickname,
-        accessToken: user[1],
-        message: "로그인 되었습니다.",
-      });
-    } catch (err) {
-      if (err.code === -1) {
-        res.status(412).json({ errormessage: "ID 또는 패스워드를 확인해 주세요" });
-      } else {
-        console.log(err);
-        res.status(400).json({ errmessage: err });
-      }
-    }
-  };
+
   // ID 중복확인
   checkId = async (req, res, next) => {
     try {
@@ -130,11 +105,72 @@ class UsersController {
       }
     }
   };
+  // ID찾기
+  findId = async (req, res, next) => {
+    try {
+      const { phone } = req.body; // +code
+      // sms
+      const findId = await this.usersService.findId(phone);
+      return res.status(200).json(findId);
+    } catch (err) {
+      if (err.code === -1) {
+        return res.status(412).json({ errormessage: "회원가입 안하신듯?" });
+      } else {
+        console.log(err);
+        res.status(400).json({ errmessage: err });
+      }
+    }
+  };
+  // PW찾기
+  findPW = async (req, res, next) => {
+    try {
+      const { loginId, phone } = req.body; // +code
+      // sms
+      const checkIdPhone = await this.usersService.checkIdPhone(loginId, phone);
+      if (!checkIdPhone) throw { code: -1 };
+      // 인증 완료 되면 비밀 번호 변경 페이지로 이동시키고 비밀번호 변경을 회원정보 수정 api 이용해서 비번 바꾸게 만듬
+      res.status(200).json({ message: "인증 성공 비밀번호 변경 페이지로 이동 시켜 주세요" });
+    } catch (err) {
+      if (err.code === -1) {
+        res.status(412).json({ errormessage: "회원가입 안하신듯?" });
+      } else {
+        console.log(err);
+        res.status(400).json({ errmessage: err });
+      }
+    }
+  };
+  // sms
+  // 로그인
+  LoginUser = async (req, res, next) => {
+    try {
+      const { loginId, password } = req.body;
+      const user = await this.usersService.LoginUser(loginId, password);
+      if (user[0].drop) {
+        return res.status(202).json({
+          nickname: user[0].nickname,
+          accessToken: user[1],
+          message: "탈퇴한 계정",
+        });
+      }
+      return res.status(200).json({
+        nickname: user[0].nickname,
+        accessToken: user[1],
+        message: "로그인 되었습니다.",
+      });
+    } catch (err) {
+      if (err.code === -1) {
+        res.status(412).json({ errormessage: "ID 또는 패스워드를 확인해 주세요" });
+      } else {
+        console.log(err);
+        res.status(400).json({ errmessage: err });
+      }
+    }
+  };
   // 유저 정보 조회
   getUser = async (req, res, next) => {
     try {
       const { loginId } = res.locals.user;
-      const getUser = await this.usersService.checkId(loginId);
+      const getUser = await this.usersService.getUser(loginId);
       return res.status(200).json({ user: getUser });
     } catch (err) {
       console.log(err);
