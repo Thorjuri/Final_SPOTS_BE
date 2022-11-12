@@ -467,7 +467,9 @@
             "description": "Unauthorized"
           }
         }
-      },
+      }
+    },
+    "/reservations/register/{place}/{date}": {
       "get": {
         "description": "매치 조회",
         "tags": ["Reservations"],
@@ -478,21 +480,32 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "place",
+            "in": "path",
             "type": "string",
             "schema": {
               "type": "object",
               "properties": {
                 "place": {
                   "example": "아스가르드"
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
                 "date": {
                   "example": "2022-11-11"
                 }
               }
             }
           }
+
         ],
         "responses": {
           "200": {
