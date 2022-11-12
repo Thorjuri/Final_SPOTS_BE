@@ -209,6 +209,40 @@
         "responses": {}
       }
     },
+    "/users/plusPoint": {
+      "patch": {
+        "description": "포인트 충전",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "point": {
+                  "example": "금액"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/users/me": {
       "get": {
         "description": "회원정보 조회",
