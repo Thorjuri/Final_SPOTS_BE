@@ -6,7 +6,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -14,7 +14,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -638,10 +638,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "loginId": {
-                  "type": "string",
-                  "example": "유저 아이디"
-                },
                 "x": {
                   "type": "string",
                   "example": "경도"
