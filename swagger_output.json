@@ -329,6 +329,38 @@
             "description": "Unauthorized"
           }
         }
+      },
+      "delete": {
+        "description": "팀 삭제",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "type": "integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamId": {
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     },
     "/teams/": {
@@ -420,39 +452,7 @@
           "description": "Unauthorized"
         }
       }
-    },
-      "delete": {
-        "description": "팀 삭제",
-        "tags": ["Teams"],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "teamName": {
-                  "example": "팀 이름"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
+    }
     },
     "/reservations/register": {
       "post": {

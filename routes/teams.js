@@ -21,7 +21,7 @@ router.post('/', authMiddleware, upload.single('image'), wrapAsyncController(tea
 router.patch('/', authMiddleware, wrapAsyncController(teamsController.updateTeam));
 
 // 5. 팀 삭제
-router.delete('/', authMiddleware, wrapAsyncController(teamsController.deleteTeam))
+router.delete('/:teamId', authMiddleware, wrapAsyncController(teamsController.deleteTeam))
 
 
 module.exports = router;

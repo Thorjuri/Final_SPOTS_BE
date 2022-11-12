@@ -34,8 +34,8 @@ class TeamsController {
 
     deleteTeam = async(req, res)=> {
         const {nickname} = res.locals.user;
-        const {teamName} = req.body;
-        const data = await this.teamsService.deleteTeam(nickname, teamName);
+        const { teamId } = req.params;
+        const data = await this.teamsService.deleteTeam(nickname, teamId);
         res.send(data);
     };
 };

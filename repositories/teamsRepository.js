@@ -65,8 +65,8 @@ class TeamsRepository {
         return {updateTeam, message: `변경된 매치 내역은 총 ${updateMatch.length}건 입니다`};
     };
     
-    deleteTeam = async(nickname, teamName)=> {
-        await Teams.destroy({ where : { admin : nickname, teamName : teamName}});
+    deleteTeam = async(nickname, teamId)=> {
+        await Teams.destroy({ where : { admin : nickname, teamId : teamId}});
         return {message : '팀이 삭제되었습니다.'}
     };
 
