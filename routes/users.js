@@ -13,6 +13,7 @@ router.post("/checkPhone", usersController.checkPhone);
 router.post("/findId", usersController.findId);
 router.post("/findPW", usersController.findPW);
 router.post("/login", usersController.LoginUser);
+router.patch("/plusPoint", auth_middleware, usersController.plusPoint);
 router.get("/me", auth_middleware, usersController.getUser);
 router.patch("/me", auth_middleware, usersController.updateUser);
 router.patch("/drop", auth_middleware, usersController.dropUser);

@@ -177,6 +177,18 @@ class UsersController {
       res.status(400).json({ errmessage: err });
     }
   };
+  // 포인트 충전
+  plusPoint = async (req, res, next) => {
+    try {
+      const { loginId } = res.locals.user;
+      const { point } = req.body;
+      const plusPoint = await this.usersService.plusPoint(loginId, point);
+      return res.status(200).json({});
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ errmessage: err });
+    }
+  };
   // 유저 정보 수정
   updateUser = async (req, res, next) => {
     try {
