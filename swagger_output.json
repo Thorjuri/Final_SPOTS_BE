@@ -1,4 +1,3 @@
-
 {
   "swagger": "2.0",
   "info": {
@@ -6,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -14,7 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -216,17 +215,15 @@
         "tags": ["Users"],
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "type": "string",
             "schema": {
               "type": "object",
               "properties": {
+                "loginId": {
+                  "example": "ID"
+                },
                 "point": {
                   "example": "금액"
                 }
@@ -496,44 +493,44 @@
           }
         }
       },
-    "patch": {
-      "description": "팀 수정",
-      "tags": ["Teams"],
-      "parameters": [
-        {
-          "name": "authorization",
-          "in": "header",
-          "type": "string"
-        },
-        {
-          "name": "body",
-          "in": "body",
-          "type": "string",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "teamName": {
-                "example": "팀 이름"
-              },
-              "newAdmin": {
-                "example": "위임할 nickname"
-              },
-              "newMember": {
-                "example": "5"
+      "patch": {
+        "description": "팀 수정",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamName": {
+                  "example": "팀 이름"
+                },
+                "newAdmin": {
+                  "example": "위임할 nickname"
+                },
+                "newMember": {
+                  "example": "5"
+                }
               }
             }
           }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "OK"
-        },
-        "401": {
-          "description": "Unauthorized"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
         }
       }
-    }
     },
     "/reservations/register": {
       "post": {
@@ -819,7 +816,6 @@
             "schema": {
               "type": "object",
               "properties": {
-               
                 "x": {
                   "type": "string",
                   "example": "경도"
