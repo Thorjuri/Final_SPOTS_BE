@@ -69,6 +69,11 @@ class UsersRepository {
 
   // + redis
 
+  // 포인트 충전
+  plusPoint = async (loginId, point) => {
+    await Users.increment({ point: point }, { where: { loginId } });
+  };
+
   // 유저 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     await Users.update(

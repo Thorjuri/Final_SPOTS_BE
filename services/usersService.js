@@ -31,7 +31,7 @@ class UsersService {
     }
     if (recommendId) {
       // 추천인 ID 유무 확인
-      const checkRecommend = await this.usersRepository.checkRecommend(recommendId);
+      const checkRecommend = await this.usersRepository.checkId(recommendId);
       if (!checkRecommend) {
         throw { code: -4 };
       }
@@ -52,6 +52,13 @@ class UsersService {
       favSports,
       recommendId
     );
+
+    await this.usersRepository.plusPoint(loginId, 5000);
+    if (recommendId) {
+      await this.usersRepository.plusPoint(loginId, 2000);
+      await this.usersRepository.plusPoint(recommendId, 2000);
+    }
+
     return;
   };
   // ID 중복검사
@@ -112,6 +119,11 @@ class UsersService {
     });
     await this.usersRepository.updateRefresh(refreshToken, user);
     return [user, accessToken];
+  };
+  // 포인트 충전
+  plusPoint = async (loginId, point) => {
+    await this.usersRepository.plusPoint(loginId, point);
+    return;
   };
   // 회원 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
