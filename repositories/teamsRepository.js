@@ -21,6 +21,11 @@ class TeamsRepository {
         return {players, members};
     }
 
+    checkUser = async(val)=> {
+        const data = await Users.findOne({ where : { nickname : val}});
+        return data;
+    }
+
     getMyTeam = async(nickname)=> {
         const data = await Teams.findAll({ where: { admin : nickname } })
         return data;
@@ -41,19 +46,24 @@ class TeamsRepository {
         return data;
     };
 
+    getTeamOne = async(teamName)=> {
+        const data = await Teams.findOne({ where : { teamName }});
+        return data;
+    };
+
     createTeam = async(nickname, teamName, sports, member, image)=> {
         const admin = nickname;
         const data = await Teams.create({admin, teamName, sports, member, image});
         return {data : data, message: "신규 팀 생성 완료."};
     };
 
-    updateTeam = async(nickname, teamName, newTeam, newMember, newPlayer)=> {
-        await Users.update({ teamName: newTeam }, { where: { nickname } });
-        await Teams.update({ player: newPlayer, member: newMember }, { where: { teamName } });
-
-        return {team : newTeam, player: newPlayer, message: "팀 가입 완료."};
+    updateTeam = async(teamName, newAdmin, newMember)=> {
+        await Teams.update({ admin : newAdmin, member : newMember}, { where : { teamName }});
+        await Reservations.update({ admin: newAdmin, member: newMember }, { where: { teamName, result: '경기 전'}});
+        const updateTeam = await Teams.findOne({ where : { teamName }});
+        const updateMatch = await Reservations.findAll({ where : { teamName, result: '경기 전'}});
+        return {updateTeam, message: `변경된 매치 내역은 총 ${updateMatch.length}건 입니다`};
     };
-
     
     deleteTeam = async(nickname, teamName)=> {
         await Teams.destroy({ where : { admin : nickname, teamName : teamName}});
