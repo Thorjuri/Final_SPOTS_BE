@@ -669,10 +669,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "loginId": {
-                  "type": "string",
-                  "example": "유저 아이디"
-                },
                 "x": {
                   "type": "string",
                   "example": "경도"
