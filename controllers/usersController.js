@@ -144,17 +144,19 @@ class UsersController {
   LoginUser = async (req, res, next) => {
     try {
       const { loginId, password } = req.body;
-      const user = await this.usersService.LoginUser(loginId, password);
-      if (user[0].drop) {
+      const { user, accessToken } = await this.usersService.LoginUser(loginId, password);
+      // console.log(user);
+      // console.log(user);
+      if (user.drop) {
         return res.status(202).json({
-          nickname: user[0].nickname,
-          accessToken: user[1],
+          nickname: user.nickname,
+          accessToken: `Bearer ${accessToken}`,
           message: "탈퇴한 계정",
         });
       }
       return res.status(200).json({
-        nickname: user[0].nickname,
-        accessToken: user[1],
+        nickname: user.nickname,
+        accessToken: `Bearer ${accessToken}`,
         message: "로그인 되었습니다.",
       });
     } catch (err) {
@@ -180,10 +182,9 @@ class UsersController {
   // 포인트 충전
   plusPoint = async (req, res, next) => {
     try {
-      const { loginId } = res.locals.user;
-      const { point } = req.body;
+      const { loginId, point } = req.body;
       const plusPoint = await this.usersService.plusPoint(loginId, point);
-      return res.status(200).json({});
+      return res.status(200).json({ message: `${plusPoint}포인트 충전 완료!` });
     } catch (err) {
       console.log(err);
       res.status(400).json({ errmessage: err });

@@ -103,7 +103,7 @@ class UsersService {
   // 로그인
   LoginUser = async (loginId, password) => {
     const user = await this.usersRepository.checkId(loginId);
-
+    console.log(user);
     if (!user) {
       throw { code: -1 };
     }
@@ -112,18 +112,21 @@ class UsersService {
       throw { code: -1 };
     }
     const accessToken = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: "30m",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
     await this.usersRepository.updateRefresh(refreshToken, user);
-    return [user, accessToken];
+    return {
+      user: user,
+      accessToken: accessToken,
+    };
   };
   // 포인트 충전
   plusPoint = async (loginId, point) => {
-    await this.usersRepository.plusPoint(loginId, point);
-    return;
+    const plusPoint = await this.usersRepository.plusPoint(loginId, point);
+    return plusPoint;
   };
   // 회원 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
