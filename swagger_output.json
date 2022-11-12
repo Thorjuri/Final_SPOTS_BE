@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "https://ws-study.shop",
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -537,44 +537,40 @@
             "schema": {
               "type": "object",
               "properties": {
-                
                 "x": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "위도"
                 },
                 "y": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "경도"
                 },
                 "sports": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "종목"
                 },
                 "spotName": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "시설이름"
                 },
                 "spotKind": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "스팟종류"
                 },
                 "address": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "주소"
                 },
                 "comforts": {
-                  "type" : "json",
-                  "example": [
-                    "화장실",
-                    "장비대여"
-                  ]
+                  "type": "json",
+                  "example": ["화장실", "장비대여"]
                 },
                 "price": {
-                  "type" : "integer",
+                  "type": "integer",
                   "example": 0
                 },
                 "desc": {
-                  "type" : "string",
+                  "type": "string",
                   "example": "스팟설명"
                 }
               }
@@ -620,7 +616,7 @@
                   "example": "footsal"
                 }
               }
-            }      
+            }
           }
         ],
         "responses": {
@@ -664,7 +660,7 @@
                   "example": "테니스장"
                 }
               }
-            }      
+            }
           }
         ],
         "responses": {
@@ -693,7 +689,7 @@
                   "example": "동작구"
                 }
               }
-            }      
+            }
           }
         ],
         "responses": {
@@ -707,6 +703,4 @@
       }
     }
   }
-  
 }
-
