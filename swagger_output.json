@@ -6,7 +6,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "ws-study.shop",
+  "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
@@ -14,7 +14,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["https"],
+  "schemes": ["http"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -661,19 +661,28 @@
         "tags": ["Places"],
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "type": "string",
             "schema": {
               "type": "object",
               "properties": {
+                "loginId": {
+                  "type": "string",
+                  "example": "유저 아이디"
+                },
                 "x": {
                   "type": "string",
-                  "example": "위도"
+                  "example": "경도"
                 },
                 "y": {
                   "type": "string",
-                  "example": "경도"
+                  "example": "위도"
                 },
                 "sports": {
                   "type": "string",
@@ -730,6 +739,27 @@
         }
       }
     },
+    "/places/me": {
+      "get": {
+        "description": "본인것만 조회",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/places/{sports}": {
       "get": {
         "description": "종목별 조회",
@@ -743,7 +773,120 @@
               "properties": {
                 "sports": {
                   "type": "string",
-                  "example": "footsal"
+                  "example": "풋살장"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/{placesId}": {
+      "put": {
+        "description": "수정하기",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "placesId",
+            "in": "path",
+            "type": "integer",
+            "schema": {
+              "properties": {
+                "placesId": {
+                  "type": "integer",
+                  "example": 13
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+               
+                "x": {
+                  "type": "string",
+                  "example": "경도"
+                },
+                "y": {
+                  "type": "string",
+                  "example": "위도"
+                },
+                "sports": {
+                  "type": "string",
+                  "example": "종목"
+                },
+                "spotName": {
+                  "type": "string",
+                  "example": "시설이름"
+                },
+                "spotKind": {
+                  "type": "string",
+                  "example": "스팟종류"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "주소"
+                },
+                "comforts": {
+                  "type": "json",
+                  "example": ["화장실", "장비대여"]
+                },
+                "price": {
+                  "type": "integer",
+                  "example": 0
+                },
+                "desc": {
+                  "type": "string",
+                  "example": "스팟설명"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "description": "삭제하기",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "placesId",
+            "in": "path",
+            "type": "integer",
+            "schema": {
+              "properties": {
+                "placesId": {
+                  "type": "integer",
+                  "example": 12
                 }
               }
             }
