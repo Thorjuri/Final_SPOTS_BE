@@ -37,11 +37,10 @@ class TeamsService {
         return data;
     };
 
-    deleteTeam = async(nickname, teamName)=> {
-        const check = await this.teamsRepository.getMyTeam(nickname);
-        const myTeams = check.filter((val)=> {return val.teamName === teamName});
-        if(myTeams.length === 0){ throw new Error('해당 팀을 찾을 수 없습니다. 팀 명을 확인해주세요.')}
-        const data = await this.teamsRepository.deleteTeam(nickname, teamName);
+    deleteTeam = async(nickname, teamId)=> {
+        const checkAdmin = await this.teamsRepository.getTeamInfo(teamId);
+            if(checkAdmin.admin !== nickname) { throw new Error('팀 삭제 권한이 없습니다.')}
+        const data = await this.teamsRepository.deleteTeam(nickname, teamId);
         return data;
     };
 
