@@ -1,6 +1,7 @@
 const UsersRepository = require("../repositories/usersRepository");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+// +sms
 require("dotenv").config();
 
 class UsersService {
@@ -30,7 +31,7 @@ class UsersService {
     }
     if (recommendId) {
       // 추천인 ID 유무 확인
-      const checkRecommend = await this.usersRepository.checkRecommend(recommendId);
+      const checkRecommend = await this.usersRepository.checkId(recommendId);
       if (!checkRecommend) {
         throw { code: -4 };
       }
@@ -38,6 +39,9 @@ class UsersService {
     const salt = await bcrypt.genSalt(10);
     const enpryptedPW = bcrypt.hashSync(password, salt);
     password = enpryptedPW;
+
+    // +sms
+
     await this.usersRepository.createUser(
       loginId,
       password,
@@ -48,26 +52,28 @@ class UsersService {
       favSports,
       recommendId
     );
+
+    await this.usersRepository.plusPoint(loginId, 5000);
+    if (recommendId) {
+      await this.usersRepository.plusPoint(loginId, 2000);
+      await this.usersRepository.plusPoint(recommendId, 2000);
+    }
+
     return;
   };
-  // ID 중복검사, 유저 정보 조회
+  // ID 중복검사
   checkId = async (loginId) => {
     const checkId = await this.usersRepository.checkId(loginId);
-    console.log(checkId);
-    if (!checkId) {
+
+    return checkId;
+  };
+  // 유저 정보 조회
+  getUser = async (loginId) => {
+    const getUser = await this.usersRepository.getUser(loginId);
+    if (!getUser) {
       return;
     }
-    return {
-      ID: checkId.loginId,
-      nickname: checkId.nickname,
-      gender: checkId.gender,
-      phone: checkId.phone,
-      score: checkId.score,
-      point: checkId.point,
-      teamName: checkId.teamName,
-      sports: checkId.sports,
-      favSports: checkId.favSports,
-    };
+    return getUser;
   };
   // 닉네임 중복검사
   checkNick = async (nickname) => {
@@ -78,6 +84,21 @@ class UsersService {
   checkPhone = async (phone) => {
     const checkPhone = await this.usersRepository.checkPhone(phone);
     return checkPhone;
+  };
+
+  // +sms
+
+  // ID찾기
+  findId = async (phone) => {
+    const findId = await this.usersRepository.checkPhone(phone);
+    if (!findId) throw { code: -1 };
+    return {
+      ID: findId.loginId,
+    };
+  };
+  checkIdPhone = async (loginId, phone) => {
+    const checkIdPhone = await this.usersRepository.checkIdPhone(loginId, phone);
+    return checkIdPhone;
   };
   // 로그인
   LoginUser = async (loginId, password) => {
@@ -98,6 +119,11 @@ class UsersService {
     });
     await this.usersRepository.updateRefresh(refreshToken, user);
     return [user, accessToken];
+  };
+  // 포인트 충전
+  plusPoint = async (loginId, point) => {
+    await this.usersRepository.plusPoint(loginId, point);
+    return;
   };
   // 회원 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
@@ -127,7 +153,7 @@ class UsersService {
       sports,
       favSports
     );
-    const getUpdate = await this.checkId(loginId);
+    const getUpdate = await this.usersRepository.getUser(loginId);
     return getUpdate;
   };
   // 회원탈퇴

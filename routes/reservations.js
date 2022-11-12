@@ -9,10 +9,10 @@ const authMiddleware = require('../middlewares/auth_middleware')
 router.post('/register', authMiddleware, reservationsController.createMatch)
 
 // 2. 매치 조회 (특정 날짜, 타임 클릭 시 매치 내역 조회 )
-router.get('/register', authMiddleware, reservationsController.getMatch)
+router.get('/register/:place/:date', authMiddleware, reservationsController.getMatch)
 
 //3. 나의 매치 예약현황 조회
-router.get('/me', authMiddleware, reservationsController.getReservations)
+router.get('/me', authMiddleware, reservationsController.getMyMatch)
 
 
 

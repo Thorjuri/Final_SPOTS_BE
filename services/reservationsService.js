@@ -15,13 +15,14 @@ class ReservationsService {
         return data;
     };
 
-    getMatch = async(matchId, place)=>{
-        const data = await this.reservationsRepository.getMatch(matchId, place);
+    getMatch = async(place, date)=>{
+        const data = await this.reservationsRepository.getMatch(place, date);
         return data;
     };
 
-    getReservations = async(nickname)=> {
-        const data =  await this.reservationsRepository.getReservations(nickname);
+    getMyMatch = async(nickname)=> {
+        const admin = nickname;
+        const data =  await this.reservationsRepository.getMyMatch(admin);
         return data;
     };
     
