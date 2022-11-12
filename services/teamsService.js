@@ -26,6 +26,17 @@ class TeamsService {
         return data;
     };
 
+    updateTeam = async(nickname, teamName, newAdmin, newMember)=> {
+        const checkAdmin = await this.teamsRepository.getTeamOne(teamName);
+            if(checkAdmin.admin !== nickname) { throw new Error('팀 수정 권한이 없습니다.')};
+            if(!newAdmin) { newAdmin = nickname}
+        const checkUser = await this.teamsRepository.checkUser(newAdmin);
+            if(!checkUser) { throw new Error('admin은 가입한 회원에게만 위임할 수 있습니다.')};
+            if(!newMember) { newMember = checkAdmin.member}
+        const data = await this.teamsRepository.updateTeam(teamName, newAdmin, newMember);
+        return data;
+    };
+
     deleteTeam = async(nickname, teamName)=> {
         const check = await this.teamsRepository.getMyTeam(nickname);
         const myTeams = check.filter((val)=> {return val.teamName === teamName});
