@@ -26,11 +26,21 @@ class TeamsService {
         return data;
     };
 
-    deleteTeam = async(nickname, teamName)=> {
-        const check = await this.teamsRepository.getMyTeam(nickname);
-        const myTeams = check.filter((val)=> {return val.teamName === teamName});
-        if(myTeams.length === 0){ throw new Error('해당 팀을 찾을 수 없습니다. 팀 명을 확인해주세요.')}
-        const data = await this.teamsRepository.deleteTeam(nickname, teamName);
+    updateTeam = async(nickname, teamName, newAdmin, newMember)=> {
+        const checkAdmin = await this.teamsRepository.getTeamOne(teamName);
+            if(checkAdmin.admin !== nickname) { throw new Error('팀 수정 권한이 없습니다.')};
+            if(!newAdmin) { newAdmin = nickname}
+        const checkUser = await this.teamsRepository.checkUser(newAdmin);
+            if(!checkUser) { throw new Error('admin은 가입한 회원에게만 위임할 수 있습니다.')};
+            if(!newMember) { newMember = checkAdmin.member}
+        const data = await this.teamsRepository.updateTeam(teamName, newAdmin, newMember);
+        return data;
+    };
+
+    deleteTeam = async(nickname, teamId)=> {
+        const checkAdmin = await this.teamsRepository.getTeamInfo(teamId);
+            if(checkAdmin.admin !== nickname) { throw new Error('팀 삭제 권한이 없습니다.')}
+        const data = await this.teamsRepository.deleteTeam(nickname, teamId);
         return data;
     };
 

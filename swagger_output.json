@@ -1,3 +1,4 @@
+
 {
   "swagger": "2.0",
   "info": {
@@ -343,7 +344,7 @@
         }
       }
     },
-    "/teams/info/{teamId}": {
+    "/teams/{teamId}": {
       "get": {
         "description": "팀 상세정보 조회",
         "tags": ["Teams"],
@@ -375,9 +376,41 @@
             "description": "Unauthorized"
           }
         }
+      },
+      "delete": {
+        "description": "팀 삭제",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "teamId",
+            "in": "path",
+            "type": "integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "teamId": {
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     },
-    "/teams/register": {
+    "/teams/": {
       "post": {
         "description": "신규 팀 생성",
         "tags": ["Teams"],
@@ -398,7 +431,7 @@
                   "example": "팀 이름"
                 },
                 "member": {
-                  "example": 5
+                  "example": "5"
                 },
                 "sports": {
                   "example": "종목"
@@ -428,41 +461,45 @@
             "description": "Unauthorized"
           }
         }
-      }
-    },
-    "/teams/drop": {
-      "put": {
-        "description": "기존 팀 탈퇴",
-        "tags": ["Teams"],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "teamName": {
-                  "example": "팀 이름"
-                }
+      },
+    "patch": {
+      "description": "팀 수정",
+      "tags": ["Teams"],
+      "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "type": "string",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "teamName": {
+                "example": "팀 이름"
+              },
+              "newAdmin": {
+                "example": "위임할 nickname"
+              },
+              "newMember": {
+                "example": "5"
               }
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "401": {
+          "description": "Unauthorized"
         }
       }
+    }
     },
     "/reservations/register": {
       "post": {
