@@ -12,7 +12,8 @@ class PlacesRepository {
           address,
           comforts,
           price,
-          desc
+          desc,
+          image
     ) => {
       const createPlaceData = await Places.create({
           loginId,  
@@ -25,6 +26,7 @@ class PlacesRepository {
           comforts,
           price,
           desc,
+          image
       });
 
       return createPlaceData;
@@ -52,9 +54,9 @@ class PlacesRepository {
     };
 
     // 수정
-    updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc) => {
+    updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
       const updatePlaces = await Places.update(
-          {x,y,sports,spotName,spotKind,address,comforts,price,desc}, {where: {placesId, loginId}}
+          {x,y,sports,spotName,spotKind,address,comforts,price,desc,image}, {where: {placesId, loginId}}
       );
       return updatePlaces;
     };

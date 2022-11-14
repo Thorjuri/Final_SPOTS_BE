@@ -10,7 +10,7 @@ const router = express.Router();
     let request = require("request");     // %ED%85%8C%EB%8B%88%EC%8A%A4%EC%9E%A5 테니스장     %ED%92%8B%EC%82%B4%EC%9E%A5 풋살장
     let options = {                         // %EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5 배드민턴장
       method: "GET",
-      url: "http://openapi.seoul.go.kr:8088/554950534b7268613131624d597145/json/ListPublicReservationSport/1/30/%EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5",
+      url: "http://openapi.seoul.go.kr:8088/554950534b7268613131624d597145/json/ListPublicReservationSport/1/2/%ED%85%8C%EB%8B%88%EC%8A%A4%EC%9E%A5",
       headers: {},
     };
     request(options, async function (error, response) {
@@ -43,7 +43,6 @@ const router = express.Router();
         
 
         
-  
 
 
         // console.log(
@@ -66,10 +65,9 @@ const router = express.Router();
         //     "\n지역명: " +
         //     AREANM
         //   );
-
-          
         
-            //console.log("=========================================");
+        //     console.log("=========================================");
+        
 
         //let sql = "INSERT INTO Opens (MINCLASSNM,SVCSTATNM,SVCNM,PLACENM,SVCURL,X,Y,AREANM,IMGURL) VALUES ? ";
         // Opens.query(sql, [values], function(err) {
@@ -86,7 +84,6 @@ const router = express.Router();
         //res.json({ data: openPlace });
 
     
-
-module.exports = router;
+module.exports = router; 
 
 

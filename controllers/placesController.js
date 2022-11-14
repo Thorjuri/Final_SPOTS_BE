@@ -5,10 +5,11 @@ class PlacesController {
 
   createPlace = async (req, res, next) => {
     //시설 등록
-    //try {
+    try {
     const {loginId} = res.locals.user;  
-    const { x,y,sports, spotName, spotKind, address, comforts, price, desc } =
-      req.body;
+    const { x,y,sports, spotName, spotKind, address, comforts, price, desc } = req.body;
+    let image = ''
+      req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
     await this.placesService.createPlace(
       loginId,
@@ -20,13 +21,14 @@ class PlacesController {
       address,
       comforts,
       price,
-      desc
+      desc,
+      image
     );
 
     return res.status(201).json({ message: "시설 등록이 완료되었습니다." });
-    // } catch (error) {
-    //     res.status(400).json({errorMessage: error.message});
-    // }
+    } catch (error) {
+        res.status(400).json({errorMessage: error.message});
+    }
   };
 
   findAllPlaces = async (req, res, next) => {
@@ -72,11 +74,13 @@ class PlacesController {
         const {placesId} = req.params;
         const {loginId} = res.locals.user;
         const {x,y,sports,spotName,spotKind,address,comforts,price,desc} = req.body;
+        let image = ''
+        req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
         const updateresult = await this.placesService.updatePlaces(
             placesId,
             loginId,
-            x,y,sports,spotName,spotKind,address,comforts,price,desc
+            x,y,sports,spotName,spotKind,address,comforts,price,desc,image
         );
 
         res.json({data: updateresult.message});
