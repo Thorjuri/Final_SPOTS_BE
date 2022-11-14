@@ -7,13 +7,13 @@ class TeamsController {
         const {nickname} = res.locals.user;
         console.log(nickname)
         const data = await this.teamsService.getMyTeam(nickname);
-        res.send(data);
+        res.status(200).send(data);
     };
 
     getTeamInfo = async(req, res)=>{
         const { teamId } = req.params;
         const data = await this.teamsService.getTeamInfo(teamId);
-        res.send(data);
+        res.status(200).send(data);
     };
 
     createTeam = async(req, res)=> {
@@ -22,21 +22,21 @@ class TeamsController {
         let image = ''
         req.hasOwnProperty('file')===false?  image = null : image = req.file.location
         const data = await this.teamsService.createTeam(nickname, teamName, sports, member, image);
-        res.send(data);
+        res.status(201).send(data);
     };
 
     updateTeam = async(req, res)=> {
         const { teamName, newAdmin, newMember } = req.body;
         const { nickname } = res.locals.user;
         const data = await this.teamsService.updateTeam(nickname, teamName, newAdmin, newMember);
-        res.send(data);
+        res.status(201).send(data);
     };
 
     deleteTeam = async(req, res)=> {
         const {nickname} = res.locals.user;
         const { teamId } = req.params;
         const data = await this.teamsService.deleteTeam(nickname, teamId);
-        res.send(data);
+        res.status(201).send(data);
     };
 };
 
