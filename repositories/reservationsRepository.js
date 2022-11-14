@@ -53,14 +53,18 @@ class ReservationsRepository {
     };
 
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
+        const points = await this.checkPoint(nickname);
+        const newPoints = points.point + price;
         await Reservations.destroy({ where : { matchId, teamName, place}});
-        await Users.update({ point: + price }, { where : { nickname }})
+        await Users.update({ point: newPoints }, { where : { nickname }})
         return {message : '예약 취소 및 포인트 반환 완료'}
     };
 
     cancleConditional = async(matchId, teamName, place, price, nickname)=> {
+        const points = await this.checkPoint(nickname);
+        const newPoints = points.point + price*0.9;
         await Reservations.destroy({ where : { matchId, teamName, place}});
-        await Users.update({ point: + price*0.9}, { where : { nickname }})
+        await Users.update({ point: newPoints }, { where : { nickname }})
         return {message : '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)'}
     };
 
