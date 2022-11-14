@@ -4,11 +4,12 @@ const router = express.Router();
 const PlacesController = require('../controllers/placesController.js');
 const placesController = new PlacesController();
 const authMiddleware = require('../middlewares/auth_middleware');
+const upload = require('../middlewares/multerS3_middleware.js')
 
 
 
 //  시설 등록 
-router.post('/', authMiddleware, placesController.createPlace)
+router.post('/', authMiddleware, upload.single('image'), placesController.createPlace)
 
  //전체 조회 
 router.get('/', placesController.findAllPlaces) 
@@ -23,7 +24,7 @@ router.get('/open', placesController.findAllOpens)
 router.get('/:sports', placesController.getSports)
 
 //  시설 수정
-router.put('/:placesId', authMiddleware, placesController.updatePlaces); 
+router.patch('/:placesId', authMiddleware, upload.single('image'), placesController.updatePlaces); 
 
 //  시설 삭제
 router.delete('/:placesId', authMiddleware, placesController.deletePlaces);

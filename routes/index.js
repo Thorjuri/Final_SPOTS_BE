@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const usersRouter = require("./users.js");
-const placesRouter = require("./places.js");
-const teamsRouter = require("./teams.js");
-//const openPlacesRouter = require('./openPlaces.js');
+const usersRouter = require('./users.js');
+const placesRouter = require('./places.js');
+const teamsRouter = require('./teams.js');
+//const openPlacesRouter = require('./openPlaces.js');  // open Api연결  안쓸때는 주석해놓기!
 //const mypagesRouter = require('./mypages.js');
 const reservationsRouter = require("./reservations.js");
 

@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "ws-study.shop",
+  "host": "localhost:3000",  
   "basePath": "/",
   "tags": [
     {
@@ -13,7 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["https"],
+  "schemes": ["http"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -669,14 +669,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "x": {
-                  "type": "string",
-                  "example": "경도"
-                },
-                "y": {
-                  "type": "string",
-                  "example": "위도"
-                },
                 "sports": {
                   "type": "string",
                   "example": "종목"
@@ -704,6 +696,19 @@
                 "desc": {
                   "type": "string",
                   "example": "스팟설명"
+                }
+              }
+            }
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "schema": {
+              "type": "file",
+              "properties": {
+                "image": {
+                  "example": "이미지파일 (2MB 이하,720*720 이하)"
                 }
               }
             }
@@ -783,7 +788,7 @@
       }
     },
     "/places/{placesId}": {
-      "put": {
+      "patch": {
         "description": "수정하기",
         "tags": ["Places"],
         "parameters": [
@@ -812,14 +817,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "x": {
-                  "type": "string",
-                  "example": "경도"
-                },
-                "y": {
-                  "type": "string",
-                  "example": "위도"
-                },
                 "sports": {
                   "type": "string",
                   "example": "종목"
@@ -847,6 +844,19 @@
                 "desc": {
                   "type": "string",
                   "example": "스팟설명"
+                }
+              }
+            }
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "schema": {
+              "type": "file",
+              "properties": {
+                "image": {
+                  "example": "이미지파일 (2MB 이하,720*720 이하)"
                 }
               }
             }
