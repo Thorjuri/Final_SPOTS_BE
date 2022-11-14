@@ -23,16 +23,17 @@ module.exports = async (req, res, next) => {
     if (myToken == "jwt expired") {
       // access token 만료
       const userInfo = jwt.decode(tokenValue, process.env.SECRET_KEY);
+      console.log(userInfo);
       const userId = userInfo.userId;
       let refreshToken;
 
       Users.findOne({ where: { userId } }).then((user) => {
+        if (!user) return res.send("jwt 코드를 확인해 주세요");
         refreshToken = user.refreshToken;
         const myRefreshToken = verifyToken(refreshToken);
         if (myRefreshToken == "jwt expired") {
           res.send({ errorMessage: "로그인이 필요합니다." });
         } else {
-          console.log(user);
           const myNewToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
             expiresIn: "30m",
           });

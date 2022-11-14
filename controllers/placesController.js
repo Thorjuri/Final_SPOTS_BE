@@ -6,14 +6,13 @@ class PlacesController {
   createPlace = async (req, res, next) => {
     //시설 등록
     //try {
-    const {loginId} = res.locals.user;  
-    const { x,y,sports, spotName, spotKind, address, comforts, price, desc } =
-      req.body;
+    const { loginId } = res.locals.user;
+    const { x, y, sports, spotName, spotKind, address, comforts, price, desc } = req.body;
 
     await this.placesService.createPlace(
       loginId,
       x,
-      y,  
+      y,
       sports,
       spotName,
       spotKind,
@@ -38,13 +37,13 @@ class PlacesController {
     // } catch (error) {
     //     res.status(400).json({errorMessage: error.message});
     // }
-    //};  
+    //};
   };
 
   findGetPlaces = async (req, res, next) => {
     // 본인이 등록한 시설만 조회
     // try {
-    const {loginId} = res.locals.user;
+    const { loginId } = res.locals.user;
     const places = await this.placesService.findGetPlaces(loginId);
 
     res.json({ data: places });
@@ -52,8 +51,6 @@ class PlacesController {
     //     res.status(400).json({errorMessage: error.message});
     // }
   };
-
-
 
   getSports = async (req, res, next) => {
     // 종목별 조회
@@ -67,55 +64,50 @@ class PlacesController {
     // }
   };
 
-  updatePlaces = async (req, res, next) => {   // 시설정보 수정
+  updatePlaces = async (req, res, next) => {
+    // 시설정보 수정
     // try {
-        const {placesId} = req.params;
-        const {loginId} = res.locals.user;
-        const {x,y,sports,spotName,spotKind,address,comforts,price,desc} = req.body;
+    const { placesId } = req.params;
+    const { loginId } = res.locals.user;
+    const { x, y, sports, spotName, spotKind, address, comforts, price, desc } = req.body;
 
-        const updateresult = await this.placesService.updatePlaces(
-            placesId,
-            loginId,
-            x,y,sports,spotName,spotKind,address,comforts,price,desc
-        );
+    const updateresult = await this.placesService.updatePlaces(
+      placesId,
+      loginId,
+      x,
+      y,
+      sports,
+      spotName,
+      spotKind,
+      address,
+      comforts,
+      price,
+      desc
+    );
 
-        res.json({data: updateresult.message});
+    res.json({ data: updateresult.message });
     // } catch (error) {
     //     res.status(error.status || 400).json({errorMessage: error.message});
     // }
-};
+  };
 
+  deletePlaces = async (req, res, next) => {
+    // 시설 삭제
+    try {
+      const { placesId } = req.params;
+      const { loginId } = res.locals.user;
 
+      const deleteresult = await this.placesService.deletePlaces(placesId, loginId);
 
-deletePlaces = async (req, res, next) => {   // 시설 삭제
-  try {
-      const {placesId} = req.params;
-      const {loginId} = res.locals.user;
+      res.json({ data: deleteresult.message });
+    } catch (error) {
+      res.status(error.status || 400).json({ errorMessage: error.message });
+    }
+  };
 
-      const deleteresult = await this.placesService.deletePlaces(
-          placesId,
-          loginId,
-      );
+  findAllOpens = async (req, res, next) => {
+    // open api 전체 불러오기
 
-
-      res.json({data: deleteresult.message});
-
-  } catch (error) {
-      res.status(error.status || 400).json({errorMessage: error.message});
-  }
-};
-
-
-
-
-
-
-
-
-
-
-  findAllOpens = async (req, res, next) => {  // open api 전체 불러오기
-    
     // try {
     const places = await this.placesService.findAllOpens();
 
@@ -126,8 +118,9 @@ deletePlaces = async (req, res, next) => {   // 시설 삭제
     // }
   };
 
-  getSportsOpen = async (req, res, next) => {  // 소분류명 open api 조회
-   
+  getSportsOpen = async (req, res, next) => {
+    // 소분류명 open api 조회
+
     // try {
     const { minclassnm } = req.params;
     const places = await this.placesService.getSportsOpen(minclassnm);
@@ -138,8 +131,9 @@ deletePlaces = async (req, res, next) => {   // 시설 삭제
     // }
   };
 
-  getRegionOpen = async (req, res, next) => {  // 지역명 open api 조회
-   
+  getRegionOpen = async (req, res, next) => {
+    // 지역명 open api 조회
+
     // try {
     const { areanm } = req.params;
     const places = await this.placesService.getRegionOpen(areanm);
@@ -151,7 +145,6 @@ deletePlaces = async (req, res, next) => {   // 시설 삭제
     //     res.status(400).json({errorMessage: error.message});
     // }
   };
-
 }
 
 module.exports = PlacesController;
