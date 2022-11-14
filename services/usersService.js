@@ -103,7 +103,7 @@ class UsersService {
   // 로그인
   LoginUser = async (loginId, password) => {
     const user = await this.usersRepository.checkId(loginId);
-    console.log(user);
+    //console.log(user);
     if (!user) {
       throw { code: -1 };
     }

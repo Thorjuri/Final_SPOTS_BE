@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        placenm: { 
+        spotName: { 
           type: DataTypes.STRING,
           allowNull: false,
         },

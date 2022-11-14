@@ -47,10 +47,27 @@ class ReservationsRepository {
     };
 
 
-    getMyMatch = async(admin)=> { // 수정중. 빈 값 반환 문제 (map 비동기 문제인 듯)
+    getMyMatch = async(admin)=> { 
         const data = await Reservations.findAll({ where : { admin }});
         return data;
     };
+
+    cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
+        const points = await this.checkPoint(nickname);
+        const newPoints = points.point + price;
+        await Reservations.destroy({ where : { matchId, teamName, place}});
+        await Users.update({ point: newPoints }, { where : { nickname }})
+        return {message : '예약 취소 및 포인트 반환 완료'}
+    };
+
+    cancleConditional = async(matchId, teamName, place, price, nickname)=> {
+        const points = await this.checkPoint(nickname);
+        const newPoints = points.point + price*0.9;
+        await Reservations.destroy({ where : { matchId, teamName, place}});
+        await Users.update({ point: newPoints }, { where : { nickname }})
+        return {message : '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)'}
+    };
+
 };
 
 module.exports = ReservationsRepository;

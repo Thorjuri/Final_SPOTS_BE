@@ -3,20 +3,8 @@ const PlacesRepository = require("../repositories/placesRepository");
 class PlacesService {
   placesRepository = new PlacesRepository();
 
-  createPlace = async (
-    loginId,
-    x,
-    y,
-    sports,
-    spotName,
-    spotKind,
-    address,
-    comforts,
-    price,
-    desc,
-    image
-  ) => {
-    // 시설등록
+  // 시설등록
+  createPlace = async (loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
     await this.placesRepository.createPlace(
       loginId,
       x,
