@@ -61,13 +61,13 @@ class ReservationsService {
     getDateDiff = async(d1, d2) => {     
         const diffDate = d1.getTime() - d2.getTime();
         return diffDate / (1000 * 60 * 60 * 24); // 밀리세컨 * 초 * 분 * 시 = 일
-      };
+    };
 
     cancleConditional = async(matchId, teamName, place, price, nickname)=> {
         const data = await this.reservationsRepository.cancleConditional(matchId, teamName, place, price, nickname);
         return data;
     };
-      
+
 
     deleteMatch = async(nickname, matchId, teamName, place)=> {
         const reservations = await this.reservationsRepository.checkMatch(matchId, place);
@@ -93,7 +93,6 @@ class ReservationsService {
         const monthMatch = matchDate.getMonth()+1
         console.log(matchDate)
         console.log(` 경기날짜 : 일:${dayMatch},  월:${monthMatch}`)
-
         
         //현재 날짜
         const now = new Date;
@@ -107,7 +106,6 @@ class ReservationsService {
         const diffMatch = await this.getDateDiff(matchDate, now)
         console.log(`diffRegister : ${diffRegister} `)
         console.log(`diffMatch : ${diffMatch} `)
-
 
             // 경기 당일 취소
             if(monthMatch === monthNow && dayMatch === dayNow){
@@ -127,8 +125,8 @@ class ReservationsService {
 
             // 신청 당일 취소
             if(monthRegister === monthNow && dayRegister === dayNow){
-               const cancleSuccessData = this.cancleSuccess(matchId, teamName, place, price, nickname)
-               return cancleSuccessData;
+                const cancleSuccessData = this.cancleSuccess(matchId, teamName, place, price, nickname)
+                return cancleSuccessData;
             };
 
             // 신청 익일 ~ 경기 전일 취소 
