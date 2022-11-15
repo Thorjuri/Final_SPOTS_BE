@@ -17,6 +17,6 @@ router.get('/register/:place/:date', authMiddleware, wrapAsyncController(reserva
 router.get('/me', authMiddleware, wrapAsyncController(reservationsController.getMyMatch));
 
 // 4. 매치 예약 취소
-router.put('/register', authMiddleware, wrapAsyncController(reservationsController.deleteMatch));
+router.put('/register/delete', authMiddleware, wrapAsyncController(reservationsController.deleteMatch));
 
 module.exports = router;
