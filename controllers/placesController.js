@@ -6,28 +6,30 @@ class PlacesController {
   createPlace = async (req, res, next) => {
     //시설 등록
     try {
-    const {loginId} = res.locals.user;  
-    const { x,y,sports, spotName, spotKind, address, comforts, price, desc } = req.body;
-    let image = ''
-      req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
-    await this.placesService.createPlace(
-      loginId,
-      x,
-      y,
-      sports,
-      spotName,
-      spotKind,
-      address,
-      comforts,
-      price,
-      desc,
-      image
-    );
+      const {loginId} = res.locals.user;  
+      const { x,y,sports, spotName, spotKind, address, comforts, price, desc } = req.body;
+      let image = ''
+        req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
-    return res.status(201).json({ message: "시설 등록이 완료되었습니다." });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+      await this.placesService.createPlace(
+        loginId,
+        x,
+        y,
+        sports,
+        spotName,
+        spotKind,
+        address,
+        comforts,
+        price,
+        desc,
+        image
+      );
+     
+     res.status(201).json({ message: "시설 등록이 완료되었습니다." });
+    }
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -36,9 +38,10 @@ class PlacesController {
     try {
     const places = await this.placesService.findAllPlaces();
 
-    res.json({ data: places });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+    res.status(200).json({ data: places });
+    }
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
   
@@ -46,12 +49,13 @@ class PlacesController {
   findGetPlaces = async (req, res, next) => {
     // 본인이 등록한 시설만 조회
     try {
-    const { loginId } = res.locals.user;
-    const places = await this.placesService.findGetPlaces(loginId);
+      const { loginId } = res.locals.user;
+      const places = await this.placesService.findGetPlaces(loginId);
 
-    res.json({ data: places });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+    res.status(200).json({ data: places });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -61,9 +65,10 @@ class PlacesController {
     const { sports } = req.params;
     const places = await this.placesService.getSports(sports);
 
-    res.json({ data: places });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+    res.status(200).json({ data: places });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -82,9 +87,10 @@ class PlacesController {
             x,y,sports,spotName,spotKind,address,comforts,price,desc,image
         );
 
-    res.json({ data: updateresult.message });
-    } catch (error) {
-        res.status(error.status || 400).json({errorMessage: error.message});
+    res.status(201).json({ data: updateresult.message });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -96,9 +102,10 @@ class PlacesController {
 
       const deleteresult = await this.placesService.deletePlaces(placesId, loginId);
 
-      res.json({ data: deleteresult.message });
-    } catch (error) {
-      res.status(error.status || 400).json({ errorMessage: error.message });
+      res.status(201).json({ data: deleteresult.message });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -108,10 +115,11 @@ class PlacesController {
     try {
     const places = await this.placesService.findAllOpens();
 
-    res.json({ data: places });
-    res.json({ data: places });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+    res.status(200).json({ data: places });
+    
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -122,9 +130,10 @@ class PlacesController {
     const { minclassnm } = req.params;
     const places = await this.placesService.getSportsOpen(minclassnm);
 
-    res.json({ data: places });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+    res.status(200).json({ data: places });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -135,11 +144,12 @@ class PlacesController {
     const { areanm } = req.params;
     const places = await this.placesService.getRegionOpen(areanm);
 
-    res.json({ data: places });
-    } catch (error) {
-        res.status(400).json({errorMessage: error.message});
+    res.status(200).json({ data: places });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
     }
-  };
+  };  
 };
 
 module.exports = PlacesController;
