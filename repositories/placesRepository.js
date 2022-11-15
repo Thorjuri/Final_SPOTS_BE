@@ -1,20 +1,9 @@
 const { Places, Opens} = require("../models");
 
-class PlacesRepository {
-    createPlace = async (
-      //시설등록
-          loginId,    
-          x,
-          y,
-          sports,
-          spotName,
-          spotKind,
-          address,
-          comforts,
-          price,
-          desc,
-          image
-    ) => {
+class PlacesRepository {   //시설등록
+
+    createPlace = async (loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
+
       const createPlaceData = await Places.create({
           loginId,  
           x,
@@ -30,6 +19,12 @@ class PlacesRepository {
       });
 
       return createPlaceData;
+    };
+
+    findPlaces = async (address) => {  //  등록된 시설 주소 찾기
+      const findPlace = await Places.findOne({where: {address}});
+      
+      return findPlace;
     };
 
     // 시설 전체 조회
@@ -49,6 +44,7 @@ class PlacesRepository {
     //종목 조회
     getSports = async (sports) => {
       const findSports = await Places.findAll({ where: { sports } });
+  
 
       return findSports;
     };
