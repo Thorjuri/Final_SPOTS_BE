@@ -122,6 +122,17 @@ class PlacesRepository {   //시설등록
       return open;
     };
 
+
+    //open api keyword 조회  minclassnm,svcstatnm,svcnm,spotName,areanm
+     getOpenKeyword = async(keywords)=> {
+      const sql = `SELECT * FROM Opens
+      where minclassnm like '%${keywords}%' OR svcstatnm like '%${keywords}%' OR svcnm like '%${keywords}%' OR spotName like '%${keywords}%' OR areanm like '%${keywords}%'`  
+        
+      const data = await this.dbQueryAsync(sql);
+      return data;
+    };
+
+
     // open api 소분류명 조회
     getSportsOpen = async (minclassnm) => {
       const findOpenSports = await Opens.findAll({ where: { minclassnm } });

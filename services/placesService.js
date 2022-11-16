@@ -184,6 +184,24 @@ class PlacesService {
     return findOpenPlace;
   };
 
+
+  getOpenKeyword = async (keywords) => {
+    //open api 키워드별 조회
+  
+    const findOpenKeyword = await this.placesRepository.getOpenKeyword(keywords);
+
+    if(findOpenKeyword.length === 0){
+      const err = new Error(`placesService Error`);
+      err.statusCode = 404;
+      err.message = '존재하지 않는 키워드입니다.';
+      throw err;
+    }
+
+    return findOpenKeyword;
+
+  };
+
+
   getSportsOpen = async (minclassnm) => {
     //소분류명 open api 조회
     

@@ -17,8 +17,12 @@ router.get('/', placesController.findAllPlaces)
 // 본인이 등록한 시설만 조회 
 router.get('/me', authMiddleware, placesController.findGetPlaces)
 
+
+
 //Open Api 전체 조회 
 router.get('/open', placesController.findAllOpens)
+
+
 
 //  종목 조회 
 router.get('/:sports', placesController.getSports)
@@ -26,12 +30,16 @@ router.get('/:sports', placesController.getSports)
 //  키워드 조회 
 router.get('/keyword/:keywords', placesController.getKeyword)
 
-
 //  시설 수정
 router.patch('/:placesId', authMiddleware, upload.single('image'), placesController.updatePlaces); 
 
 //  시설 삭제
 router.delete('/:placesId', authMiddleware, placesController.deletePlaces);
+
+
+
+// Open Api 키워드 조회 
+router.get('/open/keyword/:keywords', placesController.getOpenKeyword)
 
 //Open Api 소분류명 조회 
 router.get('/open/:minclassnm', placesController.getSportsOpen)
