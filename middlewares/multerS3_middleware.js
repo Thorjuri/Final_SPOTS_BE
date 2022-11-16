@@ -5,6 +5,7 @@ const multerS3 = require('multer-s3');
 const dotenv = require('dotenv');
 dotenv.config();
 
+
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_ID,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,

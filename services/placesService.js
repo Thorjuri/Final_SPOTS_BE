@@ -7,7 +7,7 @@ class PlacesService {
   createPlace = async (loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
 
     const findPlaces = await this.placesRepository.findPlaces(address);
-    console.log(findPlaces)
+    
 
         if (!sports || !spotName || !spotKind || !address || !comforts || !price || !desc) {
           const err = new Error(`placesService Error`);
@@ -24,7 +24,7 @@ class PlacesService {
              
         };
 
-        await this.placesRepository.createPlace(
+        const createPlaces = await this.placesRepository.createPlace(
           loginId,
           x,
           y,
@@ -38,7 +38,7 @@ class PlacesService {
           image
         );
 
-        return;
+        return createPlaces;
   };
 
   findAllPlaces = async () => {
@@ -69,7 +69,6 @@ class PlacesService {
     //종목별 조회
   
     const findFootsal = await this.placesRepository.getSports(sports);
-    console.log(findFootsal)
 
     if(findFootsal.length === 0){
       const err = new Error(`placesService Error`);
@@ -105,9 +104,12 @@ class PlacesService {
           };
 
 
-        await this.placesRepository.updatePlaces(placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image);
+        const updateData = await this.placesRepository.updatePlaces(placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image);
+          
 
-        return {'message': '시설 정보 수정이 완료 되었습니다'};
+        return updateData;
+          
+        
   };
 
   //삭제
@@ -118,8 +120,12 @@ class PlacesService {
 
         //해당하는 데이터가 없으면
         if (findPlacesId === null) {
-            return {'message': '삭제할 시설이 없습니다.'};
-        }
+          const err = new Error(`placesService Error`);
+            err.statusCode = 404;
+            err.message = '삭제할 시설이 없습니다.';
+            throw err;
+          };
+          
 
         //댓글을 삭제하려는 userId와 댓글을 작성한 userId가 다를때
         if (loginId !== findPlacesId.dataValues.loginId) {
@@ -127,11 +133,11 @@ class PlacesService {
             err.statusCode = 403;
             err.message = '시설을 삭제할 권한이 없습니다.';
             throw err;
-          };
+        };
             
-          await this.placesRepository.deletePlaces(placesId, loginId);
+        const deleteData = await this.placesRepository.deletePlaces(placesId, loginId);
   
-          return {'message': '시설 삭제가 완료 되었습니다'};
+          return deleteData;
   };
      
 

@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",  
+  "host": "sparta4.shop",  
   "basePath": "/",
   "tags": [
     {
@@ -13,7 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -669,6 +669,14 @@
             "schema": {
               "type": "object",
               "properties": {
+                "x": {
+                  "type": "string",
+                  "example": "경도"
+                },
+                "y": {
+                  "type": "string",
+                  "example": "위도"
+                },
                 "sports": {
                   "type": "string",
                   "example": "종목"

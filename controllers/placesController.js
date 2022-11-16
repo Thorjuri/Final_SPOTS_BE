@@ -12,7 +12,7 @@ class PlacesController {
       let image = ''
         req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
-      await this.placesService.createPlace(
+      const createPlaces = await this.placesService.createPlace(
         loginId,
         x,
         y,
@@ -26,7 +26,7 @@ class PlacesController {
         image
       );
      
-     res.status(201).json({ message: "시설 등록이 완료되었습니다." });
+     res.status(201).json({ message: "시설 등록이 완료되었습니다.", data : createPlaces});
     }
     catch (err) {
       res.status(err.statusCode ||400).json({message: err.message});
@@ -87,7 +87,7 @@ class PlacesController {
             x,y,sports,spotName,spotKind,address,comforts,price,desc,image
         );
 
-    res.status(201).json({ data: updateresult.message });
+    res.status(201).json({ message: "시설 정보 수정이 완료 되었습니다", data: updateresult });
     } 
     catch (err) {
       res.status(err.statusCode ||400).json({message: err.message});
@@ -102,7 +102,7 @@ class PlacesController {
 
       const deleteresult = await this.placesService.deletePlaces(placesId, loginId);
 
-      res.status(201).json({ data: deleteresult.message });
+      res.status(201).json({ message: "시설 삭제가 완료 되었습니다" });
     } 
     catch (err) {
       res.status(err.statusCode ||400).json({message: err.message});
