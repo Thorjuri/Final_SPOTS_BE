@@ -23,6 +23,10 @@ router.get('/open', placesController.findAllOpens)
 //  종목 조회 
 router.get('/:sports', placesController.getSports)
 
+//  키워드 조회 
+router.get('/keyword/:keywords', placesController.getKeyword)
+
+
 //  시설 수정
 router.patch('/:placesId', authMiddleware, upload.single('image'), placesController.updatePlaces); 
 
