@@ -81,6 +81,33 @@ class PlacesService {
 
   };
 
+
+
+
+
+
+  getKeyword = async (keywords) => {
+    //키워드별 조회
+  
+    const findKeyword = await this.placesRepository.getKeyword(keywords);
+
+    if(findKeyword.length === 0){
+      const err = new Error(`placesService Error`);
+      err.statusCode = 404;
+      err.message = '존재하지 않는 키워드입니다.';
+      throw err;
+    }
+
+    return findKeyword;
+
+  };
+
+
+
+
+
+
+
    // 수정
   updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
     const findplacesId = await this.placesRepository.findPlacesId(placesId);

@@ -72,6 +72,30 @@ class PlacesController {
     }
   };
 
+
+
+
+
+  
+
+  getKeyword = async (req, res, next) => {
+    // 키워드별 조회
+    try {
+    const { keywords } = req.params;
+    const keydata = await this.placesService.getKeyword(keywords);
+
+    res.status(200).json({ data: keydata });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
+    }
+  };
+
+
+
+
+
+
   updatePlaces = async (req, res, next) => {
     // 시설정보 수정
     try {

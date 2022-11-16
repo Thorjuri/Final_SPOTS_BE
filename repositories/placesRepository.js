@@ -1,4 +1,15 @@
 const { Places, Opens} = require("../models");
+require("dotenv").config();
+const mysql2 = require('mysql2');  //mysql 모듈 import
+
+var db = mysql2.createConnection({  //mpsql DB 연결  keywords 할때 sequelize 아니라서 다시 연결
+  host: process.env.DB_ENDPOINT,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+   })
+db.connect();
+
 
 class PlacesRepository {   //시설등록
 
@@ -48,6 +59,32 @@ class PlacesRepository {   //시설등록
 
       return findSports;
     };
+
+
+
+    dbQueryAsync = async(sql) => {
+      return new Promise((resolve, reject) => {
+        db.query(sql, (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
+        });
+      });
+    }
+
+    //keyword 조회  sports, spotName, spotKind, address, comforts, price, desc
+    getKeyword = async(keywords)=> {
+      const sql = `SELECT * FROM Places
+      where sports like '%${keywords}%' OR spotName like '%${keywords}%' OR spotKind like '%${keywords}%' OR address like '%${keywords}%' OR comforts like '%${keywords}%' OR price like '%${keywords}%'`  
+        
+      const data = await this.dbQueryAsync(sql);
+      return data;
+    }
+      
+
+
+
 
     // 수정
     updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
@@ -99,6 +136,7 @@ class PlacesRepository {   //시설등록
 
       return findOpenArea;
     };
+
 }
 
 module.exports = PlacesRepository;
