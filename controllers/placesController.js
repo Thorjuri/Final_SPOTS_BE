@@ -73,11 +73,6 @@ class PlacesController {
   };
 
 
-
-
-
-  
-
   getKeyword = async (req, res, next) => {
     // 키워드별 조회
     try {
@@ -90,9 +85,6 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
-
-
-
 
 
 
@@ -133,6 +125,11 @@ class PlacesController {
     }
   };
 
+
+
+
+
+
   findAllOpens = async (req, res, next) => {
     // open api 전체 불러오기
 
@@ -146,6 +143,21 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
+
+
+  getOpenKeyword = async (req, res, next) => {
+    // open api 키워드별 조회
+    try {
+    const { keywords } = req.params;
+    const keydata = await this.placesService.getOpenKeyword(keywords);
+
+    res.status(200).json({ data: keydata });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
+    }
+  };
+
 
   getSportsOpen = async (req, res, next) => {
     // 소분류명 open api 조회
