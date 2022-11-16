@@ -54,12 +54,14 @@ class PlacesRepository {   //시설등록
       const updatePlaces = await Places.update(
           {x,y,sports,spotName,spotKind,address,comforts,price,desc,image}, {where: {placesId, loginId}}
       );
-      return updatePlaces;
+      const findPlaces = await Places.findOne({where : {placesId}});
+      return findPlaces;
     };
 
     // 시설 삭제
     deletePlaces = async (placesId, loginId) => {
       const deletePlace = await Places.destroy({where: {placesId, loginId}});
+      
       return deletePlace;
     };
 
