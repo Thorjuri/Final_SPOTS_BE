@@ -19,4 +19,7 @@ router.get('/me', authMiddleware, wrapAsyncController(reservationsController.get
 // 4. 매치 예약 취소
 router.put('/register/delete', authMiddleware, wrapAsyncController(reservationsController.deleteMatch));
 
+// 5. 검색(테스트용)
+router.get('/test/:words', wrapAsyncController(reservationsController.getPlace))
+
 module.exports = router;

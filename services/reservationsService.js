@@ -4,7 +4,7 @@ const ReservationsRepository = require('../repositories/reservationsRepository.j
 class ReservationsService {
     reservationsRepository = new ReservationsRepository();
 
-    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
+    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price, email)=> {
         const checkTeams = await this.reservationsRepository.checkTeam(teamName);
             if (!checkTeams) {
                 const err = new Error(`reservationsService Error`);
@@ -36,7 +36,7 @@ class ReservationsService {
                 throw err;
             };
 
-        const data = await this.reservationsRepository.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price);
+        const data = await this.reservationsRepository.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price, email);
         return data;
     };  
 
@@ -132,6 +132,11 @@ class ReservationsService {
             // 신청 익일 ~ 경기 전일 취소 
                 const cancleConditionalData = this.cancleConditional(matchId, teamName, place, price, nickname)
                 return cancleConditionalData;
+    };
+
+    getPlace = async(words)=> {
+        const data = await this.reservationsRepository.getPlace(words);
+        return data;
     };
 };
 

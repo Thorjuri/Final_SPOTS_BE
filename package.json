@@ -13,6 +13,7 @@
     "multer-s3": "^2.10.0",
     "mysql2": "^2.3.3",
     "node-fecth": "^0.0.1-security",
+    "nodemailer": "^6.8.0",
     "nunjucks": "^3.2.3",
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.1",

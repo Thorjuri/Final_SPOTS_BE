@@ -5,8 +5,8 @@ class ReservationsController {
 
     createMatch = async(req, res)=> {
         const {nickname} = res.locals.user; //admin
-        const {matchId, place, teamName, member, date, isDouble, price} = req.body;
-        const data = await this.reservationsService.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price);
+        const {matchId, place, teamName, member, date, isDouble, price, email} = req.body;
+        const data = await this.reservationsService.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price, email);
         res.status(201).send(data);
     };
 
@@ -27,6 +27,12 @@ class ReservationsController {
         const { matchId, teamName, place } = req.body;
         const data = await this.reservationsService.deleteMatch(nickname, matchId, teamName, place);
         res.status(201).send(data)
+    }
+
+    getPlace = async(req, res)=> {
+        const {words} = req.params;
+        const data = await this.reservationsService.getPlace(words)
+        res.send(data);
     }
 };
 

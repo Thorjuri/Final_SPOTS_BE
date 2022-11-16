@@ -1,5 +1,17 @@
 const { Reservations, Users, Teams } = require('../models');
+const sendEmail = require('../mail.js')
+
 require("dotenv").config();
+
+const mysql2 = require('mysql2');  //mysql 모듈 import
+
+var db = mysql2.createConnection({  //mpsql 로컬 DB 연결
+    host     : 'localhost',
+    user     : 'root',
+    password : 'thor71593!!',
+    database : 'final'
+	})
+db.connect();
 
 
 class ReservationsRepository {
@@ -21,11 +33,14 @@ class ReservationsRepository {
         return newPoints;
     }
 
-    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
+    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price, email)=> {
         const admin = nickname
         const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트를 반환함
         const data = await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
-        return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`};
+        // const contents = JSON.stringify(data)
+        const contents = `장소: ${data.place} \n 팀명: ${data.teamName} \n 일자: ${data.date} \n 인원수: ${data.member}`
+        const sendmail = sendEmail(email, contents)
+        return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`, mailing: sendmail};
     };
 
     checkTeam = async(teamName)=> {
@@ -67,6 +82,24 @@ class ReservationsRepository {
         await Users.update({ point: newPoints }, { where : { nickname }})
         return {message : '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)'}
     };
+
+    dbQueryAsync = async(sql) => {
+        return new Promise((resolve, reject) => {
+            db.query(sql, (error, result) => {
+                if (error) { reject(error) };
+            resolve(result);
+            });
+        });
+    };
+
+
+    getPlace = async(words)=> {
+        const sql = `SELECT * FROM reservations r
+        where place like '%${words}%' OR teamName like '%${words}%' OR admin like '%${words}%' `  
+        
+        const data = await this.dbQueryAsync(sql);
+        return data
+    }
 
 };
 
