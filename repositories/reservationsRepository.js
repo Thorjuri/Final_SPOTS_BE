@@ -1,18 +1,6 @@
 const { Reservations, Users, Teams } = require('../models');
 const sendEmail = require('../mail.js')
-
 require("dotenv").config();
-
-const mysql2 = require('mysql2');  //mysql 모듈 import
-
-var db = mysql2.createConnection({  //mpsql 로컬 DB 연결
-    host     : process.env.ENDPOINT,
-    user     : process.env.DB_USERNAME,
-    password : process.env.DB_PASSWORD,
-    database : 'final'
-	})
-db.connect();
-
 
 class ReservationsRepository {
 
@@ -87,25 +75,6 @@ class ReservationsRepository {
         await Users.update({ point: newPoints }, { where : { nickname }})
         return {message : '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)'}
     };
-
-    dbQueryAsync = async(sql) => {
-        return new Promise((resolve, reject) => {
-            db.query(sql, (error, result) => {
-                if (error) { reject(error) };
-            resolve(result);
-            });
-        });
-    };
-
-
-    getPlace = async(words)=> {
-        const sql = `SELECT * FROM reservations r
-        where place like '%${words}%' OR teamName like '%${words}%' OR admin like '%${words}%' `  
-        
-        const data = await this.dbQueryAsync(sql);
-        return data
-    }
-
 };
 
 module.exports = ReservationsRepository;

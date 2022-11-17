@@ -133,11 +133,6 @@ class ReservationsService {
                 const cancleConditionalData = this.cancleConditional(matchId, teamName, place, price, nickname)
                 return cancleConditionalData;
     };
-
-    getPlace = async(words)=> {
-        const data = await this.reservationsRepository.getPlace(words);
-        return data;
-    };
 };
 
 module.exports = ReservationsService;

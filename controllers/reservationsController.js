@@ -28,12 +28,6 @@ class ReservationsController {
         const data = await this.reservationsService.deleteMatch(nickname, matchId, teamName, place);
         res.status(201).send(data)
     }
-
-    getPlace = async(req, res)=> {
-        const {words} = req.params;
-        const data = await this.reservationsService.getPlace(words)
-        res.send(data);
-    }
 };
 
 module.exports = ReservationsController;
