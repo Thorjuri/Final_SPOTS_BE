@@ -1,19 +1,21 @@
-const { date } = require('joi');
 const ReservationsRepository = require('../repositories/reservationsRepository.js');
+const sendEmail = require('../mail.js')
+require("dotenv").config();
+
 
 class ReservationsService {
     reservationsRepository = new ReservationsRepository();
 
-    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
-        const checkTeams = await this.reservationsRepository.checkTeam(teamName);
+    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price, email)=> {
+        const checkTeams = await this.reservationsRepository.checkTeam(teamName);  //예외처리1
             if (!checkTeams) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
-                err.message = '존재하지 않는 팀 입니다. 팀 명을 확인해주세요.';
+                err.message = '존재하지 않는 팀 입니다. 팀 명을 확인해주세요.'; 
                 throw err;
             };
 
-        const checkMatchs = await this.reservationsRepository.checkMatch(matchId, place)
+        const checkMatchs = await this.reservationsRepository.checkMatch(matchId, place) //예외처리2
             if (checkMatchs.data.length >= 2) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
@@ -21,54 +23,66 @@ class ReservationsService {
                 throw err;
             };
 
-            if (checkTeams.admin !== nickname) {
+            if (checkTeams.admin !== nickname) {  //예외처리3
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '매칭 신청은 팀장만 가능합니다.';
                 throw err;
             };
 
-        const checkPoints = await this.reservationsRepository.checkPoint(nickname);
+        const checkPoints = await this.reservationsRepository.checkPoint(nickname);  //예외처리4
             if (checkPoints.point < price) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = `보유 포인트가 부족합니다. 현재 잔여 포인트:  ${checkPoints.point} 포인트`;
                 throw err;
             };
-
+        // DB 저장 
         const data = await this.reservationsRepository.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price);
+        // email 발송
+        const contents = `🥇매치번호(매치ID): ${data.data.matchId} 
+                        \n ⚡경기장소: ${data.data.place}
+                        \n ⚡경기일자: ${data.data.date}
+                        \n ⚡팀 명: ${data.data.teamName}
+                        \n ⚡인원: ${data.data.member} 명
+                        \n ⚡결제금액: ${data.data.price} 포인트`;
+            if(email) { sendEmail(email, contents, data.data.teamName) };
+
         return data;
-    };  
+    };      
 
-
+    //장소별-날짜별 예약현황 조회
     getMatch = async(place, date)=>{
         const data = await this.reservationsRepository.getMatch(place, date);
         return data;
     };
 
-
+    //나의 매치 조회
     getMyMatch = async(nickname)=> {
         const admin = nickname;
         const data =  await this.reservationsRepository.getMyMatch(admin);
         return data;
     };
-
+    
+    // 100& 취소
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
         const data = await this.reservationsRepository.cancleSuccess(matchId, teamName, place, price, nickname);
         return data;
     };
-
-    getDateDiff = async(d1, d2) => {     
-        const diffDate = d1.getTime() - d2.getTime();
-        return diffDate / (1000 * 60 * 60 * 24); // 밀리세컨 * 초 * 분 * 시 = 일
-    };
-
+    
+    // 조건부 취소
     cancleConditional = async(matchId, teamName, place, price, nickname)=> {
         const data = await this.reservationsRepository.cancleConditional(matchId, teamName, place, price, nickname);
         return data;
     };
-
-
+    
+    // 기간 차이 계산
+    getDateDiff = async(d1, d2) => {     
+        const diffDate = d1.getTime() - d2.getTime();
+        return diffDate / (1000 * 60 * 60 * 24); // 밀리세컨 * 초 * 분 * 시 = 일
+    };
+    
+    //매치 예약 취소
     deleteMatch = async(nickname, matchId, teamName, place)=> {
         const reservations = await this.reservationsRepository.checkMatch(matchId, place);
         const reservation = reservations.data.filter((val)=> { return val.teamName === teamName })
