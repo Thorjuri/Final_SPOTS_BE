@@ -1,5 +1,4 @@
 const { Reservations, Users, Teams } = require('../models');
-const sendEmail = require('../mail.js')
 require("dotenv").config();
 
 class ReservationsRepository {
@@ -21,31 +20,27 @@ class ReservationsRepository {
         return newPoints;
     }
 
-    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price, email)=> {
+    //매치 예약 신청
+    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
         const admin = nickname
         const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트를 반환함
         const data = await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
-        // const contents = JSON.stringify(data)
-        const contents = `🥇매치번호(매치ID): ${data.matchId} 
-                        \n ⚡경기장소: ${data.place}
-                        \n ⚡경기일자: ${data.date}
-                        \n ⚡팀 명: ${data.teamName}
-                        \n ⚡인원: ${data.member} 명
-                        \n ⚡결제금액: ${data.price} 포인트`
-        const sendmail = sendEmail(email, contents, data.teamName)
-        return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`, mailing: sendmail};
+        return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`};
     };
 
+    // 팀 조회
     checkTeam = async(teamName)=> {
         const data = await Teams.findOne({ where : { teamName }});
         return data;
     };
 
+    // 매치 조회(By MatchId)
     checkMatch = async(matchId, place)=> {
         const data = await Reservations.findAll({ where: { matchId, place }});
         return {data: data, message : "매치 조회 완료"};
     };
 
+    // 매치 조회(By Place)
     getMatch = async(place, date)=> {
         const data = await Reservations.findAll({ 
             where : {place, date},
@@ -54,12 +49,13 @@ class ReservationsRepository {
         return {data, message: `조회된 매치 신청: ${data.length}건`}
     };
 
-
+    // 나의 매치 조회
     getMyMatch = async(admin)=> { 
         const data = await Reservations.findAll({ where : { admin }});
         return data;
     };
 
+    // 100% 취소
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point + price;
@@ -68,6 +64,7 @@ class ReservationsRepository {
         return {message : '예약 취소 및 포인트 반환 완료'}
     };
 
+    // 조건부 취소
     cancleConditional = async(matchId, teamName, place, price, nickname)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point + price*0.9;

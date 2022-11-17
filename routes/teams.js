@@ -14,7 +14,7 @@ router.get('/me', authMiddleware, wrapAsyncController(teamsController.getMyTeam)
 // 2. 팀 상세 조회
 router.get('/:teamId', authMiddleware, wrapAsyncController(teamsController.getTeamInfo))
 
-// 3. 팀 등록
+// 3. 팀 신규 등록
 router.post('/', authMiddleware, upload.single('image'), wrapAsyncController(teamsController.createTeam))
 
 // 4. 팀 정보 수정
