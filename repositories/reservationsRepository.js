@@ -38,8 +38,13 @@ class ReservationsRepository {
         const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트를 반환함
         const data = await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
         // const contents = JSON.stringify(data)
-        const contents = `장소: ${data.place} \n 팀명: ${data.teamName} \n 일자: ${data.date} \n 인원수: ${data.member}`
-        const sendmail = sendEmail(email, contents)
+        const contents = `🥇매치번호(매치ID): ${data.matchId} 
+                        \n ⚡경기장소: ${data.place}
+                        \n ⚡경기일자: ${data.date}
+                        \n ⚡팀 명: ${data.teamName}
+                        \n ⚡인원: ${data.member} 명
+                        \n ⚡결제금액: ${data.price} 포인트`
+        const sendmail = sendEmail(email, contents, data.teamName)
         return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`, mailing: sendmail};
     };
 
