@@ -6,9 +6,9 @@ require("dotenv").config();
 const mysql2 = require('mysql2');  //mysql 모듈 import
 
 var db = mysql2.createConnection({  //mpsql 로컬 DB 연결
-    host     : 'localhost',
-    user     : 'root',
-    password : 'thor71593!!',
+    host     : process.env.ENDPOINT,
+    user     : process.env.DB_USERNAME,
+    password : process.env.DB_PASSWORD,
     database : 'final'
 	})
 db.connect();
