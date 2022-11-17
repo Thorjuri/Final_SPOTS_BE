@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "ws-study.shop",
+  "host": "sparta4.shop",
   "basePath": "/",
   "tags": [
     {
@@ -13,7 +13,7 @@
       "description": "회원정보API"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -669,6 +669,14 @@
             "schema": {
               "type": "object",
               "properties": {
+                "x": {
+                  "type": "string",
+                  "example": "경도"
+                },
+                "y": {
+                  "type": "string",
+                  "example": "위도"
+                },
                 "sports": {
                   "type": "string",
                   "example": "종목"
@@ -772,6 +780,35 @@
                 "sports": {
                   "type": "string",
                   "example": "풋살장"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/keyword/{keywords}": {
+      "get": {
+        "description": "키워드별 조회",
+        "tags": ["Places"],
+        "parameters": [
+          {
+            "name": "keywords",
+            "in": "path",
+            "type": "string",
+            "schema": {
+              "properties": {
+                "keywords": {
+                  "type": "string",
+                  "example": "주차장"
                 }
               }
             }
