@@ -124,15 +124,17 @@ class UsersController {
   // PW찾기
   findPW = async (req, res, next) => {
     try {
-      const { loginId, phone } = req.body; // +code
-      // sms
+      const { loginId, phone, code } = req.body;
+      const checkSms = await this.usersService.checkSms(phone, code);
+      if (!checkSms) return res.status(401).json({ message: "인증 실패" });
       const checkIdPhone = await this.usersService.checkIdPhone(loginId, phone);
       if (!checkIdPhone) throw { code: -1 };
-      // 인증 완료 되면 비밀 번호 변경 페이지로 이동시키고 비밀번호 변경을 회원정보 수정 api 이용해서 비번 바꾸게 만듬
-      res.status(200).json({ message: "인증 성공 비밀번호 변경 페이지로 이동 시켜 주세요" });
+      const tempPass = await this.usersService.tempPass(loginId);
+      res.status(200).json({ password: tempPass });
     } catch (err) {
-      if (err.code === -1) {
-        res.status(412).json({ errormessage: "회원가입 안하신듯?" });
+      if (err.code === -1) res.status(412).json({ errormessage: "회원가입 안하신듯?" });
+      if (err.code === -2) {
+        res.status(400).json({ errormessage: "임시 비밀번호 발급 에러" });
       } else {
         console.log(err);
         res.status(400).json({ errmessage: err });
