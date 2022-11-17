@@ -176,13 +176,13 @@ class PlacesService {
 
 
 
-  findAllOpens = async () => {
-    // open api 전체조회
+  // findAllOpens = async () => {
+  //   // open api 전체조회
 
-    const findOpenPlace = await this.placesRepository.findAllOpens();
+  //   const findOpenPlace = await this.placesRepository.findAllOpens();
 
-    return findOpenPlace;
-  };
+  //   return findOpenPlace;
+  // };
 
 
 

@@ -41,8 +41,9 @@ class PlacesRepository {   //시설등록
     // 시설 전체 조회
     findAllPlaces = async () => {
       const places = await Places.findAll();
+      const opens = await Opens.findAll();
 
-      return places;
+      return {private: places, public: opens};
     };
 
     // 본인이 등록한 시설만 조회
@@ -124,12 +125,12 @@ class PlacesRepository {   //시설등록
 
 
 
-    // open api 전체 조회
-    findAllOpens = async () => {
-      const open = await Opens.findAll();
+    // // open api 전체 조회
+    // findAllOpens = async () => {
+    //   const open = await Opens.findAll();
 
-      return open;
-    };
+    //   return open;
+    // };
 
 
     // open api 소분류명 조회

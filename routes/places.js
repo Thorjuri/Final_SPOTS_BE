@@ -19,8 +19,8 @@ router.get('/me', authMiddleware, placesController.findGetPlaces)
 
 
 
-//Open Api 전체 조회 
-router.get('/open', placesController.findAllOpens)
+// //Open Api 전체 조회 
+// router.get('/open', placesController.findAllOpens)
 
 
 

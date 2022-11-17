@@ -147,19 +147,19 @@ class PlacesController {
 
 
 
-  findAllOpens = async (req, res, next) => {
-    // open api 전체 불러오기
+  // findAllOpens = async (req, res, next) => {
+  //   // open api 전체 불러오기
 
-    try {
-    const places = await this.placesService.findAllOpens();
+  //   try {
+  //   const places = await this.placesService.findAllOpens();
 
-    res.status(200).json({ data: places });
+  //   res.status(200).json({ data: places });
     
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
-    }
-  };
+  //   } 
+  //   catch (err) {
+  //     res.status(err.statusCode ||400).json({message: err.message});
+  //   }
+  // };
 
 
 
