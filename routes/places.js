@@ -36,11 +36,6 @@ router.patch('/:placesId', authMiddleware, upload.single('image'), placesControl
 //  시설 삭제
 router.delete('/:placesId', authMiddleware, placesController.deletePlaces);
 
-
-
-// Open Api 키워드 조회 
-router.get('/open/keyword/:keywords', placesController.getOpenKeyword)
-
 //Open Api 소분류명 조회 
 router.get('/open/:minclassnm', placesController.getSportsOpen)
 

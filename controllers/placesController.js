@@ -3,12 +3,14 @@ const PlacesService = require("../services/placesService");
 class PlacesController {
   placesService = new PlacesService();
 
+
   createPlace = async (req, res, next) => {
     //시설 등록
     try {
 
       const {loginId} = res.locals.user;  
       const { x,y,sports, spotName, spotKind, address, comforts, price, desc } = req.body;
+
       let image = ''
         req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
@@ -33,6 +35,9 @@ class PlacesController {
     }
   };
 
+
+
+
   findAllPlaces = async (req, res, next) => {
     // 시설 전체 불러오기
     try {
@@ -46,6 +51,8 @@ class PlacesController {
   };
   
 
+
+
   findGetPlaces = async (req, res, next) => {
     // 본인이 등록한 시설만 조회
     try {
@@ -58,6 +65,9 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
+
+
+
 
   getSports = async (req, res, next) => {
     // 종목별 조회
@@ -73,6 +83,8 @@ class PlacesController {
   };
 
 
+
+
   getKeyword = async (req, res, next) => {
     // 키워드별 조회
     try {
@@ -85,6 +97,8 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
+
+
 
 
 
@@ -110,6 +124,10 @@ class PlacesController {
     }
   };
 
+
+
+
+
   deletePlaces = async (req, res, next) => {
     // 시설 삭제
     try {
@@ -124,7 +142,6 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
-
 
 
 
@@ -145,18 +162,6 @@ class PlacesController {
   };
 
 
-  getOpenKeyword = async (req, res, next) => {
-    // open api 키워드별 조회
-    try {
-    const { keywords } = req.params;
-    const keydata = await this.placesService.getOpenKeyword(keywords);
-
-    res.status(200).json({ data: keydata });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
-    }
-  };
 
 
   getSportsOpen = async (req, res, next) => {
@@ -172,6 +177,9 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
+  
+
+
 
   getRegionOpen = async (req, res, next) => {
     // 지역명 open api 조회

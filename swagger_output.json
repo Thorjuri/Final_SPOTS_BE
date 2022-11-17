@@ -956,35 +956,6 @@
         }
       }
     },
-    "/places/open/keyword/{keywords}": {
-      "get": {
-        "description": "키워드별 조회",
-        "tags": ["Places"],
-        "parameters": [
-          {
-            "name": "keywords",
-            "in": "path",
-            "type": "string",
-            "schema": {
-              "properties": {
-                "keywords": {
-                  "type": "string",
-                  "example": "접수중"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
     "/places/open/{minclassnm}": {
       "get": {
         "description": "소분류명 조회",
