@@ -73,15 +73,24 @@ class PlacesRepository {   //시설등록
       });
     }
 
-    //keyword 조회  sports, spotName, spotKind, address, comforts, price, desc
+    //keyword 조회  
     getKeyword = async(keywords)=> {
+      
       const sql = `SELECT * FROM Places
       where sports like '%${keywords}%' OR spotName like '%${keywords}%' OR spotKind like '%${keywords}%' OR address like '%${keywords}%' OR comforts like '%${keywords}%' OR price like '%${keywords}%'`  
-        
-      const data = await this.dbQueryAsync(sql);
-      return data;
-    }
       
+      const sql2 = `SELECT * FROM Opens
+      where minclassnm like '%${keywords}%' OR svcstatnm like '%${keywords}%' OR svcnm like '%${keywords}%' OR placenm like '%${keywords}%' OR areanm like '%${keywords}%'`
+      
+      const data = await this.dbQueryAsync(sql);
+      const data2 = await this.dbQueryAsync(sql2);
+      
+      return {private: data, public: data2};
+
+      
+    }
+    
+
 
 
 
@@ -120,16 +129,6 @@ class PlacesRepository {   //시설등록
       const open = await Opens.findAll();
 
       return open;
-    };
-
-
-    //open api keyword 조회  minclassnm,svcstatnm,svcnm,spotName,areanm
-     getOpenKeyword = async(keywords)=> {
-      const sql = `SELECT * FROM Opens
-      where minclassnm like '%${keywords}%' OR svcstatnm like '%${keywords}%' OR svcnm like '%${keywords}%' OR spotName like '%${keywords}%' OR areanm like '%${keywords}%'`  
-        
-      const data = await this.dbQueryAsync(sql);
-      return data;
     };
 
 
