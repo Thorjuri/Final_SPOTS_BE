@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "localhost:3000",  
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
