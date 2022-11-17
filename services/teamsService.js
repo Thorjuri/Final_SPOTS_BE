@@ -3,6 +3,7 @@ const TeamsRepository = require('../repositories/teamsRepository.js');
 class TeamsService {
     teamsRepository = new TeamsRepository();
 
+    // 나의 팀 조회
     getMyTeam = async(nickname)=> {
         const data = await this.teamsRepository.getMyTeam(nickname);
         if (data.length === 0) {
@@ -14,7 +15,7 @@ class TeamsService {
         return data;
     };
 
-
+    // 팀 상세 조회
     getTeamInfo = async(teamId)=> {
         const data = await this.teamsRepository.getTeamInfo(teamId);
         if (!data) {
@@ -26,7 +27,7 @@ class TeamsService {
         return data;
     };
 
-
+    // 팀 신규 등록
     createTeam = async(nickname, teamName, sports, member, image)=> {
         if (!teamName || !sports || !member) {
             const err = new Error(`teamsService Error`);
@@ -48,7 +49,7 @@ class TeamsService {
         return data;
     };
 
-
+    // 팀 정보 수정
     updateTeam = async(nickname, teamName, newAdmin, newMember)=> {
         const checkAdmin = await this.teamsRepository.getTeamOne(teamName);
             if (checkAdmin.admin !== nickname) {
@@ -70,7 +71,7 @@ class TeamsService {
         return data;
     };
 
-
+    // 팀 삭제
     deleteTeam = async(nickname, teamId)=> {
         const checkAdmin = await this.teamsRepository.getTeamInfo(teamId);
             if (checkAdmin.admin !== nickname) {
