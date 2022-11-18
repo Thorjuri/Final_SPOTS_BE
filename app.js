@@ -91,10 +91,10 @@ io.on("connection", socket => {
       console.log(`socket Event: ${event}`) 
   })
   socket.on("enter_room", (roomName)  => {  // room 만들기 혹은 입장
-      socket.join(roomName) // 1.room 입장
+      // socket.join(roomName) // 1.room 입장
       // const counts = countRoom(roomName)
       // cb(counts)  //2. 프론트에 showRoom 함수실행
-      const message = `${socket.nickname} 님 환영합니다. SPOTS 고객 상담 1:1 채팅방입니다. 무엇을 도와드릴까요?`
+      const message = `${roomName} 님 환영합니다. SPOTS 고객 상담 1:1 채팅방입니다. 무엇을 도와드릴까요?`
       socket.emit("enter_notice", message); //해당 socket의, 해당 room의 - 모든 접속자에게 메세지 보냄(본인 제외)
       // io.sockets.emit("room_change", publicRooms()); //연결된 모든 socket의 모든 접속자에게 'public room' 목록을 보냄
   });
