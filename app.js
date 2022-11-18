@@ -13,7 +13,6 @@ const errorHandlerMiddleware = require("./middlewares/error_handler_middleware")
 const auth_middleware = require("./middlewares/auth_middleware");
 require("./models");
 
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -34,7 +33,6 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // 에러 핸들러 (주석처리 후 마지막에 적용)
 app.use(errorHandlerMiddleware);
-
 
 http.listen(port, () => {
   console.log(`${port}번 포트로 서버 실행`);

@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
   try {
     const accessToken = req.headers.authorization;
     if (!accessToken) {
-      res.status(401).json({ errorMessage: "다시 로그인 해주세요." });
+      return res.status(401).json({ errorMessage: "다시 로그인 해주세요." });
     }
 
     const [tokenType, tokenValue] = accessToken.split(" ");
@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
       tokenValue === "undefined" ||
       !tokenValue
     ) {
-      res.status(401).send({ errorMessage: "로그인 후 이용 가능한 기능입니다." });
+      return res.status(401).send({ errorMessage: "로그인 후 이용 가능한 기능입니다." });
     }
 
     const myToken = verifyToken(tokenValue);
@@ -31,13 +31,12 @@ module.exports = async (req, res, next) => {
         refreshToken = user.refreshToken;
         const myRefreshToken = verifyToken(refreshToken);
         if (myRefreshToken == "jwt expired") {
-          res.send({ errorMessage: "로그인이 필요합니다." });
+          return res.send({ errorMessage: "로그인이 필요합니다." });
         } else {
-          console.log(user);
           const myNewToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
             expiresIn: "30m",
           });
-          res.send({ message: "new access token", myNewToken: `Bearer ${myNewToken}` });
+          return res.send({ message: "new access token", myNewToken: `Bearer ${myNewToken}` });
         }
       });
     } else {
@@ -48,7 +47,7 @@ module.exports = async (req, res, next) => {
       });
     }
   } catch (err) {
-    res.send({ errorMessage: err + " : 로그인이 필요합니다." });
+    return res.send({ errorMessage: err + " : 로그인이 필요합니다." });
   }
 };
 

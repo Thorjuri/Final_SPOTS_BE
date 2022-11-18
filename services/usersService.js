@@ -50,8 +50,7 @@ class UsersService {
       gender,
       phone,
       sports,
-      favSports,
-      recommendId
+      favSports
     );
 
     await this.usersRepository.plusPoint(loginId, 5000);
