@@ -3,12 +3,14 @@ const PlacesService = require("../services/placesService");
 class PlacesController {
   placesService = new PlacesService();
 
+
   createPlace = async (req, res, next) => {
     //시설 등록
     try {
 
       const {loginId} = res.locals.user;  
       const { x,y,sports, spotName, spotKind, address, comforts, price, desc } = req.body;
+
       let image = ''
         req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
@@ -33,8 +35,22 @@ class PlacesController {
     }
   };
 
+
+  findAllPlace = async (req, res, next) => {
+    // 사설 전체 불러오기
+    try {
+    const places = await this.placesService.findAllPlace();
+
+    res.status(200).json({ data: places });
+    }
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
+    }
+  };
+
+
   findAllPlaces = async (req, res, next) => {
-    // 시설 전체 불러오기
+    // 사설 + openApi 전체 조회
     try {
     const places = await this.placesService.findAllPlaces();
 
@@ -45,6 +61,8 @@ class PlacesController {
     }
   };
   
+
+
 
   findGetPlaces = async (req, res, next) => {
     // 본인이 등록한 시설만 조회
@@ -59,6 +77,9 @@ class PlacesController {
     }
   };
 
+
+
+
   getSports = async (req, res, next) => {
     // 종목별 조회
     try {
@@ -71,6 +92,26 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
+
+
+
+
+  getKeyword = async (req, res, next) => {
+    // 키워드별 조회
+    try {
+    const { keywords } = req.params;
+    const keydata = await this.placesService.getKeyword(keywords);
+
+    res.status(200).json({ data: keydata });
+    } 
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});
+    }
+  };
+
+
+
+
 
   updatePlaces = async (req, res, next) => {
     // 시설정보 수정
@@ -94,6 +135,10 @@ class PlacesController {
     }
   };
 
+
+
+
+
   deletePlaces = async (req, res, next) => {
     // 시설 삭제
     try {
@@ -109,6 +154,10 @@ class PlacesController {
     }
   };
 
+
+
+
+
   findAllOpens = async (req, res, next) => {
     // open api 전체 불러오기
 
@@ -123,6 +172,9 @@ class PlacesController {
     }
   };
 
+
+
+
   getSportsOpen = async (req, res, next) => {
     // 소분류명 open api 조회
 
@@ -136,6 +188,9 @@ class PlacesController {
       res.status(err.statusCode ||400).json({message: err.message});
     }
   };
+  
+
+
 
   getRegionOpen = async (req, res, next) => {
     // 지역명 open api 조회

@@ -1,6 +1,7 @@
 const UsersRepository = require("../repositories/usersRepository");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 // +sms
 require("dotenv").config();
 
@@ -96,6 +97,18 @@ class UsersService {
       ID: findId.loginId,
     };
   };
+
+  //임시 비밀번호 발급
+  tempPass = async (loginId) => {
+    const password = crypto.randomBytes(4).toString("hex");
+    const salt = await bcrypt.genSalt(10);
+    const enpryptedPW = bcrypt.hashSync(password, salt);
+    const tempPass = await this.usersRepository.updateUser(loginId, enpryptedPW);
+    if (!tempPass) throw { code: -2 };
+    return password;
+  };
+
+  // ID, 번호 해당 하는 아이디 찾기
   checkIdPhone = async (loginId, phone) => {
     const checkIdPhone = await this.usersRepository.checkIdPhone(loginId, phone);
     return checkIdPhone;
