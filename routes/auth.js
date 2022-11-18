@@ -35,13 +35,11 @@ router.get("/kakao/code", function async(req, res, next) {
           .then((result) => {
             let loginId = result.data["id"];
             if (!loginId) return res.status(402).json({ message: "카카오 로그인 실패" });
-            return res
-              .status(200)
-              .json({
-                message: "카카오id 받기 성공, 로그인 api로 가주세요",
-                loginId: loginId,
-                code: 2,
-              });
+            return res.status(200).json({
+              message: "카카오id 받기 성공, 로그인 api로 가주세요",
+              loginId: loginId,
+              code: 2,
+            });
           });
       })
       .catch((e) => {
@@ -67,7 +65,7 @@ router.post("/login", async (req, res, next) => {
     expiresIn: "1d",
   });
   Users.update({ refreshToken }, { where: { loginId: user.loginId } });
-  if (user.drop) {
+  if (user.deleteAt) {
     return res.status(202).json({
       nickname: user.nickname,
       accessToken: `Bearer ${accessToken}`,
