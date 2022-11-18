@@ -91,7 +91,7 @@ io.on("connection", socket => {
       console.log(`socket Event: ${event}`) 
   })
   socket.on("enter_room", (roomName)  => {  // room 만들기 혹은 입장
-      // socket.join(roomName) // 1.room 입장
+      socket.join(roomName) // 1.room 입장
       // const counts = countRoom(roomName)
       // cb(counts)  //2. 프론트에 showRoom 함수실행
       const message = `${roomName} 님 환영합니다. SPOTS 고객 상담 1:1 채팅방입니다. 무엇을 도와드릴까요?`
