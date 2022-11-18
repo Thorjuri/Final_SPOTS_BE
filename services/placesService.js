@@ -41,8 +41,20 @@ class PlacesService {
         return createPlaces;
   };
 
+
+
+  findAllPlace = async () => {
+    // 사설 전체 조회
+
+    const findAllPlace = await this.placesRepository.findAllPlace();
+
+    return findAllPlace;
+  };
+
+
+  
   findAllPlaces = async () => {
-    // 장소 전체 조회
+    // 사설 + openApi 전체 조회
 
     const findAllPlace = await this.placesRepository.findAllPlaces();
 

@@ -38,12 +38,24 @@ class PlacesRepository {   //시설등록
       return findPlace;
     };
 
-    // 시설 전체 조회
-    findAllPlaces = async () => {
+
+    // 사설 전체 조회
+    findAllPlace = async () => {
       const places = await Places.findAll();
 
       return places;
     };
+
+
+    // 사설 + openApi 전체 조회
+    findAllPlaces = async () => {
+      const places = await Places.findAll();
+      const opens = await Opens.findAll();
+
+      return {private: places, public: opens};
+    };
+
+
 
     // 본인이 등록한 시설만 조회
     findGetPlaces = async (loginId) => {  
