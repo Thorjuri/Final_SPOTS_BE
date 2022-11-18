@@ -40,7 +40,7 @@ app.use(errorHandlerMiddleware);
 
 
 
-// chat - socket
+// ------------------ chat(socket)
 // app.set('view engine', "pug");
 // app.set("views", "./src/views");
 // app.use('/public',express.static("./src/public"));
@@ -85,7 +85,7 @@ function findUser(){
 
 io.on("connection", socket => {
   // io.socketsJoin("Anouncement") //모든 소켓이 'Anouncemetn'라는 room으로 들어가게 함!!
-  socket["nickname"] = "Anon";
+  socket["nickname"] = "Anonymous";
   console.log(`현재 접속된 모든 socketId = ${findUser()}  `)
   socket.onAny((event)=> {  
       console.log(`socket Event: ${event}`) 
@@ -94,8 +94,8 @@ io.on("connection", socket => {
       socket.join(roomName) // 1.room 입장
       // const counts = countRoom(roomName)
       // cb(counts)  //2. 프론트에 showRoom 함수실행
-      const message = `${socket.nickname} 님이 ${roomName} 방에 입장하셨습니다.`
-      socket.to(roomName).emit("enter_notice", message); //해당 socket의, 해당 room의 - 모든 접속자에게 메세지 보냄(본인 제외)
+      const message = `${socket.nickname} 님 환영합니다. SPOTS 고객 상담 1:1 채팅방입니다. 무엇을 도와드릴까요?`
+      socket.emit("enter_notice", message); //해당 socket의, 해당 room의 - 모든 접속자에게 메세지 보냄(본인 제외)
       // io.sockets.emit("room_change", publicRooms()); //연결된 모든 socket의 모든 접속자에게 'public room' 목록을 보냄
   });
 
