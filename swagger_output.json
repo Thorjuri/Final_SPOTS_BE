@@ -745,6 +745,21 @@
         }
       }
     },
+    "/places/all": {
+      "get": {
+        "description": "전체 사설 + openApi 조회",
+        "tags": ["Places"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/places/me": {
       "get": {
         "description": "본인것만 조회",
