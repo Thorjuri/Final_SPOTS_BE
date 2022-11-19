@@ -19,6 +19,21 @@ class ReservationsRepository {
         await Users.update({ point : newPoints}, { where : { nickname }});
         return newPoints;
     }
+    // 매칭 성사 여부 업데이트
+    updateMatch = async(matchId)=> {
+        const data = await Reservations.findAll({
+            attributes : ["matchId"]
+        });
+        console.log("1", data)
+        const counts = data.filter((val) => {
+            return val.matchId === matchId
+        });
+        console.log("2", counts)
+        if(counts.length >= 2){
+            const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
+            return results
+        } 
+    }
 
     updateMatch = async(matchId)=> {
         const data = await Reservations.findAll({
@@ -72,6 +87,7 @@ class ReservationsRepository {
         const doneMatching = await Reservations.findAll({ where : { admin, result: "매칭 완료" }});
         return {noneMatching, doneMatching};
     };
+
 
     // 100% 취소
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {

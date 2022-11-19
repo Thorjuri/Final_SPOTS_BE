@@ -51,6 +51,7 @@ class ReservationsService {
         return data;
     };      
 
+
     //장소별-날짜별 예약현황 조회
     getMatch = async(place, date)=>{
         const data = await this.reservationsRepository.getMatch(place, date);

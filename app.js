@@ -38,6 +38,7 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(errorHandlerMiddleware);
 
+<<<<<<< HEAD
 
 
 
@@ -166,6 +167,8 @@ io.on("connection", socket => {
 
 //-----------
 
+=======
+>>>>>>> juri
 http.listen(port, () => {
   console.log(`${port}번 포트로 서버 실행`);
 });
