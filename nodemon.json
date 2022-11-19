@@ -1,4 +1,0 @@
-{
-    "ignore" : ["models/*"],
-    "exec" : "node app.js"
-}
