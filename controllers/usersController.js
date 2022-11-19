@@ -149,7 +149,7 @@ class UsersController {
       const { user, accessToken } = await this.usersService.LoginUser(loginId, password);
       // console.log(user);
       // console.log(user);
-      if (user.drop) {
+      if (user.deleteAt) {
         return res.status(202).json({
           nickname: user.nickname,
           accessToken: `Bearer ${accessToken}`,

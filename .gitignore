@@ -2,5 +2,9 @@ node_modules
 /.env
 /.idea
 /.login.html
+<<<<<<< HEAD
 /nodemon.json
 /src
+=======
+/src
+>>>>>>> 11ae238d6add5a9d5147035edb81cedcd43f846b
