@@ -19,12 +19,29 @@ class ReservationsRepository {
         await Users.update({ point : newPoints}, { where : { nickname }});
         return newPoints;
     }
+    // 매칭 성사 여부 업데이트
+    updateMatch = async(matchId)=> {
+        const data = await Reservations.findAll({
+            attributes : ["matchId"]
+        });
+        console.log("1", data)
+        const counts = data.filter((val) => {
+            return val.matchId === matchId
+        });
+        console.log("2", counts)
+        if(counts.length >= 2){
+            const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
+            return results
+        } 
+    }
 
     //매치 예약 신청
     createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
         const admin = nickname
         const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트를 반환함
-        const data = await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
+        await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
+        await this.updateMatch(matchId)
+        const data = await Reservations.findOne({ where : { matchId, teamName, place}})
         return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`};
     };
 
@@ -35,8 +52,8 @@ class ReservationsRepository {
     };
 
     // 매치 조회(By MatchId)
-    checkMatch = async(matchId, place)=> {
-        const data = await Reservations.findAll({ where: { matchId, place }});
+    checkMatch = async(matchId)=> {
+        const data = await Reservations.findAll({ where: { matchId}});
         return {data: data, message : "매치 조회 완료"};
     };
 
@@ -51,9 +68,11 @@ class ReservationsRepository {
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
-        const data = await Reservations.findAll({ where : { admin }});
-        return data;
+        const noneMatching = await Reservations.findAll({ where : { admin, result: "매칭 전" }});
+        const doneMatching = await Reservations.findAll({ where : { admin, result: "매칭 완료" }});
+        return {noneMatching, doneMatching};
     };
+
 
     // 100% 취소
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {

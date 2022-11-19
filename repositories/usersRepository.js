@@ -4,26 +4,8 @@ const { Users } = require("../models");
 
 class UsersRepository {
   // 회원가입
-  createUser = async (
-    loginId,
-    password,
-    nickname,
-    gender,
-    phone,
-    sports,
-    favSports,
-    recommendId
-  ) => {
-    await Users.create({
-      loginId,
-      password,
-      nickname,
-      gender,
-      phone,
-      sports,
-      favSports,
-      recommendId,
-    });
+  createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
+    await Users.create({ loginId, password, nickname, gender, phone, sports, favSports });
     return;
   };
 
@@ -77,21 +59,22 @@ class UsersRepository {
 
   // 유저 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
-    await Users.update(
+    const updateUser = await Users.update(
       { loginId, password, nickname, gender, phone, sports, favSports },
       { where: { loginId } }
     );
-    return;
+    return updateUser;
   };
 
   // 회원탈퇴
   dropUser = async (loginId) => {
-    await Users.update({ drop: true }, { where: { loginId } });
+    let date = new Date();
+    await Users.update({ deleteAt: date }, { where: { loginId } });
     return;
   };
   // 회원탈퇴 취소
   cancelDrop = async (loginId) => {
-    await Users.update({ drop: false }, { where: { loginId } });
+    await Users.update({ deleteAt: null }, { where: { loginId } });
     return;
   };
 

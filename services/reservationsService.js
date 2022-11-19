@@ -15,7 +15,7 @@ class ReservationsService {
                 throw err;
             };
 
-        const checkMatchs = await this.reservationsRepository.checkMatch(matchId, place) //예외처리2
+        const checkMatchs = await this.reservationsRepository.checkMatch(matchId) //예외처리2
             if (checkMatchs.data.length >= 2) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
@@ -50,6 +50,7 @@ class ReservationsService {
 
         return data;
     };      
+
 
     //장소별-날짜별 예약현황 조회
     getMatch = async(place, date)=>{
