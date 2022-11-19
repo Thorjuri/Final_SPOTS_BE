@@ -110,27 +110,28 @@ io.on("connection", socket => {
   socket.join(roomName)
   const rooms = findUser();
   rooms.splice(rooms.indexOf(roomName),1)
+
   socket.emit("client_main", roomName)
+
   socket.emit("admin_roomlist", rooms)
+
   socket.on("admin_enter_room", roomName => {
-    const counts = countRoom(roomName)
-    console.log(counts)
     socket.join(roomName)
-    console.log(counts)
     const message = `관리자가 ${roomName} 방에 입장했습니다.`;
     io.sockets.in(roomName).emit("new_message", message);
   });
-  socket.on("chatting", (roomName, message) => {
-    io.sockets.in(roomName).emit("new_message", message);
+
+  socket.on("chatting", (roomName, nickname, message) => {
+    const new_message = `${nickname}:  ${message}`
+    io.sockets.in(roomName).emit("new_message", new_message);
   })
 
-
-
-  socket.on("disconnecting", ()=>{ //disconnecting = 연결 종료 직전**
-      const message = `${socket.nickname} 님이 퇴장하셨습니다.`  
-      socket.rooms.forEach(room => { socket.to(room).emit("left_notice", message) // 연결 종료 시(직전에) 해당 room 전체에 메세지 보냄(본인 제외)
+  socket.on("disconnecting", () => { //disconnecting = 연결 종료 직전**
+      const nickname = socket.id.slice(0,5)
+      const message = `${nickname} 님이 퇴장하셨습니다.`  
+      const roomName = socket.id
+      io.sockets.in(roomName).emit("left_notice", message) // 연결 종료 시(직전에) 해당 room 전체에 메세지 보냄(본인 제외)
       });
-  });
 
   socket.on("disconnect", ()=>{ //disconnecting = 연결 종료 직후**
     console.log(socket.rooms)
@@ -138,8 +139,6 @@ io.on("connection", socket => {
   });
 
 });
-
-//-----------
 
 
 http.listen(port, () => {
