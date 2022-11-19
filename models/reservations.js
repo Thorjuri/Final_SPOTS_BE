@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
             result: {
                 type: DataTypes.STRING,
                 allowNull: true,
-                defaultValue: "경기 전"
+                defaultValue: "매칭 전"
             }
         },
         {
