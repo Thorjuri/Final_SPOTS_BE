@@ -39,7 +39,7 @@ const router = express.Router();
         let IMGURL = rows[i]["IMGURL"]; //이미지경로 
 
         
-        //await Opens.create({minclassnm:MINCLASSNM, svcstatnm:SVCSTATNM, svcnm:SVCNM,spotName:PLACENM,svcurl:SVCURL,x:X,y:Y,areanm:AREANM,imgurl:IMGURL});
+        //await Opens.create({minclassnm:MINCLASSNM, svcstatnm:SVCSTATNM, svcnm:SVCNM,placenm:PLACENM,svcurl:SVCURL,x:X,y:Y,areanm:AREANM,imgurl:IMGURL});
         
 
         

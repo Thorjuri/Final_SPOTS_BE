@@ -77,11 +77,11 @@ class UsersRepository {
 
   // 유저 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
-    await Users.update(
+    const updateUser = await Users.update(
       { loginId, password, nickname, gender, phone, sports, favSports },
       { where: { loginId } }
     );
-    return;
+    return updateUser;
   };
 
   // 회원탈퇴

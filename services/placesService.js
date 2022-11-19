@@ -41,8 +41,20 @@ class PlacesService {
         return createPlaces;
   };
 
+
+
+  findAllPlace = async () => {
+    // 사설 전체 조회
+
+    const findAllPlace = await this.placesRepository.findAllPlace();
+
+    return findAllPlace;
+  };
+
+
+  
   findAllPlaces = async () => {
-    // 장소 전체 조회
+    // 사설 + openApi 전체 조회
 
     const findAllPlace = await this.placesRepository.findAllPlaces();
 
@@ -80,6 +92,33 @@ class PlacesService {
     return findFootsal;
 
   };
+
+
+
+
+
+
+  getKeyword = async (keywords) => {
+    //키워드별 조회
+  
+    const findKeyword = await this.placesRepository.getKeyword(keywords);
+  
+    if(findKeyword.private.length === 0 && findKeyword.public.length  === 0){
+      const err = new Error(`placesService Error`);
+      err.statusCode = 404;
+      err.message = '존재하지 않는 키워드입니다.';
+      throw err;
+    }
+
+    return findKeyword;
+
+  };
+
+
+
+
+
+
 
    // 수정
   updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
@@ -156,6 +195,10 @@ class PlacesService {
 
     return findOpenPlace;
   };
+
+
+
+
 
   getSportsOpen = async (minclassnm) => {
     //소분류명 open api 조회
