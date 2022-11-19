@@ -4,3 +4,4 @@ node_modules
 /.login.html
 /src
 nodemon.json
+/xstore.js
