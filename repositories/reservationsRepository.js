@@ -68,9 +68,8 @@ class ReservationsRepository {
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
-        const noneMatching = await Reservations.findAll({ where : { admin, result: "매칭 전" }});
-        const doneMatching = await Reservations.findAll({ where : { admin, result: "매칭 완료" }});
-        return {noneMatching, doneMatching};
+        const data = await Reservations.findAll({ where : { admin }});
+        return data;
     };
 
 
