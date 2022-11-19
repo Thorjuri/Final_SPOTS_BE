@@ -37,8 +37,6 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(errorHandlerMiddleware);
 
-<<<<<<< HEAD
-
 
 
 // ------------------ chat(socket)
@@ -129,8 +127,7 @@ io.on("connection", socket => {
 
 //-----------
 
-=======
->>>>>>> 11ae238d6add5a9d5147035edb81cedcd43f846b
+
 http.listen(port, () => {
   console.log(`${port}번 포트로 서버 실행`);
 });

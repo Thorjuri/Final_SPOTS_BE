@@ -3,3 +3,6 @@ node_modules
 /.idea
 /.login.html
 /src
+nodemon.json
+/xstore.js
+
