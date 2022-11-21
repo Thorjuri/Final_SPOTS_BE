@@ -25,6 +25,12 @@ class ReservationsController {
         res.status(200).send(data)
     };
 
+    // 전체 매칭 조회 (매칭 전/후 구분)
+    getAllMatch = async(req, res)=> {
+        const data = await this.reservationsService.getAllMatch();
+        res.status(200).send(data)
+    };
+
     // 매치 예약 취소
     deleteMatch = async(req, res)=> {
         const { nickname } = res.locals.user;
