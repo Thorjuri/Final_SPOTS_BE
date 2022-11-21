@@ -66,9 +66,9 @@ class ReservationsService {
         return data;
     };
 
-    // 전체 매칭 조회 (매칭 전/후 구분)
-    getAllMatch = async()=> {
-        const data = await this.reservationsRepository.getAllMatch();
+    // 장소별-날짜별 매칭 전/후 조회
+    getMatchResult = async(place, date)=> {
+        const data = await this.reservationsRepository.getMatchResult(place, date);
         return data;
     };
     
