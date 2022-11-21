@@ -141,7 +141,16 @@ class UsersService {
     return plusPoint;
   };
   // 회원 정보 수정
-  updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
+  updateUser = async (
+    loginId,
+    password,
+    nickname,
+    gender,
+    phone,
+    sports,
+    favSports,
+    profileImg
+  ) => {
     if (nickname) {
       const checkNick = await this.usersRepository.checkNick(nickname);
       if (checkNick) {
@@ -166,7 +175,8 @@ class UsersService {
       gender,
       phone,
       sports,
-      favSports
+      favSports,
+      profileImg
     );
     const getUpdate = await this.usersRepository.getUser(loginId);
     return getUpdate;

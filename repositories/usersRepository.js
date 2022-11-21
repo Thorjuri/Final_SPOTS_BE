@@ -46,6 +46,7 @@ class UsersRepository {
       teamName: getUser.teamName,
       sports: getUser.sports,
       favSports: getUser.favSports,
+      profileImg: getUser.profileImg,
     };
   };
 
@@ -58,9 +59,18 @@ class UsersRepository {
   };
 
   // 유저 정보 수정
-  updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
+  updateUser = async (
+    loginId,
+    password,
+    nickname,
+    gender,
+    phone,
+    sports,
+    favSports,
+    profileImg
+  ) => {
     const updateUser = await Users.update(
-      { loginId, password, nickname, gender, phone, sports, favSports },
+      { loginId, password, nickname, gender, phone, sports, favSports, profileImg },
       { where: { loginId } }
     );
     return updateUser;
