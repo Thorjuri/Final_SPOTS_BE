@@ -16,7 +16,10 @@ router.get('/register/:place/:date', authMiddleware, wrapAsyncController(reserva
 // 3. 나의 매치 조회
 router.get('/me', authMiddleware, wrapAsyncController(reservationsController.getMyMatch));
 
-// 4. 매치 예약 취소
+// 4. 전체 매칭 조회 (매칭 전/후 구분)
+router.get('/register', authMiddleware, wrapAsyncController(reservationsController.getAllMatch))
+
+// 5. 매치 예약 취소
 router.put('/register/delete', authMiddleware, wrapAsyncController(reservationsController.deleteMatch));
 
 module.exports = router;

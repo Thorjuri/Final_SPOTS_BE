@@ -72,6 +72,12 @@ class ReservationsRepository {
         return data;
     };
 
+    // 전체 매칭 조회 (매칭 전/후 구분)
+    getAllMatch = async()=> {
+        const noneMatching = await Reservations.findAll({ where : { result : "매칭 전" }});
+        const doneMatching = await Reservations.findAll({ where : { result : "매칭 완료" }});
+        return { noneMatching, doneMatching }
+    };
 
     // 100% 취소
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
