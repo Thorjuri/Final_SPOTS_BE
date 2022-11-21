@@ -914,20 +914,8 @@
                 }
               }
             }
-          },
-          {
-            "name": "image",
-            "in": "formData",
-            "type": "file",
-            "schema": {
-              "type": "file",
-              "properties": {
-                "image": {
-                  "example": "이미지파일 (2MB 이하,720*720 이하)"
-                }
-              }
-            }
           }
+         
         ],
         "responses": {
           "200": {

@@ -112,13 +112,10 @@ class PlacesRepository {   //시설등록
     
 
 
-
-
-
     // 수정
-    updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
+    updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc) => {
       const updatePlaces = await Places.update(
-          {x,y,sports,spotName,spotKind,address,comforts,price,desc,image}, {where: {placesId, loginId}}
+          {x,y,sports,spotName,spotKind,address,comforts,price,desc}, {where: {placesId, loginId}}
       );
       const findPlaces = await Places.findOne({where : {placesId}});
       return findPlaces;

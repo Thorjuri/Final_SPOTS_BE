@@ -133,13 +133,13 @@ class PlacesController {
         const {placesId} = req.params;
         const {loginId} = res.locals.user;
         const {x,y,sports,spotName,spotKind,address,comforts,price,desc} = req.body;
-        let image = ''
-        req.hasOwnProperty('file')===false?  image = null : image = req.file.location
+        // let image = ''
+        // req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
         const updateresult = await this.placesService.updatePlaces(
             placesId,
             loginId,
-            x,y,sports,spotName,spotKind,address,comforts,price,desc,image
+            x,y,sports,spotName,spotKind,address,comforts,price,desc
         );
 
     res.status(201).json({ message: "시설 정보 수정이 완료 되었습니다", data: updateresult });
