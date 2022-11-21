@@ -44,9 +44,23 @@ class PlacesController {
     res.status(200).json({ data: places });
     }
     catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(err.statusCode ||400).json({message: err.message});  
     }
   };
+
+
+  findRecentPlace = async (req, res, next) => {
+    // 사설 최신등록 6개만
+    try {
+    const Recentplaces = await this.placesService.findRecentPlace();
+
+    res.status(200).json({ data: Recentplaces });
+    }
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});  
+    }
+  };
+
 
 
   findAllPlaces = async (req, res, next) => {
