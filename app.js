@@ -13,6 +13,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const errorHandlerMiddleware = require("./middlewares/error_handler_middleware");
 const auth_middleware = require("./middlewares/auth_middleware");
+const { CostExplorer } = require("aws-sdk");
+const { Console } = require("console");
 require("./models");
 
 app.use(express.json());
@@ -113,15 +115,20 @@ io.on("connection", socket => {
 
   socket.emit("admin_roomlist", rooms)
 
-  socket.on("admin_enter_room", roomName => {
-    socket.join(roomName)
+  socket.on("admin_enter_room", room => {
+    socket.join(room)
+    const roomName = room
+    const nickname = "관리자"
     const message = `관리자가 ${roomName} 방에 입장했습니다.`;
-    io.sockets.in(roomName).emit("new_message", message);
+    const data = { roomName, nickname, message}
+    io.sockets.in(roomName).emit("new_message", data);
   });
 
-  socket.on("chatting", (roomName, nickname, message) => {
-    const new_message = `${nickname}:  ${message}`
-    io.sockets.in(roomName).emit("new_message", new_message);
+  socket.on("chatting", (obj) => {
+    const convert = JSON.parse(obj)
+    const {roomName, nickname, value} = convert;
+    const data = {roomName, nickname, message:value}
+    io.sockets.in(roomName).emit("new_message", data);
   })
 
   socket.on("disconnecting", () => { //disconnecting = 연결 종료 직전**
@@ -133,7 +140,6 @@ io.on("connection", socket => {
 
   socket.on("disconnect", ()=>{ //disconnecting = 연결 종료 직후**
     console.log(socket.rooms)
-      // io.sockets.emit("room_change", publicRooms()); //연결된 모든 socket의 모든 접속자에게 'public room' 목록을 보냄
   });
 
 });
