@@ -35,6 +35,21 @@ class ReservationsRepository {
         } 
     }
 
+    updateMatch = async(matchId)=> {
+        const data = await Reservations.findAll({
+            attributes : ["matchId"]
+        });
+        console.log("1", data)
+        const counts = data.filter((val) => {
+            return val.matchId === matchId
+        });
+        console.log("2", counts)
+        if(counts.length >= 2){
+            const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
+            return results
+        } 
+    }
+
     //매치 예약 신청
     createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
         const admin = nickname
@@ -68,9 +83,8 @@ class ReservationsRepository {
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
-        const noneMatching = await Reservations.findAll({ where : { admin, result: "매칭 전" }});
-        const doneMatching = await Reservations.findAll({ where : { admin, result: "매칭 완료" }});
-        return {noneMatching, doneMatching};
+        const data = await Reservations.findAll({ where : { admin }});
+        return data;
     };
 
 

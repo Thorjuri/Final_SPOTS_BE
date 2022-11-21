@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "ws-study.shop",
+  "host": "sparta4.shop",
   "basePath": "/",
   "tags": [
     {
@@ -733,6 +733,21 @@
       },
       "get": {
         "description": "전체 시설 조회",
+        "tags": ["Places"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/places/new": {
+      "get": {
+        "description": "사설 최신등록 6개만",
         "tags": ["Places"],
         "parameters": [],
         "responses": {

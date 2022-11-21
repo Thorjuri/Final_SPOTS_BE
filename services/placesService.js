@@ -52,6 +52,15 @@ class PlacesService {
   };
 
 
+  findRecentPlace = async () => {
+   // 사설 최신등록 6개만
+
+    const findRecentPlace = await this.placesRepository.findRecentPlace();
+
+    return findRecentPlace;
+  };
+
+
   
   findAllPlaces = async () => {
     // 사설 + openApi 전체 조회
