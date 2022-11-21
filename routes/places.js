@@ -12,7 +12,10 @@ const upload = require('../middlewares/multerS3_middleware.js')
 router.post('/', authMiddleware, upload.single('image'), placesController.createPlace)
 
 //  사설 전체 조회 
-router.get('/', placesController.findAllPlace) 
+router.get('/', placesController.findAllPlace)  
+
+// 사설 최신등록 6개만 
+router.get('/new', placesController.findRecentPlace)  
 
  //  사설 + openApi 전체 조회 
 router.get('/all', placesController.findAllPlaces) 
