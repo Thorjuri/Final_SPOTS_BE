@@ -7,8 +7,8 @@ const doc = {
     title: "Spots",
     description: "",
   },
-  host: "sparta4.shop",
-  schemes: ["https"],  
+  host: "localhost:3000",
+  schemes: ["http"],  
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [
