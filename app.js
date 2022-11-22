@@ -43,17 +43,17 @@ app.use(errorHandlerMiddleware);
 
 
 // ------------------ chat(socket)
-// app.set('view engine', "pug");
-// app.set("views", "./src/views");
-// app.use('/public',express.static("./src/public"));
+app.set('view engine', "pug");
+app.set("views", "./src/views");
+app.use('/public',express.static("./src/public"));
 
-// app.get('/chat', (req, res)=> {
-//     res.render("home")
-// });
+app.get('/chat', (req, res)=> {
+    res.render("home")
+});
 
-// app.get('/admin', (req, res)=> {
-//   res.render("admin")
-// });
+app.get('/admin', (req, res)=> {
+  res.render("admin")
+});
 
 // public room 목록 추출
 function publicRooms(){ //객체의 구조 분해 할당 3겹 (io란 객체 안의, sockets 객체 안의, adapter 객체 안의 sids, rooms 란 객체)
