@@ -47,6 +47,14 @@ class PlacesRepository {   //시설등록
     };
 
 
+    // 사설 최신등록 6개만
+    findRecentPlace = async () => {
+      const RecentPlaces = await Places.findAll({ limit: 6, order: [['createdAt', 'DESC']]});
+
+      return RecentPlaces;
+    };
+
+
     // 사설 + openApi 전체 조회
     findAllPlaces = async () => {
       const places = await Places.findAll();
@@ -104,13 +112,10 @@ class PlacesRepository {   //시설등록
     
 
 
-
-
-
     // 수정
-    updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
+    updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc) => {
       const updatePlaces = await Places.update(
-          {x,y,sports,spotName,spotKind,address,comforts,price,desc,image}, {where: {placesId, loginId}}
+          {x,y,sports,spotName,spotKind,address,comforts,price,desc}, {where: {placesId, loginId}}
       );
       const findPlaces = await Places.findOne({where : {placesId}});
       return findPlaces;

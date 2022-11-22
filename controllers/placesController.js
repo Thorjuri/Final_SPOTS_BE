@@ -44,9 +44,23 @@ class PlacesController {
     res.status(200).json({ data: places });
     }
     catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(err.statusCode ||400).json({message: err.message});  
     }
   };
+
+
+  findRecentPlace = async (req, res, next) => {
+    // 사설 최신등록 6개만
+    try {
+    const Recentplaces = await this.placesService.findRecentPlace();
+
+    res.status(200).json({ data: Recentplaces });
+    }
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});  
+    }
+  };
+
 
 
   findAllPlaces = async (req, res, next) => {
@@ -119,13 +133,13 @@ class PlacesController {
         const {placesId} = req.params;
         const {loginId} = res.locals.user;
         const {x,y,sports,spotName,spotKind,address,comforts,price,desc} = req.body;
-        let image = ''
-        req.hasOwnProperty('file')===false?  image = null : image = req.file.location
+        // let image = ''
+        // req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
         const updateresult = await this.placesService.updatePlaces(
             placesId,
             loginId,
-            x,y,sports,spotName,spotKind,address,comforts,price,desc,image
+            x,y,sports,spotName,spotKind,address,comforts,price,desc
         );
 
     res.status(201).json({ message: "시설 정보 수정이 완료 되었습니다", data: updateresult });

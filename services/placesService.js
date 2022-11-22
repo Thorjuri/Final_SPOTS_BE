@@ -52,6 +52,15 @@ class PlacesService {
   };
 
 
+  findRecentPlace = async () => {
+   // 사설 최신등록 6개만
+
+    const findRecentPlace = await this.placesRepository.findRecentPlace();
+
+    return findRecentPlace;
+  };
+
+
   
   findAllPlaces = async () => {
     // 사설 + openApi 전체 조회
@@ -121,7 +130,7 @@ class PlacesService {
 
 
    // 수정
-  updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image) => {
+  updatePlaces = async (placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc) => {
     const findplacesId = await this.placesRepository.findPlacesId(placesId);
   
        
@@ -143,7 +152,7 @@ class PlacesService {
           };
 
 
-        const updateData = await this.placesRepository.updatePlaces(placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc,image);
+        const updateData = await this.placesRepository.updatePlaces(placesId,loginId,x,y,sports,spotName,spotKind,address,comforts,price,desc);
           
 
         return updateData;

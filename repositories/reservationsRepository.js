@@ -83,11 +83,16 @@ class ReservationsRepository {
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
-        const noneMatching = await Reservations.findAll({ where : { admin, result: "매칭 전" }});
-        const doneMatching = await Reservations.findAll({ where : { admin, result: "매칭 완료" }});
-        return {noneMatching, doneMatching};
+        const data = await Reservations.findAll({ where : { admin }});
+        return data;
     };
 
+    // 장소별-날짜별 매칭 전/후 조회
+    getMatchResult = async(place, date)=> {
+        const noneMatching = await Reservations.findAll({ where : { place, date, result : "매칭 전" }});
+        const doneMatching = await Reservations.findAll({ where : { place, date, result : "매칭 완료" }});
+        return { noneMatching, doneMatching }
+    };
 
     // 100% 취소
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {

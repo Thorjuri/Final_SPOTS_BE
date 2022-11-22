@@ -745,6 +745,21 @@
         }
       }
     },
+    "/places/new": {
+      "get": {
+        "description": "사설 최신등록 6개만",
+        "tags": ["Places"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/places/all": {
       "get": {
         "description": "전체 사설 + openApi 조회",
@@ -899,20 +914,8 @@
                 }
               }
             }
-          },
-          {
-            "name": "image",
-            "in": "formData",
-            "type": "file",
-            "schema": {
-              "type": "file",
-              "properties": {
-                "image": {
-                  "example": "이미지파일 (2MB 이하,720*720 이하)"
-                }
-              }
-            }
           }
+         
         ],
         "responses": {
           "200": {

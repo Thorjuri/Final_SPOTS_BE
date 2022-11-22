@@ -1,5 +1,6 @@
 const ReservationsRepository = require('../repositories/reservationsRepository.js');
-const sendEmail = require('../mail.js')
+const sendEmail = require('../mail.js');
+const { DataPipeline } = require('aws-sdk');
 require("dotenv").config();
 
 
@@ -62,6 +63,12 @@ class ReservationsService {
     getMyMatch = async(nickname)=> {
         const admin = nickname;
         const data =  await this.reservationsRepository.getMyMatch(admin);
+        return data;
+    };
+
+    // 장소별-날짜별 매칭 전/후 조회
+    getMatchResult = async(place, date)=> {
+        const data = await this.reservationsRepository.getMatchResult(place, date);
         return data;
     };
     
