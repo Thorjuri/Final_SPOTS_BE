@@ -15,11 +15,18 @@
  - Frontend 3명
  - UX/UI designer 1명
 ### 4. 기술 스택
- - Backend
-   + Node.js, Express, MySQL, EC2, RDS, 
- - Frontend
-   + React, Redux, Axios, styled-components
-   
+ <div>
+  <h4> Backend Stacks </h4>
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black">
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=black">
+<img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+<img src="https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white">
+ <h4> Backend Stacks </h4>
+ <h5> React, Redux, Axios, styled-components </h5>
+</div>
+<br>
+<br>
 
 ## 서비스 소개 🥇 
 ### 1. What's 'SPOTS' ? 
