@@ -10,6 +10,7 @@ class TeamsService {
             const err = new Error(`teamsService Error`);
             err.status = 404;
             err.message = '아직 등록한 팀이 없습니다.';
+            err.code = -1
             throw err;
         };
         return data;
@@ -22,6 +23,7 @@ class TeamsService {
             const err = new Error(`teamsService Error`);
             err.status = 404;
             err.message = '해당하는 팀을 찾을 수 없습니다.';
+            err.code = -1
             throw err;
         };
         return data;
@@ -33,6 +35,7 @@ class TeamsService {
             const err = new Error(`teamsService Error`);
             err.status = 400;
             err.message = '필수 기입 사항을 모두 입력해주세요.';
+            err.code = -1
             throw err;
         };
         const allTeams = await this.teamsRepository.getAllTeams();
@@ -43,6 +46,7 @@ class TeamsService {
             const err = new Error(`teamsService Error`);
             err.status = 400;
             err.message = '중복된 팀 이름입니다. 팀 이름을 다시 작성해 주세요.';
+            err.code = -2
             throw err;
         };
         const data = await this.teamsRepository.createTeam(nickname, teamName, sports, member, image);
@@ -56,6 +60,7 @@ class TeamsService {
                 const err = new Error(`teamsService Error`);
                 err.status = 403;
                 err.message = '팀 수정 권한이 없습니다.';
+                err.code = -1
                 throw err;
             };    
             if(!newAdmin) { newAdmin = nickname};
@@ -64,6 +69,7 @@ class TeamsService {
                 const err = new Error(`teamsService Error`);
                 err.status = 400;
                 err.message = 'admin은 가입한 회원에게만 위임할 수 있습니다.';
+                err.code = -1
                 throw err;
             };    
             if(!newMember) { newMember = checkAdmin.member};
@@ -78,6 +84,7 @@ class TeamsService {
                 const err = new Error(`teamsService Error`);
                 err.status = 403;
                 err.message = '팀 삭제 권한이 없습니다.';
+                err.code = -1
                 throw err;
             };    
         const data = await this.teamsRepository.deleteTeam(nickname, teamId);

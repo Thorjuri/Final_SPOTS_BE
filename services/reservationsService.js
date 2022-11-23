@@ -13,6 +13,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '존재하지 않는 팀 입니다. 팀 명을 확인해주세요.'; 
+                err.code = -1
                 throw err;
             };
 
@@ -21,6 +22,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '해당 타임은 이미 마감되었습니다.';
+                err.code = -1
                 throw err;
             };
 
@@ -28,6 +30,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '매칭 신청은 팀장만 가능합니다.';
+                err.code = -2
                 throw err;
             };
 
@@ -36,6 +39,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = `보유 포인트가 부족합니다. 현재 잔여 포인트:  ${checkPoints.point} 포인트`;
+                err.code = -2
                 throw err;
             };
         // DB 저장 
@@ -99,6 +103,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '매치 취소는 admin 계정만 가능합니다.';
+                err.code = -1
                 throw err;
             };    
         //신청 날짜
@@ -134,6 +139,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '경기 당일 취소는 불가능합니다.';
+                err.code = -1
                 throw err;
             };
         
@@ -142,6 +148,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '취소 가능 기간이 아닙니다.';
+                err.code = -2
                 throw err;
             };
 
