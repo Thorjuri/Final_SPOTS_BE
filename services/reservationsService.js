@@ -84,6 +84,7 @@ class ReservationsService {
     getMyMatch = async(nickname)=> {
         const admin = nickname;
         const data =  await this.reservationsRepository.getMyMatch(admin);
+        console.log("-------------------", data)
         return data;
     };
 

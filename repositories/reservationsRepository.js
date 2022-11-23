@@ -1,4 +1,4 @@
-const { Reservations, Users, Teams } = require('../models');
+const { Reservations, Users, Teams, Places } = require('../models');
 require("dotenv").config();
 
 class ReservationsRepository {
@@ -83,8 +83,16 @@ class ReservationsRepository {
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
-        const data = await Reservations.findAll({ where : { admin }});
-        return data;
+        const matchData = await Reservations.findAll({ where : { admin }});
+        const matchTotalData = []
+        for(let i = 0; i < matchData.length; i++){
+            console.log(matchData[i])
+            const placeData = await Places.findOne({ where : { spotName : matchData[i].place } })
+            const teamData = await Teams.findOne({ where : { teamName : matchData[i].teamName }})
+            const aMatch = {matchData: matchData[i], teamData, placeData}
+            matchTotalData.push(aMatch)
+        }
+        return matchTotalData;
     };
 
     // 장소별-날짜별 매칭 전/후 조회
