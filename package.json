@@ -34,5 +34,20 @@
     "@babel/preset-env": "^7.20.2",
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.5.2"
-  }
+  },
+  "name": "final_spots_be",
+  "description": "![spots_main-02](https://user-images.githubusercontent.com/112181770/203052639-6aab4879-8e50-4219-b2cd-dbf910547fb0.jpg)",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thorjuri/Final_SPOTS_BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thorjuri/Final_SPOTS_BE/issues"
+  },
+  "homepage": "https://github.com/Thorjuri/Final_SPOTS_BE#readme"
 }
