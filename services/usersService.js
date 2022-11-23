@@ -2,7 +2,7 @@ const UsersRepository = require("../repositories/usersRepository");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-// +sms
+const { NCPClient } = require("node-sens");
 require("dotenv").config();
 
 class UsersService {
@@ -40,8 +40,6 @@ class UsersService {
     const salt = await bcrypt.genSalt(10);
     const enpryptedPW = bcrypt.hashSync(password, salt);
     password = enpryptedPW;
-
-    // +sms
 
     await this.usersRepository.createUser(
       loginId,
@@ -86,8 +84,31 @@ class UsersService {
     return checkPhone;
   };
 
-  // +sms
+  // sms
+  sendSms = async (phone) => {
+    const ncp = new NCPClient({
+      phoneNumber: "01068551466",
+      serviceId: process.env.SERVICE_ID,
+      secretKey: process.env.SECRET_KEY,
+      accessKey: process.env.ACCESS_KEY,
+    });
+    const code = Math.floor(900000 * Math.random()) + 100000;
+    const { success } = await ncp.sendSMS({
+      to: phone,
+      content: "[Spots] 인증번호 [" + code + "]를 입력해 주세요",
+      countryCode: "82",
+    });
+    console.log(success);
 
+    const saveCode = await this.usersRepository.saveCode(phone, code);
+    return saveCode;
+  };
+  checkSms = async (phone, code) => {
+    const checkCode = await this.usersRepository.getCode(phone);
+    if (checkCode === code) {
+      return true;
+    } else return false;
+  };
   // ID찾기
   findId = async (phone) => {
     const findId = await this.usersRepository.checkPhone(phone);
@@ -123,8 +144,8 @@ class UsersService {
     if (!chekPass) {
       throw { code: -1 };
     }
-    const accessToken = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+    const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
+      expiresIn: "10s",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
@@ -141,16 +162,7 @@ class UsersService {
     return plusPoint;
   };
   // 회원 정보 수정
-  updateUser = async (
-    loginId,
-    password,
-    nickname,
-    gender,
-    phone,
-    sports,
-    favSports,
-    profileImg
-  ) => {
+  updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     if (nickname) {
       const checkNick = await this.usersRepository.checkNick(nickname);
       if (checkNick) {
@@ -175,11 +187,15 @@ class UsersService {
       gender,
       phone,
       sports,
-      favSports,
-      profileImg
+      favSports
     );
     const getUpdate = await this.usersRepository.getUser(loginId);
     return getUpdate;
+  };
+  changeImg = async (loginId, profileImg) => {
+    const changeImg = await this.usersRepository.changeImg(loginId, profileImg);
+    if (!changeImg[0]) throw { code: -1 };
+    return changeImg;
   };
   // 회원탈퇴
   dropUser = async (loginId) => {

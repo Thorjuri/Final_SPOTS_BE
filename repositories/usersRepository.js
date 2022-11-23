@@ -1,11 +1,31 @@
 const { Users } = require("../models");
+const redis = require("redis");
 
-// +redis
+const redisClient = redis.createClient({ legacyMode: true });
+redisClient.on("connect", () => {
+  console.info("Redis connected!");
+});
+redisClient.on("error", (err) => {
+  console.error("Redis Client Error", err);
+});
+redisClient.connect().then();
+const redisCli = redisClient.v4;
 
 class UsersRepository {
   // 회원가입
   createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
-    await Users.create({ loginId, password, nickname, gender, phone, sports, favSports });
+    const profileImg =
+      "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
+    await Users.create({
+      loginId,
+      password,
+      nickname,
+      gender,
+      phone,
+      sports,
+      favSports,
+      profileImg: profileImg,
+    });
     return;
   };
 
@@ -50,7 +70,14 @@ class UsersRepository {
     };
   };
 
-  // + redis
+  saveCode = async (phone, code) => {
+    const saveCode = await redisCli.set(phone, code, { EX: 180 });
+    return saveCode;
+  };
+  getCode = async (phone) => {
+    const getCode = await redisCli.get(phone);
+    return getCode;
+  };
 
   // 포인트 충전
   plusPoint = async (loginId, point) => {
@@ -59,27 +86,24 @@ class UsersRepository {
   };
 
   // 유저 정보 수정
-  updateUser = async (
-    loginId,
-    password,
-    nickname,
-    gender,
-    phone,
-    sports,
-    favSports,
-    profileImg
-  ) => {
+  updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     const updateUser = await Users.update(
-      { loginId, password, nickname, gender, phone, sports, favSports, profileImg },
+      { loginId, password, nickname, gender, phone, sports, favSports },
       { where: { loginId } }
     );
     return updateUser;
   };
+  changeImg = async (loginId, profileImg) => {
+    if (!profileImg)
+      profileImg =
+        "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
+    const changeImg = await Users.update({ profileImg: profileImg }, { where: { loginId } });
+    return changeImg;
+  };
 
   // 회원탈퇴
   dropUser = async (loginId) => {
-    let date = new Date();
-    await Users.update({ deleteAt: date }, { where: { loginId } });
+    await Users.update({ deleteAt: new Date() }, { where: { loginId } });
     return;
   };
   // 회원탈퇴 취소
