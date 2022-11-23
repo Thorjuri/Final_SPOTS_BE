@@ -13,6 +13,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '존재하지 않는 팀 입니다. 팀 명을 확인해주세요.'; 
+                err.code = -1
                 throw err;
             };
 
@@ -21,21 +22,41 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '해당 타임은 이미 마감되었습니다.';
+                err.code = -1
                 throw err;
             };
 
-            if (checkTeams.admin !== nickname) {  //예외처리3
+            if (checkMatchs.data.length === 1) {
+                if(checkMatchs.data[0].isDouble !== isDouble) {  //예외처리3
+                    const err = new Error(`reservationsService Error`);
+                    err.status = 400;
+                    err.message = '단/복식은 상대팀과 일치해야 합니다.';
+                    err.code = -3
+                    throw err;    
+                };
+                if(checkMatchs.data[0].member !== member) {  //예외처리4
+                    const err = new Error(`reservationsService Error`);
+                    err.status = 400;
+                    err.message = '인원 수가 상대팀과 일치해야 합니다.';
+                    err.code = -4
+                    throw err;    
+                };
+            }
+
+            if (checkTeams.admin !== nickname) {  //예외처리5
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '매칭 신청은 팀장만 가능합니다.';
+                err.code = -2
                 throw err;
             };
 
-        const checkPoints = await this.reservationsRepository.checkPoint(nickname);  //예외처리4
+        const checkPoints = await this.reservationsRepository.checkPoint(nickname);  //예외처리6
             if (checkPoints.point < price) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = `보유 포인트가 부족합니다. 현재 잔여 포인트:  ${checkPoints.point} 포인트`;
+                err.code = -2
                 throw err;
             };
         // DB 저장 
@@ -63,6 +84,7 @@ class ReservationsService {
     getMyMatch = async(nickname)=> {
         const admin = nickname;
         const data =  await this.reservationsRepository.getMyMatch(admin);
+        console.log("-------------------", data)
         return data;
     };
 
@@ -99,6 +121,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
                 err.message = '매치 취소는 admin 계정만 가능합니다.';
+                err.code = -1
                 throw err;
             };    
         //신청 날짜
@@ -134,6 +157,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '경기 당일 취소는 불가능합니다.';
+                err.code = -1
                 throw err;
             };
         
@@ -142,6 +166,7 @@ class ReservationsService {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '취소 가능 기간이 아닙니다.';
+                err.code = -2
                 throw err;
             };
 

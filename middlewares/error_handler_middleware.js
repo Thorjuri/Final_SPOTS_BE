@@ -19,6 +19,7 @@ module.exports = (err, req, res, next) => {
             type: err.name,
             status: err.status,
             error: err.message,
+            code: (err.code || "")
         });
     }
 };
