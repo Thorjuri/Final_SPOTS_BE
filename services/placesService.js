@@ -111,7 +111,7 @@ class PlacesService {
 
     if (findKeyword.private.length === 0 && findKeyword.public.length === 0) {
       const err = new Error(`placesService Error`);
-      err.statusCode = 406;
+      err.statusCode = 206;
       err.message = "존재하지 않는 키워드입니다.";
       err.message2 = findKeyword.public;
       err.message3 = findKeyword.private;
@@ -188,7 +188,7 @@ class PlacesService {
     //예약 된 구장은 삭제 x
     if (findReservationPlace) {
       const err = new Error(`placesService Error`);
-      err.statusCode = 204;
+      err.statusCode = 206;
       err.message = "예약이 있는 구장은 삭제할 수 없습니다.";
       throw err;
     }
