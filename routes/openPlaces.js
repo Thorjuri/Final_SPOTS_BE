@@ -28,18 +28,18 @@ const router = express.Router();
 
 
       for (let i = 0; i < rows.length; i++) {
-        let MINCLASSNM = rows[i]["MINCLASSNM"]; //소분류명 
-        let SVCSTATNM = rows[i]["SVCSTATNM"]; //서비스상태
-        let SVCNM = rows[i]["SVCNM"]; //서비스명
-        let PLACENM = rows[i]["PLACENM" ]; //장소명
-        let SVCURL = rows[i]["SVCURL"]; //바로가기URL
-        let X = rows[i]["X"];
-        let Y = rows[i]["Y"];
-        let AREANM = rows[i]["AREANM"]; //지역명
-        let IMGURL = rows[i]["IMGURL"]; //이미지경로 
+        let minclassnm = rows[i]["MINCLASSNM"]; //소분류명 
+        let svcstatnm = rows[i]["SVCSTATNM"]; //서비스상태
+        let svcnm = rows[i]["SVCNM"]; //서비스명
+        let placenm = rows[i]["PLACENM" ]; //장소명
+        let svcurl = rows[i]["SVCURL"]; //바로가기URL
+        let x = rows[i]["X"];
+        let y = rows[i]["Y"];
+        let areanm = rows[i]["AREANM"]; //지역명
+        let imgurl = rows[i]["IMGURL"]; //이미지경로 
 
         
-        //await Opens.create({minclassnm:MINCLASSNM, svcstatnm:SVCSTATNM, svcnm:SVCNM,placenm:PLACENM,svcurl:SVCURL,x:X,y:Y,areanm:AREANM,imgurl:IMGURL});
+        //await Opens.create({minclassnm, svcstatnm, svcnm,placenm,svcurl,x,y,areanm,imgurl});
         
 
         

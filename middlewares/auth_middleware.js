@@ -36,7 +36,7 @@ module.exports = async (req, res, next) => {
           return res.send({ errorMessage: "로그인이 필요합니다." });
         } else {
           const myNewToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-            expiresIn: "5s",
+            expiresIn: "1d",
           });
           return res
             .status(200)
