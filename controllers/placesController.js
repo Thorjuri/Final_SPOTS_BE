@@ -119,7 +119,7 @@ class PlacesController {
     res.status(200).json({ data: keydata });
     } 
     catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(err.statusCode ||400).json({message: err.message,public: err.message2,private: err.message3});
     }
   };
 
