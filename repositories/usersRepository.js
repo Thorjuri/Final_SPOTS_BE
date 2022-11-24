@@ -113,8 +113,9 @@ class UsersRepository {
   };
 
   //Refresh토큰 업데이트
-  updateRefresh = async (refreshToken, user) => {
+  updateRefresh = async (refreshToken, user, accKey) => {
     await Users.update({ refreshToken }, { where: { loginId: user.loginId } });
+    await Users.update({ accKey }, { where: { loginId: user.loginId } });
   };
 }
 

@@ -144,13 +144,18 @@ class UsersService {
     if (!chekPass) {
       throw { code: -1 };
     }
-    const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const accKey = crypto.randomBytes(2).toString("hex");
+    const accessToken = jwt.sign(
+      { loginId: user.loginId, accKey: accKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    await this.usersRepository.updateRefresh(refreshToken, user);
+    await this.usersRepository.updateRefresh(refreshToken, user, accKey);
     return {
       user: user,
       accessToken: accessToken,
