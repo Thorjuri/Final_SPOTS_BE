@@ -19,15 +19,7 @@ class PlacesService {
   ) => {
     const findPlaces = await this.placesRepository.findPlaces(address);
 
-    if (
-      !sports ||
-      !spotName ||
-      !spotKind ||
-      !address ||
-      !comforts ||
-      !price ||
-      !desc
-    ) {
+    if (!sports || !spotName || !spotKind || !address || !comforts || !price || !desc) {
       const err = new Error(`placesService Error`);
       err.statusCode = 400;
       err.message = "빈칸을 입력해주세요.";
@@ -119,8 +111,10 @@ class PlacesService {
 
     if (findKeyword.private.length === 0 && findKeyword.public.length === 0) {
       const err = new Error(`placesService Error`);
-      err.statusCode = 404;
+      err.statusCode = 406;
       err.message = "존재하지 않는 키워드입니다.";
+      err.message2 = findKeyword.public;
+      err.message3 = findKeyword.private;
       throw err;
     }
 
@@ -179,10 +173,9 @@ class PlacesService {
   //삭제
   deletePlaces = async (placesId, loginId) => {
     const findPlacesId = await this.placesRepository.findPlacesId(placesId); //repository에서 placesId 불러오기
-    const place = findPlacesId.spotName;
+    const place = findPlacesId.spotName;    //등록된 구장 이름
 
-    const findReservationPlace =
-      await this.placesRepository.findReservationPlace(place); //repository에서 reservation의 place 불러오기
+    const findReservationPlace = await this.placesRepository.findReservationPlace(place); //등록된 구장 이름과 같은 reservation의 place 불러오기
 
     //해당하는 데이터가 없으면
     if (findPlacesId === null) {
@@ -195,7 +188,7 @@ class PlacesService {
     //예약 된 구장은 삭제 x
     if (findReservationPlace) {
       const err = new Error(`placesService Error`);
-      err.statusCode = 202;
+      err.statusCode = 204;
       err.message = "예약이 있는 구장은 삭제할 수 없습니다.";
       throw err;
     }
