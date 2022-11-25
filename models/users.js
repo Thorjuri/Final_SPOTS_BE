@@ -64,6 +64,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: { team: [] },
       },
+      accKey: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       refreshToken: {
         type: DataTypes.STRING,
         allowNull: true,

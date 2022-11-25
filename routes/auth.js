@@ -7,7 +7,8 @@ const jwt = require("jsonwebtoken");
 const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
 const CLIENT_id = "497bb40725964bac025412acbaf9fc7c";
-const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
+// const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
+const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 const { Users } = require("../models");
 require("dotenv").config();
 
@@ -58,7 +59,7 @@ router.post("/login", async (req, res, next) => {
   if (!user)
     return res.status(200).json({ code: -1, message: "회원가입 필요(카카오)", loginId: loginId });
 
-  const accessToken = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, {
+  const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
     expiresIn: "1d",
   });
   const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
@@ -80,7 +81,6 @@ router.post("/login", async (req, res, next) => {
 });
 router.post("/signup", async (req, res, next) => {
   try {
-    console.log(req.body);
     const { loginId, nickname, gender, phone, sports, favSports, recommendId } = req.body;
     const checkId = await Users.findOne({ where: { loginId } }); // id 중복확인
     if (checkId) {

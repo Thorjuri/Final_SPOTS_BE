@@ -87,29 +87,12 @@ class UsersController {
       }
     }
   };
-  // 핸드폰 중복확인
-  checkPhone = async (req, res, next) => {
-    try {
-      const { phone } = req.body;
-      const checkPhone = await this.usersService.checkPhone(phone);
-      if (checkPhone) {
-        throw { code: -1 };
-      }
-      return res.status(200).json({ message: "사용 가능한 번호" });
-    } catch (err) {
-      if (err.code === -1) {
-        res.status(412).json({ errormessage: "사용 중인 번호입니다." });
-      } else {
-        console.log(err);
-        res.status(400).json({ errmessage: err });
-      }
-    }
-  };
   // ID찾기
   findId = async (req, res, next) => {
     try {
-      const { phone } = req.body; // +code
-      // sms
+      const { phone, code } = req.body;
+      const smsCheck = await this.usersService.checkSms(phone, code);
+      if (!smsCheck) return res.status(401).json({ message: "인증 실패" });
       const findId = await this.usersService.findId(phone);
       return res.status(200).json(findId);
     } catch (err) {
@@ -141,7 +124,44 @@ class UsersController {
       }
     }
   };
+  //sms
+  signupSms = async (req, res, next) => {
+    try {
+      const { phone } = req.body;
+      const checkPhone = await this.usersService.checkPhone(phone);
+      if (checkPhone) {
+        throw { code: -1 };
+      }
+      const sendSms = await this.usersService.sendSms(phone);
+      if (!sendSms) return res.status(400).json({ errormessage: "전송 실패" });
+      return res.status(200).json({ message: "메세지 전송" });
+    } catch (err) {
+      if (err.code === -1) {
+        res.status(412).json({ errormessage: "사용 중인 번호입니다." });
+      } else {
+        console.log(err);
+        res.status(400).json({ errmessage: err });
+      }
+    }
+  };
   // sms
+  sendSms = async (req, res, next) => {
+    const { phone } = req.body;
+    const sendSms = await this.usersService.sendSms(phone);
+    if (!sendSms) return res.status(400).json({ errormessage: "전송 실패" });
+    res.status(200).json({ message: "메세지 전송" });
+  };
+  checkSms = async (req, res, next) => {
+    try {
+      const { phone, code } = req.body;
+      const smsCheck = await this.usersService.checkSms(phone, code);
+      if (smsCheck) return res.status(200).json({ message: "인증 성공" });
+      return res.status(401).json({ message: "인증 실패" });
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ errmessage: err });
+    }
+  };
   // 로그인
   LoginUser = async (req, res, next) => {
     try {
@@ -195,8 +215,6 @@ class UsersController {
     try {
       const { loginId } = res.locals.user;
       const { password, confirmPassword, nickname, gender, phone, sports, favSports } = req.body;
-      let profileImg = "";
-      req.hasOwnProperty("file") ? (profileImg = req.file.location) : (profileImg = null);
       if (password !== confirmPassword) {
         throw { code: -3 };
       }
@@ -207,8 +225,7 @@ class UsersController {
         gender,
         phone,
         sports,
-        favSports,
-        profileImg
+        favSports
       );
       res.status(200).json({ user: updateUser });
     } catch (err) {
@@ -218,6 +235,22 @@ class UsersController {
         res.status(412).json({ errormessage: "중복된 번호입니다.", code: -2 });
       } else if (err.code === -3) {
         res.status(412).json({ errormessage: "비밀번호를 확인해 주세요", code: -3 });
+      } else {
+        console.log(err);
+        res.status(400).json({ errmessage: err });
+      }
+    }
+  };
+  changeImg = async (req, res, next) => {
+    try {
+      const { loginId } = res.locals.user;
+      let profileImg = "";
+      if (req.hasOwnProperty("file")) profileImg = req.file.location;
+      const changeImg = await this.usersService.changeImg(loginId, profileImg);
+      return res.status(200).json({ meesage: "프로필 이미지 변경 성공" });
+    } catch (err) {
+      if (err.code === -1) {
+        res.status(401).json({ errormessage: "변경 안됐씀메" });
       } else {
         console.log(err);
         res.status(400).json({ errmessage: err });
