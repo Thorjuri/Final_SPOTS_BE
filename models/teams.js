@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             teamName: {
                 type: DataTypes.STRING,
-                unique: true,
+                // unique: true,
                 allowNull: false,
             },
             sports: {
