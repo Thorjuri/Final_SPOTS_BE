@@ -23,7 +23,7 @@ AWS.config.update({
           cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`) // original 폴더안에다 파일을 저장
        },
     }),
-    limits: { fileSize: 2 * 720 * 720 },
+    limits: { fileSize: 2 * 2048 * 2048 },
  });
 
  module.exports = upload;
