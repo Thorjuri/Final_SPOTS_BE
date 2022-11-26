@@ -4,13 +4,13 @@ const axios = require("axios");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
-const CLIENT_id = "497bb40725964bac025412acbaf9fc7c";
+const CLIENT_id = process.env.CLIENT_id;
 // const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
 const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 const { Users } = require("../models");
-require("dotenv").config();
 
 router.get("/kakao/code", function async(req, res, next) {
   let code = req.query.code;
