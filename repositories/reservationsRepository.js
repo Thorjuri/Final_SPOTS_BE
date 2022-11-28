@@ -109,10 +109,13 @@ class ReservationsRepository {
 
     // 전체 매치 조회
     getAllMatch = async()=> {
-        const data = await Reservations.findAll({
-            limit: 6,
-            order: [["date"]],      
+        const matches = await Reservations.findAll({
+            // limit: 6,
+            order: [["date"]],     
+            where: { result: "매칭 전"} 
         });
+        const isMatches = matches.filter((val)=> { return val.matchId[13] === "i" })
+        const data = isMatches.splice(0, 5)
         return data;
     };
 
