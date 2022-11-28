@@ -188,7 +188,7 @@ class PlacesService {
     //예약 된 구장은 삭제 x
     if (findReservationPlace) {
       const err = new Error(`placesService Error`);
-      err.statusCode = 206;
+      err.statusCode = 406;
       err.message = "예약이 있는 구장은 삭제할 수 없습니다.";
       throw err;
     }
