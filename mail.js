@@ -29,7 +29,7 @@ const sendEmail = (email, contents, teamName)=> {
         if (error) {
         console.log(error);
         } else {
-        return('Email sent: ' + info.response);
+        console.log('Email sent: ' + info.response);
         }
     });
 }
