@@ -83,16 +83,28 @@ class ReservationsRepository {
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
-        const matchData = await Reservations.findAll({ where : { admin }});
-        const matchTotalData = []
-        for(let i = 0; i < matchData.length; i++){
-            console.log(matchData[i])
-            const placeData = await Places.findOne({ where : { spotName : matchData[i].place } })
-            const teamData = await Teams.findOne({ where : { teamName : matchData[i].teamName }})
-            const aMatch = {matchData: matchData[i], teamData, placeData}
-            matchTotalData.push(aMatch)
+        const myMatches = await Reservations.findAll({ where : { admin }});
+        let noneMatchTotal = []
+        let doneMatchTotal = []
+        let aMatch = {}
+        for(let i = 0; i < myMatches.length; i++){
+            let placeData = await Places.findOne({ where : { spotName : myMatches[i].place } })
+            let teamData = await Teams.findOne({ where : { teamName : myMatches[i].teamName }})
+            let whole = await Reservations.findAll({ 
+                where: { matchId: myMatches[i].matchId }
+            })
+            let wholeTeam = whole.map((val)=> {return val.teamName})  //매칭전: 본인의 팀 정보만
+                if(myMatches[i].result === "매칭 전"){
+                    aMatch = {matchData: myMatches[i], teamData, placeData}
+                    noneMatchTotal.push(aMatch)
+                }else if (myMatches[i].result === "매칭 완료") { //매칭완료: 상대팀 팀정보 함께
+                    wholeTeam.splice(wholeTeam.indexOf(myMatches[i].teamName), 1)
+                    let opponent = await Teams.findOne({ where : { teamName : wholeTeam[0]}})
+                    aMatch = {matchData: myMatches[i], teamData, placeData, opponent}
+                    doneMatchTotal.push(aMatch)
+                }
         }
-        return matchTotalData;
+        return {noneMatchTotal, doneMatchTotal}
     };
 
     // 장소별-날짜별 매칭 전/후 조회
@@ -106,6 +118,7 @@ class ReservationsRepository {
     cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point + price;
+        await Reservations.update({ result: "매칭 전"}, { where: { matchId, place }})
         await Reservations.destroy({ where : { matchId, teamName, place}});
         await Users.update({ point: newPoints }, { where : { nickname }})
         return {message : '예약 취소 및 포인트 반환 완료'}
@@ -115,6 +128,7 @@ class ReservationsRepository {
     cancleConditional = async(matchId, teamName, place, price, nickname)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point + price*0.9;
+        await Reservations.update({ result: "매칭 전"}, { where: { matchId, place }})
         await Reservations.destroy({ where : { matchId, teamName, place}});
         await Users.update({ point: newPoints }, { where : { nickname }})
         return {message : '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)'}
