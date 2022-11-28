@@ -4,7 +4,7 @@ require("dotenv").config();
 const sendEmail = (email, contents, teamName)=> {
     var transporter = nodemailer.createTransport({
         service: process.env.SERVICE,   // 메일 보내는 곳
-        prot: 465,
+        port: 465,
         host: process.env.HOST,  
         secure: false,  //true 시 SSL 인증된 https 통신 필요
         requireTLS: true ,
