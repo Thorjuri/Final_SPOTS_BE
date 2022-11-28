@@ -25,6 +25,12 @@ class ReservationsController {
         res.status(200).send(data)
     };
 
+    // 전체 매치 조회
+    getAllMatch = async(req, res)=> {
+        const data = await this.reservationsService.getAllMatch();
+        res.status(200).send(data)
+    };
+
     // 장소별-날짜별 매칭 전/후 조회
     getMatchResult = async(req, res)=> {
         const {place, date} = req.params;
