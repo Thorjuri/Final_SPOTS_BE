@@ -88,6 +88,12 @@ class ReservationsService {
         return data;
     };
 
+    //전체 매치 조회
+    getAllMatch = async()=>{
+        const data = await this.reservationsRepository.getAllMatch();
+        return data;
+    };
+
     // 장소별-날짜별 매칭 전/후 조회
     getMatchResult = async(place, date)=> {
         const data = await this.reservationsRepository.getMatchResult(place, date);

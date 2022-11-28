@@ -107,6 +107,15 @@ class ReservationsRepository {
         return {noneMatchTotal, doneMatchTotal}
     };
 
+    // 전체 매치 조회
+    getAllMatch = async()=> {
+        const data = await Reservations.findAll({
+            limit: 6,
+            order: [["date"]],      
+        });
+        return data;
+    };
+
     // 장소별-날짜별 매칭 전/후 조회
     getMatchResult = async(place, date)=> {
         const noneMatching = await Reservations.findAll({ where : { place, date, result : "매칭 전" }});
