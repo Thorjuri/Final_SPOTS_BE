@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 
     const myToken = verifyToken(tokenValue);
     console.log(myToken);
-    if (myToken == "jwt expired") {
+    if (myToken === "jwt expired") {
       // access token 만료
       const userInfo = jwt.decode(tokenValue, process.env.SECRET_KEY);
       console.log(userInfo);
@@ -30,38 +30,32 @@ module.exports = async (req, res, next) => {
       let accKey = userInfo.accKey;
       let refreshToken;
 
-      Users.findOne({ where: { loginId } }).then((user) => {
-        if (!user) return res.send("jwt 코드를 확인해 주세요");
-        refreshToken = user.refreshToken;
-        const myRefreshToken = verifyToken(refreshToken);
-        if (myRefreshToken == "jwt expired") {
-          return res.send({ errorMessage: "로그인이 필요합니다." });
-        }
-        console.log("db정보");
-        console.log(user.accKey);
-        console.log("jwt 디코드");
-        console.log(accKey);
-        if (user.accKey !== accKey) return res.send("잘못된 접근 입니다.");
-        else {
-          accKey = crypto.randomBytes(2).toString("hex");
-          Users.update({ accKey }, { where: { loginId: user.loginId } }).then(() => {
-            const myNewToken = jwt.sign(
-              { loginId: user.loginId, acckey: accKey },
-              process.env.SECRET_KEY,
-              {
-                expiresIn: "1d",
-              }
-            );
-            res.send({ message: "new access token", myNewToken: `Bearer ${myNewToken}` });
-          });
-        }
-      });
+      const user = await Users.findOne({ where: { loginId } });
+      if (!user) return res.status(412).json({ message: "없는 회원 입니다." });
+      console.log("accKey");
+      console.log(accKey);
+      console.log("user.accKey");
+      console.log(user.accKey);
+      if (user.accKey !== accKey) return res.send("잘못된 접근 입니다.");
+      refreshToken = user.refreshToken;
+      const myRefreshToken = verifyToken(refreshToken);
+      if (myRefreshToken == "jwt expired")
+        return res.status(412).json({ errorMessage: "로그인이 필요합니다." });
+      accKey = crypto.randomBytes(2).toString("hex");
+      await Users.update({ accKey }, { where: { loginId: user.loginId } });
+      const myNewToken = jwt.sign(
+        { loginId: user.loginId, accKey: accKey },
+        process.env.SECRET_KEY,
+        { expiresIn: "5s" }
+      );
+      return res
+        .status(200)
+        .json({ code: 1, message: "new access token", myNewToken: `Bearer ${myNewToken}` });
     } else {
       const { loginId } = jwt.verify(tokenValue, process.env.SECRET_KEY);
-      Users.findOne({ where: { loginId } }).then((user) => {
-        res.locals.user = user;
-        next();
-      });
+      const user = await Users.findOne({ where: { loginId } });
+      res.locals.user = user;
+      next();
     }
   } catch (err) {
     return res.send({ errorMessage: err + " : 로그인이 필요합니다." });
