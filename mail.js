@@ -22,7 +22,7 @@ const sendEmail = (email, contents, teamName)=> {
                 \n'${teamName}' 팀의 매칭 예약 내역은 아래와 같습니다. 
                 \n \n ${contents}
                 \n 더 자세한 내용은 홈페이지의 마이페이지 > 나의 예약현황에서확인 가능합니다. 
-                \n 이용해주셔서 감사합니다.⚽ `  // 메일 내용
+                \n 이용해주셔서 감사합니다.⚽⚽ `  // 메일 내용
         };
       // 메일 발송    
     transporter.sendMail(mailOptions, function (error, info) {
