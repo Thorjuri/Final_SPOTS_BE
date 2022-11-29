@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
   try {
     const accessToken = req.headers.authorization;
     if (!accessToken) {
-      return res.status(401).json({ errorMessage: "다시 로그인 해주세요." });
+      return res.status(401).json({ errormessage: "다시 로그인 해주세요." });
     }
 
     const [tokenType, tokenValue] = accessToken.split(" ");
@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
       tokenValue === "undefined" ||
       !tokenValue
     ) {
-      return res.status(401).send({ errorMessage: "로그인 후 이용 가능한 기능입니다." });
+      return res.status(401).send({ errormessage: "로그인 후 이용 가능한 기능입니다." });
     }
 
     const myToken = verifyToken(tokenValue);
@@ -31,22 +31,23 @@ module.exports = async (req, res, next) => {
       let refreshToken;
 
       const user = await Users.findOne({ where: { loginId } });
-      if (!user) return res.status(412).json({ message: "없는 회원 입니다." });
+      if (!user) return res.status(412).json({ errormessage: "없는 회원 입니다." });
       console.log("accKey");
       console.log(accKey);
       console.log("user.accKey");
       console.log(user.accKey);
-      if (user.accKey !== accKey) return res.send("잘못된 접근 입니다.");
+      if (user.accKey !== accKey)
+        return res.status(412).json({ errormessage: "잘못된 접근 입니다." });
       refreshToken = user.refreshToken;
       const myRefreshToken = verifyToken(refreshToken);
       if (myRefreshToken == "jwt expired")
-        return res.status(412).json({ errorMessage: "로그인이 필요합니다." });
+        return res.status(412).json({ errormessage: "로그인이 필요합니다." });
       accKey = crypto.randomBytes(2).toString("hex");
       await Users.update({ accKey }, { where: { loginId: user.loginId } });
       const myNewToken = jwt.sign(
         { loginId: user.loginId, accKey: accKey },
         process.env.SECRET_KEY,
-        { expiresIn: "5s" }
+        { expiresIn: "30s" }
       );
       return res
         .status(200)
@@ -58,7 +59,7 @@ module.exports = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    return res.send({ errorMessage: err + " : 로그인이 필요합니다." });
+    return res.status(412).json({ errormessage: err + " : 로그인이 필요합니다." });
   }
 };
 
