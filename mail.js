@@ -6,7 +6,7 @@ const sendEmail = (email, contents, teamName)=> {
         service: process.env.SERVICE,   // 메일 보내는 곳
         port: 465,
         host: process.env.HOST,  
-        secure: false,  //true 시 SSL 인증된 https 통신 필요
+        secure: true,  //true 시 SSL 인증된 https 통신 필요
         requireTLS: true ,
         auth: {
           user: process.env.MAIL_ID,  // 보내는 메일의 주소
