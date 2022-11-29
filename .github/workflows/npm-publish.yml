@@ -29,4 +29,4 @@ jobs:
             cd ${{ secrets.CI_CD_PATH2 }}
             sudo git pull origin master
             npm install
-            sudo pm2 restart app.js
+            sudo node app.js
