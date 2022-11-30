@@ -49,7 +49,7 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(errorHandlerMiddleware);
 
 app.get("/", (req, res) => {
-  res.send("TEST!!!!123");
+  res.send("TEST.");
 });
 
 // ------------------ chat(socket)
