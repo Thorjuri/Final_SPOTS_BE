@@ -149,7 +149,7 @@ class UsersService {
       { loginId: user.loginId, accKey: accKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "30m",
+        expiresIn: "10s",
       }
     );
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
