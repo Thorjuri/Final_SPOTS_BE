@@ -99,14 +99,39 @@ class ReservationsRepository {
         return {noneMatchTotal, doneMatchTotal}
     };
 
-    // 전체 매치 조회
+    //'매칭 전' 임박순 6건의 팀
+    getTeamInfoSix = async(arr)=> {
+        const teamInfoSix = await Promise.all(arr.map((val)=> {
+            let data = Teams.findOne({ where : { teamName : val.teamName}});
+            return data;
+        }));
+        return teamInfoSix;
+    };
+
+    //'매칭 전' 임박순 6건의 장소
+    getPlaceInfoSix = async(arr)=> {
+        const placeSix = await Promise.all(arr.map((val)=> {
+            let data = Places.findOne({ where : { spotName : val.place }});
+            return data;
+        }));
+        return placeSix;
+    };
+
+    // '매칭 전' 임박순 6건 매칭
     getAllMatch = async()=> {
         const matches = await Reservations.findAll({
             order: [["date"]],     
             where: { result: "매칭 전"} 
         });
-        const isMatches = matches.filter((val)=> { return val.matchId[13] === "i" })
-        const data = isMatches.splice(0, 5)
+        const isMatches = matches.filter((val)=> { return val.matchId[13] === "i" });
+        const isMatchesSix = isMatches.splice(0, 6);
+        const teamsInfo = await this.getTeamInfoSix(isMatchesSix);
+        const placesInfo = await this.getPlaceInfoSix(isMatchesSix);
+        let data = [];
+        for (let i = 0; i < 6; i++){
+            let result = { match: isMatchesSix[i], team: teamsInfo[i], place: placesInfo[i]};
+            data.push(result);
+        };
         return data;
     };
 

@@ -88,7 +88,7 @@ class ReservationsService {
         return data;
     };
 
-    //전체 매치 조회
+    // '매칭 전' 임박순 6건 매칭
     getAllMatch = async()=>{
         const data = await this.reservationsRepository.getAllMatch();
         return data;
