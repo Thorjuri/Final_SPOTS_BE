@@ -50,7 +50,7 @@ router.post("/login", async (req, res, next) => {
     return res.status(200).json({ code: -1, message: "회원가입 필요(카카오)", loginId: loginId });
 
   const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-    expiresIn: "30m",
+    expiresIn: "10s",
   });
   const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
     expiresIn: "1d",
