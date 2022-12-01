@@ -20,25 +20,28 @@ class PlacesService {
     const findPlaces = await this.placesRepository.findPlaces(address);
 
     if (!sports || !spotName || !spotKind || !address || !comforts || !price || !desc || !desc) {
-      const err = new Error(`placesService Error`);
-      err.statusCode = 400;
-      err.message = "빈칸을 입력해주세요.";
-      throw err;
+      throw { code: -1 };
+      // const err = new Error(`placesService Error`);
+      // err.statusCode = 400;
+      // err.message = "빈칸을 입력해주세요.";
+      // throw err;
     }
 
     if(image === null) {
-      const err = new Error(`placesService Error`);
-      err.statusCode = 401;
-      err.message = "이미지를 등록해주세요.";
-      throw err;
+      throw { code: -2 };
+      // const err = new Error(`placesService Error`);
+      // err.statusCode = 400;
+      // err.message = "이미지를 등록해주세요.";
+      // throw err;
 
     }
 
     if (findPlaces) {
-      const err = new Error(`placesService Error`);
-      err.statusCode = 400;
-      err.message = "이미 등록된 시설입니다.";
-      throw err;
+      throw { code: -3 };
+      // const err = new Error(`placesService Error`);
+      // err.statusCode = 400;
+      // err.message = "이미 등록된 시설입니다.";
+      // throw err;
     }
 
     const createPlaces = await this.placesRepository.createPlace(
