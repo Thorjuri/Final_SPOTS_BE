@@ -84,13 +84,36 @@ class ReservationsService {
     getMyMatch = async(nickname)=> {
         const admin = nickname;
         const data =  await this.reservationsRepository.getMyMatch(admin);
-        console.log("-------------------", data)
         return data;
+    };
+
+    // 기간 차이 계산
+    getDateDiff = async(d1, d2) => {     
+        const diffDate = d1.getTime() - d2.getTime();
+        return diffDate / (1000 * 60 * 60 * 24); // 밀리세컨 * 초 * 분 * 시 = 일
     };
 
     // '매칭 전' 임박순 6건 매칭
     getAllMatch = async()=>{
-        const data = await this.reservationsRepository.getAllMatch();
+        const matches = await this.reservationsRepository.getAllMatch();
+        const isMatches = matches.filter((val)=> { return val.matchId[13] === "i" });
+        let result = []
+        for(let i = 0; i < isMatches.length; i++){
+            let matchDate = isMatches[i].matchId.slice(20, 35)
+            let nowDate = Date().slice(0, 15)
+            let matchDay = new Date(matchDate) 
+            let today = new Date(nowDate)
+            let dayDiff = await this.getDateDiff(matchDay, today);
+            if (dayDiff > 0){ result.push(isMatches[i])}
+        }
+        const isMatchesSix = result.splice(0, 6);
+        const teamsInfo = await this.reservationsRepository.getTeamInfoSix(isMatchesSix);
+        const placesInfo = await this.reservationsRepository.getPlaceInfoSix(isMatchesSix);
+        let data = [];
+        for (let i = 0; i < 6; i++){
+            let result = { match: isMatchesSix[i], team: teamsInfo[i], place: placesInfo[i]};
+            data.push(result);
+        };
         return data;
     };
 
@@ -110,12 +133,6 @@ class ReservationsService {
     cancleConditional = async(matchId, teamName, place, price, nickname)=> {
         const data = await this.reservationsRepository.cancleConditional(matchId, teamName, place, price, nickname);
         return data;
-    };
-    
-    // 기간 차이 계산
-    getDateDiff = async(d1, d2) => {     
-        const diffDate = d1.getTime() - d2.getTime();
-        return diffDate / (1000 * 60 * 60 * 24); // 밀리세컨 * 초 * 분 * 시 = 일
     };
     
     //매치 예약 취소

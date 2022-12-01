@@ -22,9 +22,7 @@ class ReservationsRepository {
     // 매칭 성사 여부 업데이트
     updateMatch = async(matchId)=> {
         const data = await Reservations.findAll({ attributes : ["matchId"] });
-        console.log("1", data)
         const counts = data.filter((val) => { return val.matchId === matchId });
-        console.log("2", counts)
         if(counts.length >= 2){
             const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
             return results
@@ -33,9 +31,7 @@ class ReservationsRepository {
     
     updateMatch = async(matchId)=> {
         const data = await Reservations.findAll({ attributes : ["matchId"] });
-        console.log("1", data)
         const counts = data.filter((val) => { return val.matchId === matchId });
-        console.log("2", counts)
         if(counts.length >= 2){
             const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
             return results
@@ -119,19 +115,10 @@ class ReservationsRepository {
 
     // '매칭 전' 임박순 6건 매칭
     getAllMatch = async()=> {
-        const matches = await Reservations.findAll({
+        const data = await Reservations.findAll({
             order: [["date"]],     
             where: { result: "매칭 전"} 
         });
-        const isMatches = matches.filter((val)=> { return val.matchId[13] === "i" });
-        const isMatchesSix = isMatches.splice(0, 6);
-        const teamsInfo = await this.getTeamInfoSix(isMatchesSix);
-        const placesInfo = await this.getPlaceInfoSix(isMatchesSix);
-        let data = [];
-        for (let i = 0; i < 6; i++){
-            let result = { match: isMatchesSix[i], team: teamsInfo[i], place: placesInfo[i]};
-            data.push(result);
-        };
         return data;
     };
 
