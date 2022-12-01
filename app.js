@@ -113,10 +113,13 @@ io.on("connection", socket => {
   socket.emit("admin_roomlist", rooms);
   socket.on("on_chat", (obj)=> {
     const convert = JSON.parse(obj);
-    const {roomName, nickname} = convert;
+    const {roomName} = convert;
     const message = '상담이 곧 시작됩니다. 잠시만 기다려주세요.'
+    let nickname = "admin"
     const data = { roomName, nickname, message };
     io.sockets.in(roomName).emit("start_chat", data);
+    const list = convert
+    socket.emit("chat_list", list);
   });
 
   socket.on("admin_enter_room", room => {
