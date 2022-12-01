@@ -28,15 +28,6 @@ class ReservationsRepository {
             return results
         } 
     }
-    
-    updateMatch = async(matchId)=> {
-        const data = await Reservations.findAll({ attributes : ["matchId"] });
-        const counts = data.filter((val) => { return val.matchId === matchId });
-        if(counts.length >= 2){
-            const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
-            return results
-        } 
-    }
 
     //매치 예약 신청
     createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
@@ -55,44 +46,49 @@ class ReservationsRepository {
     };
 
     // 매치 조회(By MatchId)
-    checkMatch = async(matchId)=> {
+    checkMatchById = async(matchId)=> {
         const data = await Reservations.findAll({ where: { matchId}});
         return {data: data, message : "매치 조회 완료"};
     };
 
+    // 매치 조회(By teamName)
+    checkMatchByTeam = async(teamName)=> {
+        const data = await Reservations.findAll({ where : { teamName }});
+        return data;
+    };
+
     // 매치 조회(By Place)
-    getMatch = async(place, date)=> {
+    checkMatchByPlace = async(place, date)=> {
         const data = await Reservations.findAll({ 
             where : {place, date},
             order: [['matchId']]
         });
-        return {data, message: `조회된 매치 신청: ${data.length}건`}
+        return {data, message: `조회된 매치 신청: ${data.length}건`};
     };
 
     // 나의 매치 조회
     getMyMatch = async(admin)=> { 
         const myMatches = await Reservations.findAll({ where : { admin }});
-        let noneMatchTotal = []
-        let doneMatchTotal = []
-        let aMatch = {}
+        let noneMatchTotal = [];
+        let doneMatchTotal = [];
+        let aMatch = {};
         for(let i = 0; i < myMatches.length; i++){
-            let placeData = await Places.findOne({ where : { spotName : myMatches[i].place } })
-            let teamData = await Teams.findOne({ where : { teamName : myMatches[i].teamName }})
-            let whole = await Reservations.findAll({ 
-                where: { matchId: myMatches[i].matchId }
-            })
-            let wholeTeam = whole.map((val)=> {return val.teamName})  //매칭전: 본인의 팀 정보만
+            let placeData = await Places.findOne({ where : { spotName : myMatches[i].place } });
+            let teamData = await Teams.findOne({ where : { teamName : myMatches[i].teamName } });
+            let whole = await Reservations.findAll({ where: { matchId: myMatches[i].matchId } });
+            let wholeTeam = whole.map((val)=> {return val.teamName});  //매칭전: 본인의 팀 정보만
+
                 if(myMatches[i].result === "매칭 전"){
-                    aMatch = {matchData: myMatches[i], teamData, placeData}
-                    noneMatchTotal.push(aMatch)
+                    aMatch = {matchData: myMatches[i], teamData, placeData};
+                    noneMatchTotal.push(aMatch);
                 }else if (myMatches[i].result === "매칭 완료") { //매칭완료: 상대팀 팀정보 함께
-                    wholeTeam.splice(wholeTeam.indexOf(myMatches[i].teamName), 1)
-                    let opponent = await Teams.findOne({ where : { teamName : wholeTeam[0]}})
-                    aMatch = {matchData: myMatches[i], teamData, placeData, opponent}
-                    doneMatchTotal.push(aMatch)
-                }
-        }
-        return {noneMatchTotal, doneMatchTotal}
+                    wholeTeam.splice(wholeTeam.indexOf(myMatches[i].teamName), 1);
+                    let opponent = await Teams.findOne({ where : { teamName : wholeTeam[0]}});
+                    aMatch = {matchData: myMatches[i], teamData, placeData, opponent};
+                    doneMatchTotal.push(aMatch);
+                };
+        };
+        return {noneMatchTotal, doneMatchTotal};
     };
 
     //'매칭 전' 임박순 6건의 팀

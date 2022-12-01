@@ -1,6 +1,5 @@
 const ReservationsRepository = require('../repositories/reservationsRepository.js');
 const sendEmail = require('../mail.js');
-const { DataPipeline } = require('aws-sdk');
 require("dotenv").config();
 
 
@@ -17,7 +16,7 @@ class ReservationsService {
                 throw err;
             };
 
-        const checkMatchs = await this.reservationsRepository.checkMatch(matchId) //예외처리2
+        const checkMatchs = await this.reservationsRepository.checkMatchById(matchId) //예외처리2
             if (checkMatchs.data.length >= 2) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
@@ -75,8 +74,8 @@ class ReservationsService {
 
 
     //장소별-날짜별 예약현황 조회
-    getMatch = async(place, date)=>{
-        const data = await this.reservationsRepository.getMatch(place, date);
+    checkMatchByPlace = async(place, date)=>{
+        const data = await this.reservationsRepository.checkMatchByPlace(place, date);
         return data;
     };
 
@@ -137,7 +136,7 @@ class ReservationsService {
     
     //매치 예약 취소
     deleteMatch = async(nickname, matchId, teamName, place)=> {
-        const reservations = await this.reservationsRepository.checkMatch(matchId, place);
+        const reservations = await this.reservationsRepository.checkMatchById(matchId);
         const reservation = reservations.data.filter((val)=> { return val.teamName === teamName })
         const price = reservation[0].price
             if(reservation[0].admin !== nickname){

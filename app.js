@@ -54,8 +54,8 @@ app.get("/", (req, res) => {
 // });
 
 // public room 목록 추출
+
 function publicRooms() {
-  //객체의 구조 분해 할당 3겹 (io란 객체 안의, sockets 객체 안의, adapter 객체 안의 sids, rooms 란 객체)
   const {
     sockets: {
       adapter: { sids, rooms },
@@ -96,24 +96,30 @@ function findRoom(room) {
     }
   });
   return roomid;
-}
+};
 
 // room의 접속자 수 추출
 function countRoom(roomName) {
   return io.sockets.adapter.rooms.get(roomName)?.size;
-}
+};
 
-io.on("connection", (socket) => {
+io.on("connection", socket => {
   const roomName = socket.id;
   socket.join(roomName);
   const rooms = findUser();
-  rooms.splice(rooms.indexOf(roomName), 1);
+  rooms.splice(rooms.indexOf(roomName),1);
 
   socket.emit("client_main", roomName);
-
   socket.emit("admin_roomlist", rooms);
+  socket.on("on_chat", (obj)=> {
+    const convert = JSON.parse(obj);
+    const {roomName, nickname} = convert;
+    const message = '상담이 곧 시작됩니다. 잠시만 기다려주세요.'
+    const data = { roomName, nickname, message };
+    io.sockets.in(roomName).emit("start_chat", data);
+  });
 
-  socket.on("admin_enter_room", (room) => {
+  socket.on("admin_enter_room", room => {
     socket.join(room);
     const roomName = room;
     const nickname = "admin";
