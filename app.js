@@ -119,7 +119,7 @@ io.on("connection", socket => {
     const data = { roomName, nickname, message };
     io.sockets.in(roomName).emit("start_chat", data);
     const list = convert
-    socket.emit("chat_list", list);
+    socket.emit("admin_roomlist", list);
   });
 
   socket.on("admin_enter_room", room => {
