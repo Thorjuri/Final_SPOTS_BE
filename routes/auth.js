@@ -4,49 +4,39 @@ const axios = require("axios");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
-const CLIENT_id = "497bb40725964bac025412acbaf9fc7c";
+const CLIENT_id = process.env.CLIENT_id;
 // const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
 const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 const { Users } = require("../models");
-require("dotenv").config();
 
-router.get("/kakao/code", function async(req, res, next) {
+router.get("/kakao/code", async function (req, res, next) {
   let code = req.query.code;
   try {
-    axios
-      .post(
-        `${KAKAO_OAUTH_TOKEN_API_URL}?grant_type=${GRANT_TYPE}&client_id=${CLIENT_id}&redirect_uri=${REDIRECT_URL}&code=${code}`,
-        {
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        }
-      )
-      .then((result) => {
-        const data = result.data["access_token"];
-        axios
-          .get("https://kapi.kakao.com/v2/user/me", {
-            headers: {
-              Authorization: `Bearer ${data}`,
-              "Content`Type": `application/x-www-form-urlencoded;charset=utf-8`,
-            },
-          })
-          .then((result) => {
-            let loginId = result.data["id"];
-            if (!loginId) return res.status(402).json({ message: "카카오 로그인 실패" });
-            return res.status(200).json({
-              message: "카카오id 받기 성공, 로그인 api로 가주세요",
-              loginId: loginId,
-              code: 2,
-            });
-          });
-      })
-      .catch((e) => {
-        console.log(e);
-        res.send(e);
-      });
+    const resultPost = await axios.post(
+      `${KAKAO_OAUTH_TOKEN_API_URL}?grant_type=${GRANT_TYPE}&client_id=${CLIENT_id}&redirect_uri=${REDIRECT_URL}&code=${code}`,
+      {
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+      }
+    );
+    const data = resultPost.data["access_token"];
+    const resultGet = await axios.get("https://kapi.kakao.com/v2/user/me", {
+      headers: {
+        Authorization: `Bearer ${data}`,
+        "Content`Type": `application/x-www-form-urlencoded;charset=utf-8`,
+      },
+    });
+    let loginId = resultGet.data["id"];
+    if (!loginId) return res.status(402).json({ message: "카카오 로그인 실패" });
+    return res.status(200).json({
+      message: "카카오id 받기 성공, 로그인 api로 가주세요",
+      loginId: loginId,
+      code: 2,
+    });
   } catch (e) {
     console.log(e);
     res.send(e);
@@ -60,7 +50,7 @@ router.post("/login", async (req, res, next) => {
     return res.status(200).json({ code: -1, message: "회원가입 필요(카카오)", loginId: loginId });
 
   const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-    expiresIn: "1d",
+    expiresIn: "30m",
   });
   const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
     expiresIn: "1d",
