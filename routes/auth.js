@@ -8,8 +8,8 @@ require("dotenv").config();
 const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
 const CLIENT_id = process.env.CLIENT_id;
-// const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
-const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
+const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
+// const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 const { Users } = require("../models");
 
 router.get("/kakao/code", async function (req, res, next) {
@@ -32,10 +32,28 @@ router.get("/kakao/code", async function (req, res, next) {
     });
     let loginId = resultGet.data["id"];
     if (!loginId) return res.status(402).json({ message: "카카오 로그인 실패" });
+    const user = await Users.findOne({ where: { loginId } });
+    if (!user)
+      return res.status(200).json({ code: -1, message: "회원가입 필요(카카오)", loginId: loginId });
+
+    const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
+      expiresIn: "30m",
+    });
+    const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+    Users.update({ refreshToken }, { where: { loginId: user.loginId } });
+    if (user.deleteAt) {
+      return res.status(202).json({
+        nickname: user.nickname,
+        accessToken: `Bearer ${accessToken}`,
+        message: "탈퇴한 계정(카카오)",
+      });
+    }
     return res.status(200).json({
-      message: "카카오id 받기 성공, 로그인 api로 가주세요",
-      loginId: loginId,
-      code: 2,
+      nickname: user.nickname,
+      accessToken: `Bearer ${accessToken}`,
+      message: "로그인 되었습니다(카카오)",
     });
   } catch (e) {
     console.log(e);
@@ -43,32 +61,32 @@ router.get("/kakao/code", async function (req, res, next) {
   }
 });
 
-router.post("/login", async (req, res, next) => {
-  const { loginId } = req.body;
-  const user = await Users.findOne({ where: { loginId } });
-  if (!user)
-    return res.status(200).json({ code: -1, message: "회원가입 필요(카카오)", loginId: loginId });
+// router.post("/login", async (req, res, next) => {
+//   const { loginId } = req.body;
+//   const user = await Users.findOne({ where: { loginId } });
+//   if (!user)
+//     return res.status(200).json({ code: -1, message: "회원가입 필요(카카오)", loginId: loginId });
 
-  const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-    expiresIn: "30m",
-  });
-  const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-    expiresIn: "1d",
-  });
-  Users.update({ refreshToken }, { where: { loginId: user.loginId } });
-  if (user.deleteAt) {
-    return res.status(202).json({
-      nickname: user.nickname,
-      accessToken: `Bearer ${accessToken}`,
-      message: "탈퇴한 계정(카카오)",
-    });
-  }
-  return res.status(200).json({
-    nickname: user.nickname,
-    accessToken: `Bearer ${accessToken}`,
-    message: "로그인 되었습니다(카카오)",
-  });
-});
+//   const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
+//     expiresIn: "30m",
+//   });
+//   const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+//     expiresIn: "1d",
+//   });
+//   Users.update({ refreshToken }, { where: { loginId: user.loginId } });
+//   if (user.deleteAt) {
+//     return res.status(202).json({
+//       nickname: user.nickname,
+//       accessToken: `Bearer ${accessToken}`,
+//       message: "탈퇴한 계정(카카오)",
+//     });
+//   }
+//   return res.status(200).json({
+//     nickname: user.nickname,
+//     accessToken: `Bearer ${accessToken}`,
+//     message: "로그인 되었습니다(카카오)",
+//   });
+// });
 router.post("/signup", async (req, res, next) => {
   try {
     const { loginId, nickname, gender, phone, sports, favSports, recommendId } = req.body;
