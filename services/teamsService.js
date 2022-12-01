@@ -1,7 +1,12 @@
 const TeamsRepository = require('../repositories/teamsRepository.js');
+const ReservationsRepository = require('../repositories/reservationsRepository.js');
+const ReservationsService = require('./reservationsService.js');
+
 
 class TeamsService {
     teamsRepository = new TeamsRepository();
+    reservationsRepository = new ReservationsRepository();
+    reservationsService = new ReservationsService();
 
     // 나의 팀 조회
     getMyTeam = async(nickname)=> {
@@ -79,12 +84,28 @@ class TeamsService {
 
     // 팀 삭제
     deleteTeam = async(nickname, teamId)=> {
-        const checkAdmin = await this.teamsRepository.getTeamInfo(teamId);
-            if (checkAdmin.admin !== nickname) {
+        const getTeam = await this.teamsRepository.getTeamInfo(teamId);
+        const checkMatch = await this.reservationsRepository.checkMatchByTeam(getTeam.teamName)
+        let result = []
+        for(let i = 0; i < checkMatch.length; i++){
+            let matchDay = new Date(checkMatch[i].date) 
+            let today = new Date()
+            let dayDiff = await this.reservationsService.getDateDiff(matchDay, today);
+            if (dayDiff >= -1){ result.push(checkMatch[i])}
+        };
+
+            if (getTeam.admin !== nickname) {
                 const err = new Error(`teamsService Error`);
                 err.status = 403;
                 err.message = '팀 삭제 권한이 없습니다.';
                 err.code = -1
+                throw err;
+            };    
+            if (result.length > 0) {
+                const err = new Error(`teamsService Error`);
+                err.status = 403;
+                err.message = '예약이 있는 경우 팀을 삭제할 수 없습니다.';
+                err.code = -2
                 throw err;
             };    
         const data = await this.teamsRepository.deleteTeam(nickname, teamId);
