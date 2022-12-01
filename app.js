@@ -110,7 +110,7 @@ io.on("connection", socket => {
   rooms.splice(rooms.indexOf(roomName),1);
 
   socket.emit("client_main", roomName);
-  //socket.emit("admin_roomlist", rooms);
+  socket.emit("admin_roomlist", rooms);
   socket.on("on_chat", (obj)=> {
     const convert = JSON.parse(obj);
     const {roomName} = convert;
@@ -119,7 +119,7 @@ io.on("connection", socket => {
     const data = { roomName, nickname, message };
     io.sockets.in(roomName).emit("start_chat", data);
     const list = convert
-    socket.emit("admin_roomlist", data);
+    socket.emit("admin_roomlist", list);
   });
 
   socket.on("admin_enter_room", room => {
