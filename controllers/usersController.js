@@ -271,7 +271,7 @@ class UsersController {
   // 회원탈퇴 취소
   cancelDrop = async (req, res, next) => {
     try {
-      const { loginId } = res.locals.user;
+      const { loginId } = res.body;
       await this.usersService.cancelDrop(loginId);
       res.status(200).send("회원 탈퇴 취소");
     } catch (err) {

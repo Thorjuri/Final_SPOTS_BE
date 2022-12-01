@@ -103,12 +103,12 @@ class UsersRepository {
 
   // 회원탈퇴
   dropUser = async (loginId) => {
-    await Users.update({ deleteAt: new Date() }, { where: { loginId } });
+    await Users.update({ deletedAt: new Date() }, { where: { loginId } });
     return;
   };
   // 회원탈퇴 취소
   cancelDrop = async (loginId) => {
-    await Users.update({ deleteAt: null }, { where: { loginId } });
+    await Users.update({ deletedAt: null }, { where: { loginId } });
     return;
   };
 
