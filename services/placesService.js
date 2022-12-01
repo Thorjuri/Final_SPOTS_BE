@@ -19,11 +19,19 @@ class PlacesService {
   ) => {
     const findPlaces = await this.placesRepository.findPlaces(address);
 
-    if (!sports || !spotName || !spotKind || !address || !comforts || !price || !desc) {
+    if (!sports || !spotName || !spotKind || !address || !comforts || !price || !desc || !desc) {
       const err = new Error(`placesService Error`);
       err.statusCode = 400;
       err.message = "빈칸을 입력해주세요.";
       throw err;
+    }
+
+    if(image === null) {
+      const err = new Error(`placesService Error`);
+      err.statusCode = 400;
+      err.message = "이미지를 등록해주세요.";
+      throw err;
+
     }
 
     if (findPlaces) {
