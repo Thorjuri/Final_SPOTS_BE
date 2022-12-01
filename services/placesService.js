@@ -28,7 +28,7 @@ class PlacesService {
 
     if(image === null) {
       const err = new Error(`placesService Error`);
-      err.statusCode = 400;
+      err.statusCode = 401;
       err.message = "이미지를 등록해주세요.";
       throw err;
 
