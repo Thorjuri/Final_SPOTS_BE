@@ -31,7 +31,14 @@ class PlacesController {
      res.status(201).json({ message: "시설 등록이 완료되었습니다.", data : createPlaces});
     }
     catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      if(err.code === -1){
+        res.status(400).json({ errormessage: "빈칸을 입력해주세요.", code: -1 });
+      } else if(err.code === -2){
+        res.status(400).json({ errormessage: "이미지를 등록해주세요.", code: -2 });
+      } else if(err.code === -3){
+        res.status(400).json({ errormessage: "이미 등록된 시설입니다.", code: -3 });
+      }
+      // res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
