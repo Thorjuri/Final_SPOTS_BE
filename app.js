@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
   res.send("SPOTS 서버 상태 양호😏");
 });
 
-socket(http);
+// socket(http);
 
 http.listen(port, () => {
   console.log(`${port}번 포트로 서버 실행`);
