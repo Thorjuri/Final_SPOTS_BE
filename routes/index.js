@@ -16,6 +16,7 @@ router.use("/users", usersRouter);
 router.use("/places", placesRouter);
 router.use("/teams", teamsRouter);
 router.use("/kakao", kakaoRouter);
+router.use("/google", googleRouter);
 // router.use('/mypages', mypagesRouter);
 router.use("/reservations", reservationsRouter);
 
