@@ -11,7 +11,7 @@ const Router = require("./routes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const errorHandlerMiddleware = require("./middlewares/error_handler_middleware");
-
+app.use(express.json());
 app.use(
   express.json({
     limit: "50mb",
@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
   res.send("SPOTS 서버 상태 양호😏");
 });
 
-// socket(http);
+socket(http);
 
 http.listen(port, () => {
   console.log(`${port}번 포트로 서버 실행`);
