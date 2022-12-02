@@ -78,7 +78,6 @@ class UsersRepository {
     const getCode = await redisCli.get(phone);
     return getCode;
   };
-
   // 포인트 충전
   plusPoint = async (loginId, point) => {
     const plusPoint = await Users.increment({ point: point }, { where: { loginId } });
