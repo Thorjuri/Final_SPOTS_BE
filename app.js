@@ -36,9 +36,6 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(errorHandlerMiddleware);
 
-app.get("/", (req, res) => {
-  res.send("TEST!!!!!");
-});
 
 // ------------------ chat(socket)
 // app.set('view engine', "pug");

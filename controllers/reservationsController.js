@@ -14,7 +14,7 @@ class ReservationsController {
     // 장소별-날짜별 예약현황 조회
     getMatch = async(req, res)=> {
         const {place, date} = req.params;
-        const data = await this.reservationsService.getMatch(place, date);
+        const data = await this.reservationsService.checkMatchByPlace(place, date);
         res.status(200).send(data);
     };
 
