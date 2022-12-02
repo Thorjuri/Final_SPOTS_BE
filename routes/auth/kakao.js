@@ -8,8 +8,8 @@ require("dotenv").config();
 const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
 const CLIENT_id = process.env.CLIENT_id;
-const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
-// const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
+// const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
+const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 const { Users } = require("../../models");
 
 router.get("/code", async function (req, res, next) {
