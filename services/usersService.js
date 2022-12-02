@@ -115,6 +115,7 @@ class UsersService {
     if (!findId) throw { code: -1 };
     return {
       ID: findId.loginId,
+      sns: "",
     };
   };
 
