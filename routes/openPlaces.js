@@ -10,7 +10,7 @@ const router = express.Router();
     let request = require("request");     // %ED%85%8C%EB%8B%88%EC%8A%A4%EC%9E%A5 테니스장     %ED%92%8B%EC%82%B4%EC%9E%A5 풋살장
     let options = {                         // %EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5 배드민턴장
       method: "GET",
-      url: "http://openapi.seoul.go.kr:8088/554950534b7268613131624d597145/json/ListPublicReservationSport/1/300/%EB%B0%B0%EB%93%9C%EB%AF%BC%ED%84%B4%EC%9E%A5",
+      url: "http://openapi.seoul.go.kr:8088/554950534b7268613131624d597145/json/ListPublicReservationSport/1/300/%ED%85%8C%EB%8B%88%EC%8A%A4%EC%9E%A5",
       headers: {},
     };
     request(options, async function (error, response) {

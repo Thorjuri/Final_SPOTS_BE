@@ -5,7 +5,7 @@ name: CD_SPOTS
 
 on:
   pull_request:
-    branches: ['master']
+    branches: ["master"]
 
 jobs:
   deploy:

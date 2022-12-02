@@ -1,15 +1,15 @@
 const { Users } = require("../models");
-const redis = require("redis");
+// const redis = require("redis");
 
-const redisClient = redis.createClient({ legacyMode: true });
-redisClient.on("connect", () => {
-  console.info("Redis connected!");
-});
-redisClient.on("error", (err) => {
-  console.error("Redis Client Error", err);
-});
-redisClient.connect().then();
-const redisCli = redisClient.v4;
+// const redisClient = redis.createClient({ legacyMode: true });
+// redisClient.on("connect", () => {
+//   console.info("Redis connected!");
+// });
+// redisClient.on("error", (err) => {
+//   console.error("Redis Client Error", err);
+// });
+// redisClient.connect().then();
+// const redisCli = redisClient.v4;
 
 class UsersRepository {
   // 회원가입
@@ -103,12 +103,12 @@ class UsersRepository {
 
   // 회원탈퇴
   dropUser = async (loginId) => {
-    await Users.update({ deleteAt: new Date() }, { where: { loginId } });
+    await Users.update({ deletedAt: new Date() }, { where: { loginId } });
     return;
   };
   // 회원탈퇴 취소
   cancelDrop = async (loginId) => {
-    await Users.update({ deleteAt: null }, { where: { loginId } });
+    await Users.update({ deletedAt: null }, { where: { loginId } });
     return;
   };
 
