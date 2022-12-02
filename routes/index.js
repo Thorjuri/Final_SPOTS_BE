@@ -15,7 +15,7 @@ const reservationsRouter = require("./reservations.js");
 router.use("/users", usersRouter);
 router.use("/places", placesRouter);
 router.use("/teams", teamsRouter);
-router.use("/auth", kakaoRouter); // 수정해야 됨
+router.use("/kakao", kakaoRouter);
 // router.use('/mypages', mypagesRouter);
 router.use("/reservations", reservationsRouter);
 
