@@ -87,6 +87,8 @@ router.post("/signup", async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const enpryptedPW = bcrypt.hashSync(password, salt);
     password = enpryptedPW;
+    const profileImg =
+      "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
     const singupKakao = await Users.create({
       loginId,
       password,
@@ -96,6 +98,7 @@ router.post("/signup", async (req, res, next) => {
       sports,
       favSports,
       recommendId,
+      profileImg,
     });
     return res.status(201).json({ message: "회원가입 되었습니다." });
   } catch (err) {
