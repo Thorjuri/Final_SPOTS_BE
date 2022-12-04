@@ -16,7 +16,7 @@ router.get("/code", async function (req, res, next) {
   let code = req.query.code;
   try {
     const resultPost = await axios.post(
-      `${KAKAO_OAUTH_TOKEN_API_URL}?grant_type=${GRANT_TYPE}&client_id=${CLIENT_id}&redirect_uri=${REDIRECT_URL}&code=${code}`,
+      `${KAKAO_OAUTH_TOKEN_API_URL}?grant_type=${GRANT_TYPE}&client_id=${CLIENT_id}&redirect_uri=${REDIRECT_URL}&code=${code}&prompts=none`,
       {
         headers: {
           "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
