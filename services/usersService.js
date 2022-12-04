@@ -98,7 +98,6 @@ class UsersService {
       content: "[Spots] 인증번호 [" + code + "]를 입력해 주세요",
       countryCode: "82",
     });
-    console.log(success);
 
     const saveCode = await this.usersRepository.saveCode(phone, code);
     return saveCode;

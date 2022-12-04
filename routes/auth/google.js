@@ -20,7 +20,7 @@ router.get("/code", async function (req, res, next) {
     const url = `https://oauth2.googleapis.com/token?code=${code}&client_id=${GOOGLE_CLIENT_ID}&client_secret=${GOOGLE_CLIENT_SECRET}&redirect_uri=${GOOGLE_REDIRECT_URI}&grant_type=${GOOGLE_GRANT_TYPE}`;
 
     const resultPost = await axios.post(url, {
-      headers: { "content-type": "application/x-www-form-urlencoded" },
+      headers: { "content-type": "application/x-www-form-urlencoded;charset=utf-8" },
     });
     const access_token = resultPost.data.access_token;
     const googleAPI = `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${access_token}`;
