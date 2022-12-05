@@ -24,8 +24,8 @@ class UsersRepository {
       nickname,
       gender,
       phone,
-      sports,
-      favSports,
+      sports: sports,
+      favSports: favSports,
       profileImg: profileImg,
     });
     return;
