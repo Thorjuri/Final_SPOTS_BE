@@ -51,7 +51,7 @@ class UsersService {
       favSports
     );
 
-    await this.usersRepository.plusPoint(loginId, 5000);
+    await this.usersRepository.plusPoint(loginId, 300000);
     if (recommendId) {
       await this.usersRepository.plusPoint(loginId, 2000);
       await this.usersRepository.plusPoint(recommendId, 2000);
