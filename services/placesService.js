@@ -27,7 +27,6 @@ class PlacesService {
       // throw err;
     }
 
-  
     if(image === null) {
       throw { code: -2 };
       // const err = new Error(`placesService Error`);
