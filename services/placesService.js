@@ -19,7 +19,7 @@ class PlacesService {
   ) => {
     const findPlaces = await this.placesRepository.findPlaces(address);
 
-    if (!sports || !spotName || !spotKind || !address || !comforts || !price || !desc || !desc) {
+    if (!sports || !spotName || !spotKind || !address || !price || !desc) {
       throw { code: -1 };
       // const err = new Error(`placesService Error`);
       // err.statusCode = 400;
@@ -27,6 +27,7 @@ class PlacesService {
       // throw err;
     }
 
+  
     if(image === null) {
       throw { code: -2 };
       // const err = new Error(`placesService Error`);
