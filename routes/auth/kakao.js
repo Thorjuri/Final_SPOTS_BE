@@ -97,8 +97,8 @@ router.post("/signup", async (req, res, next) => {
       nickname,
       gender,
       phone,
-      sports,
-      favSports,
+      sports: sports,
+      favSports: favSports,
       recommendId,
       profileImg,
     });
