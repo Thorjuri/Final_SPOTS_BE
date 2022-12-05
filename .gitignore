@@ -6,5 +6,5 @@ nodemon.json
 /src
 /xstore.js
 /loadtest.yaml
-/report.json
-/report.json.html
+/before.json
+/before.json.html

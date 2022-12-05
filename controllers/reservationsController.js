@@ -7,17 +7,7 @@ class ReservationsController {
   createMatch = async (req, res) => {
     const { nickname } = res.locals.user; //admin
     const { matchId, place, teamName, member, date, isDouble, price, email } = req.body;
-    const data = await this.reservationsService.createMatch(
-      nickname,
-      matchId,
-      place,
-      teamName,
-      member,
-      date,
-      isDouble,
-      price,
-      email
-    );
+    const data = await this.reservationsService.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price, email);
     res.status(201).send(data);
   };
 
