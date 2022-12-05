@@ -83,6 +83,8 @@ router.post("/signup", async (req, res, next) => {
         throw { code: -4 };
       }
     }
+    if(!sports) sports=[]
+    if(!favSports) favSports=[]
     let password = crypto.randomBytes(4).toString("hex");
     const salt = await bcrypt.genSalt(10);
     const enpryptedPW = bcrypt.hashSync(password, salt);
