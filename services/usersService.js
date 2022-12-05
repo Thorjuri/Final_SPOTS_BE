@@ -51,7 +51,7 @@ class UsersService {
       favSports
     );
 
-    await this.usersRepository.plusPoint(loginId, 5000);
+    await this.usersRepository.plusPoint(loginId, 300000);
     if (recommendId) {
       await this.usersRepository.plusPoint(loginId, 2000);
       await this.usersRepository.plusPoint(recommendId, 2000);
@@ -98,7 +98,6 @@ class UsersService {
       content: "[Spots] 인증번호 [" + code + "]를 입력해 주세요",
       countryCode: "82",
     });
-    console.log(success);
 
     const saveCode = await this.usersRepository.saveCode(phone, code);
     return saveCode;
@@ -115,6 +114,7 @@ class UsersService {
     if (!findId) throw { code: -1 };
     return {
       ID: findId.loginId,
+      sns: "",
     };
   };
 

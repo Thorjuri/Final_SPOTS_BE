@@ -5,4 +5,7 @@ node_modules
 nodemon.json
 /src
 /xstore.js
-/loadtest.yamlg
+/loadtest.yaml
+/before.json
+/before.json.html
+

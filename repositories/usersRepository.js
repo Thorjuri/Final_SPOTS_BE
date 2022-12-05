@@ -1,29 +1,31 @@
 const { Users } = require("../models");
-// const redis = require("redis");
+const redis = require("redis");
 
-// const redisClient = redis.createClient({ legacyMode: true });
-// redisClient.on("connect", () => {
-//   console.info("Redis connected!");
-// });
-// redisClient.on("error", (err) => {
-//   console.error("Redis Client Error", err);
-// });
-// redisClient.connect().then();
-// const redisCli = redisClient.v4;
+const redisClient = redis.createClient({ legacyMode: true });
+redisClient.on("connect", () => {
+  console.info("Redis connected!");
+});
+redisClient.on("error", (err) => {
+  console.error("Redis Client Error", err);
+});
+redisClient.connect().then();
+const redisCli = redisClient.v4;
 
 class UsersRepository {
   // 회원가입
   createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     const profileImg =
       "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
+      if(!sports) sports="[]"
+      if(!favSports) favSports="[]"
     await Users.create({
       loginId,
       password,
       nickname,
       gender,
       phone,
-      sports,
-      favSports,
+      sports: sports,
+      favSports: favSports,
       profileImg: profileImg,
     });
     return;
@@ -78,7 +80,6 @@ class UsersRepository {
     const getCode = await redisCli.get(phone);
     return getCode;
   };
-
   // 포인트 충전
   plusPoint = async (loginId, point) => {
     const plusPoint = await Users.increment({ point: point }, { where: { loginId } });

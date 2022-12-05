@@ -57,17 +57,27 @@ module.exports = (http) => {
     rooms.splice(rooms.indexOf(roomName), 1);
 
     socket.emit("client_main", roomName);
-    socket.emit("admin_roomlist", rooms);
     socket.on("on_chat", (obj) => {
       const convert = JSON.parse(obj);
-      const { roomName } = convert;
+      const { roomName, nickname } = convert;
+      const new_roomName = `${roomName} true`
+      const onChat = true
+      const data = { rooms, new_roomName, nickname, onChat };
       const message = "상담이 곧 시작됩니다. 잠시만 기다려주세요.";
-      let nickname = "admin";
-      const data = { roomName, nickname, message };
-      io.sockets.in(roomName).emit("start_chat", data);
-      const list = convert;
-      socket.emit("admin_roomlist", list);
-    });
+      const notice = { roomName, nickname, message };
+      socket.emit("admin_roomlist", data);
+      io.sockets.in(roomName).emit("start_chat", notice);
+    })
+    // socket.on("on_chat", (obj) => {
+    //   const convert = JSON.parse(obj);
+    //   const { roomName } = convert;
+    //   const message = "상담이 곧 시작됩니다. 잠시만 기다려주세요.";
+    //   let nickname = "admin";
+    //   const data = { roomName, nickname, message };
+    //   io.sockets.in(roomName).emit("start_chat", data);
+    //   const list = convert;
+    //   socket.emit("admin_roomlist", list);
+    // });
 
     socket.on("admin_enter_room", (room) => {
       socket.join(room);
