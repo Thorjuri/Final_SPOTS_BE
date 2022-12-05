@@ -5,7 +5,7 @@
     "title": "Spots",
     "description": ""
   },
-  "host": "sparta4.shop",
+  "host": "ws-study.shop",
   "basePath": "/",
   "tags": [
     {
@@ -915,7 +915,6 @@
               }
             }
           }
-         
         ],
         "responses": {
           "200": {
