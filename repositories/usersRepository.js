@@ -16,8 +16,8 @@ class UsersRepository {
   createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     const profileImg =
       "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
-      if(!sports) sports=[]
-      if(!favSports) favSports=[]
+      if(!sports) sports="[]"
+      if(!favSports) favSports="[]"
     await Users.create({
       loginId,
       password,
