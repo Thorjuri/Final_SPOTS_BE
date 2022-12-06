@@ -32,10 +32,6 @@ module.exports = async (req, res, next) => {
 
       const user = await Users.findOne({ where: { loginId } });
       if (!user) return res.status(412).json({ errormessage: "없는 회원 입니다." });
-      console.log("accKey");
-      console.log(accKey);
-      console.log("user.accKey");
-      console.log(user.accKey);
       if (user.accKey !== accKey)
         return res.status(412).json({ errormessage: "잘못된 접근 입니다." });
       refreshToken = user.refreshToken;
