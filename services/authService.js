@@ -8,14 +8,14 @@ require("dotenv").config();
 const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
 const CLIENT_id = process.env.CLIENT_id;
-// const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
-const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
+const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
+// const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 
 const GOOGLE_GRANT_TYPE = "authorization_code";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-// const GOOGLE_REDIRECT_URI = "http://localhost:3000/auth/google/callback";
-const GOOGLE_REDIRECT_URI = "https://spots-fe.vercel.app/auth/google/callback";
+const GOOGLE_REDIRECT_URI = "http://localhost:3000/auth/google/callback";
+// const GOOGLE_REDIRECT_URI = "https://spots-fe.vercel.app/auth/google/callback";
 
 class AuthService {
   authRepository = new AuthRepository();
@@ -38,13 +38,14 @@ class AuthService {
       },
     });
     let loginId = resultGet.data["id"];
+    let profileImg = resultGet.data["properties"]['profile_image']
     if (!loginId) throw { code: -1 };
 
     const user = await this.authRepository.findUser(loginId);
-    if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId };
+    if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId ,profileImg:profileImg };
 
     const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "30m",
+      expiresIn: "1d",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
@@ -72,13 +73,14 @@ class AuthService {
       },
     });
     let loginId = userInfo.data["id"];
+    let profileImg = userInfo.data["picture"]
     if (!loginId) throw { code: -2 };
 
     const user = await this.authRepository.findUser(loginId);
-    if (!user) return { code: -1, message: "회원가입 필요(구글)", loginId: loginId };
+    if (!user) return { code: -1, message: "회원가입 필요(구글)", loginId: loginId, profileImg:profileImg };
 
     const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "30m",
+      expiresIn: "1d",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
@@ -92,7 +94,7 @@ class AuthService {
     };
   };
 
-  signup = async (loginId, nickname, gender, phone, sports, favSports, recommendId) => {
+  signup = async (loginId, nickname, gender, phone, sports, favSports, recommendId, profileImg) => {
     const findUser = await this.authRepository.findUser(loginId);
     if (findUser) throw { code: -1 };
 
@@ -119,7 +121,8 @@ class AuthService {
       gender,
       phone,
       sports,
-      favSports
+      favSports,
+      profileImg
     );
     return;
   };

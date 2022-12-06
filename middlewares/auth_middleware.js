@@ -47,7 +47,7 @@ module.exports = async (req, res, next) => {
       const myNewToken = jwt.sign(
         { loginId: user.loginId, accKey: accKey },
         process.env.SECRET_KEY,
-        { expiresIn: "30m" }
+        { expiresIn: "1d" }
       );
       return res
         .status(200)

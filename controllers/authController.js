@@ -52,7 +52,7 @@ class AuthController {
   };
   signup = async (req, res, next) => {
     try {
-      const { loginId, nickname, gender, phone, sports, favSports, recommendId } = req.body;
+      const { loginId, nickname, gender, phone, sports, favSports, recommendId, profileImg } = req.body;
       const signup = await this.authService.signup(
         loginId,
         nickname,
@@ -60,7 +60,8 @@ class AuthController {
         phone,
         sports,
         favSports,
-        recommendId
+        recommendId,
+        profileImg
       );
       return res.status(201).json({ message: "회원가입 되었습니다." });
     } catch (err) {
