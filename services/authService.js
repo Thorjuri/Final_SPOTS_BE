@@ -45,7 +45,7 @@ class AuthService {
     if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId ,profileImg:profileImg };
 
     const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "10s",
+      expiresIn: "1d",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
@@ -80,7 +80,7 @@ class AuthService {
     if (!user) return { code: -1, message: "회원가입 필요(구글)", loginId: loginId, profileImg:profileImg };
 
     const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: "10s",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
