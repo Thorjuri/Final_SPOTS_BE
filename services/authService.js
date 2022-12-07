@@ -14,8 +14,8 @@ const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
 const GOOGLE_GRANT_TYPE = "authorization_code";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-// const GOOGLE_REDIRECT_URI = "http://localhost:3000/auth/google/callback";
-const GOOGLE_REDIRECT_URI = "https://spots-fe.vercel.app/auth/google/callback";
+const GOOGLE_REDIRECT_URI = "http://localhost:3000/auth/google/callback";
+// const GOOGLE_REDIRECT_URI = "https://spots-fe.vercel.app/auth/google/callback";
 
 class AuthService {
   authRepository = new AuthRepository();
@@ -45,7 +45,7 @@ class AuthService {
     if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId ,profileImg:profileImg };
 
     const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: "10s",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
