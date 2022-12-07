@@ -21,11 +21,9 @@ module.exports = async (req, res, next) => {
     }
 
     const myToken = verifyToken(tokenValue);
-    console.log(myToken);
     if (myToken === "jwt expired") {
       // access token 만료
       const userInfo = jwt.decode(tokenValue, process.env.SECRET_KEY);
-      console.log(userInfo);
       const loginId = userInfo.loginId;
       let accKey = userInfo.accKey;
       let refreshToken;
@@ -43,7 +41,7 @@ module.exports = async (req, res, next) => {
       const myNewToken = jwt.sign(
         { loginId: user.loginId, accKey: accKey },
         process.env.SECRET_KEY,
-        { expiresIn: "1d" }
+        { expiresIn: "30m" }
       );
       return res
         .status(200)
