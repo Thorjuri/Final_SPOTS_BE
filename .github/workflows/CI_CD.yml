@@ -49,8 +49,10 @@ jobs:
         run: npm run test
         
   deploy:
-    name: CD_SPOTS
-    runs-on: ubuntu-18.04
+    name: CD_TEST
+    if: ${{ always() }}
+    needs: build
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
