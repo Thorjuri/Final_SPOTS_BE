@@ -1,6 +1,6 @@
-const ReservationsRepository = require('./repositories/reservationsRepository');
+const ReservationsRepository = require('../repositories/reservationsRepository');
 let reservationsRepository = new ReservationsRepository();
-const { Reservations, Users, Teams, Places } = require('./models');
+const { Reservations, Users, Teams, Places } = require('../models');
 
 
 describe('reservationsRepository: createMatch 매칭 예약 단위 테스트', () => {
