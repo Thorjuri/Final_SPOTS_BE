@@ -12,10 +12,6 @@ jobs:
     name: CI_Build
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        redis-version: [6.2.5]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,11 +20,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "16.x"
-
-      - name: Start Redis
-        uses: supercharge/redis-github-action@1.4.0
-        with:
-        redis-version: [4.0.9]
 
       # env 설정
       - name: Setting .env
