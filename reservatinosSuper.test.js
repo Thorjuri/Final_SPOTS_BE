@@ -26,7 +26,6 @@ describe("마감 임박 매칭 조회 API 요청", () => {
 
     test("로그인 하지 않고 매칭 예약 API 요청", async() => {
         const res = await application.post("/reservations/register").send(nickname, matchId, place, teamName, member, date, isDouble, price);
-        console.log(res)
         await expect(res.statusCode).toEqual(401);
     });
 });
