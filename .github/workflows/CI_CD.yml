@@ -60,8 +60,8 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
-          key: ${{ secrets.CI_CD_KEY }}
-          host: ${{ secrets.CI_CD_HOST }}
+          key: ${{ secrets.CI_CD_KEY_J }}
+          host: ${{ secrets.CI_CD_HOST_J }}
           username: ${{ secrets.CI_CD_USERNAME }}
           port: ${{ secrets.CI_CD_PORT }}
           script: |
