@@ -5,7 +5,7 @@ name: CI_CD_SPOTS
 
 on:
   pull_request:
-    branches: ["juri"]
+    branches: ["master"]
 
 jobs:
   build:
@@ -62,13 +62,13 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
-          key: ${{ secrets.CI_CD_KEY_J }}
-          host: ${{ secrets.CI_CD_HOST_J }}
+          key: ${{ secrets.CI_CD_KEY }}
+          host: ${{ secrets.CI_CD_HOST }}
           username: ${{ secrets.CI_CD_USERNAME }}
           port: ${{ secrets.CI_CD_PORT }}
           script: |
-            cd ${{ secrets.CI_CD_PATH_1J }}
-            cd ${{ secrets.CI_CD_PATH_2J }}
-            sudo git pull origin juri
+            cd ${{ secrets.CI_CD_PATH1 }}
+            cd ${{ secrets.CI_CD_PATH2 }}
+            sudo git pull origin master
             sudo npm install
             sudo pm2 restart app.js
