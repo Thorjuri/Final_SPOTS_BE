@@ -49,8 +49,10 @@ jobs:
         run: npm run test
         
   deploy:
-    name: CD_SPOTS
-    runs-on: ubuntu-18.04
+    name: CD_TEST
+    if: ${{ always() }}
+    needs: build
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -65,8 +67,8 @@ jobs:
           username: ${{ secrets.CI_CD_USERNAME }}
           port: ${{ secrets.CI_CD_PORT }}
           script: |
-            cd ${{ secrets.CI_CD_PATH1 }}
-            cd ${{ secrets.CI_CD_PATH2 }}
+            cd ${{ secrets.CI_CD_PATH_1J }}
+            cd ${{ secrets.CI_CD_PATH_2J }}
             sudo git pull origin juri
             sudo npm install
             sudo pm2 restart app.js
