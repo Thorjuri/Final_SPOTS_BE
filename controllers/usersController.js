@@ -94,6 +94,11 @@ class UsersController {
       const smsCheck = await this.usersService.checkSms(phone, code);
       if (!smsCheck) return res.status(401).json({ message: "인증 실패" });
       const findId = await this.usersService.findId(phone);
+      if (findId.ID[0] === "2" && findId.ID[1] === "5" && findId.ID.length === 10)
+        findId.sns = "kakao";
+      else if (findId.ID[0] === "1" && findId.ID[1] === "0" && findId.ID.length === 21)
+        findId.sns = "google";
+      else findId.sns = "local";
       return res.status(200).json(findId);
     } catch (err) {
       if (err.code === -1) {

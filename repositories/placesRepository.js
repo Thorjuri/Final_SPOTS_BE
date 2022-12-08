@@ -2,14 +2,6 @@ const { Places, Opens, Reservations } = require("../models");
 require("dotenv").config();
 const mysql2 = require("mysql2"); //mysql 모듈 import
 
-var db = mysql2.createConnection({
-  //mpsql DB 연결  keywords 할때 sequelize 아니라서 다시 연결
-  host: process.env.DB_ENDPOINT,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-db.connect();
 
 class PlacesRepository {
   //시설등록
@@ -90,43 +82,55 @@ class PlacesRepository {
     return findSports;
   };
 
-  dbQueryAsync = async (sql) => {
-    return new Promise((resolve, reject) => {
-      db.query(sql, (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(result);
-      });
-    });
-  };
 
   //keyword 조회
   getKeyword = async (keywords) => {
 
+    var db = mysql2.createConnection({
+      //mpsql DB 연결  keywords 할때 sequelize 아니라서 다시 연결
+      host: process.env.DB_ENDPOINT,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    });
+    db.connect();
+
+    const dbQueryAsync = async (sql) => {
+        return new Promise((resolve, reject) => {
+          db.query(sql, (error, result) => {
+            if (error) {
+              reject(error);
+            }
+            resolve(result);
+          });
+        });
+      };
+    
     const a = keywords.split(' ')
 
     let [keyword, keyword2, keyword3] = a
+    
 
     if(a.length === 1){    // 키워드 1개일때
-      const sql = `SELECT * FROM Places where sports like '%${keywords}%' OR spotName like '%${keywords}%' OR spotKind like '%${keywords}%' OR address like '%${keywords}%' OR comforts like '%${keywords}%' OR price like '%${keywords}%'`;
+      const sql = `SELECT * FROM Places where deletedAt Is NULL AND (sports like '%${keywords}%' OR spotName like '%${keywords}%' OR spotKind like '%${keywords}%' OR address like '%${keywords}%' OR comforts like '%${keywords}%' OR price like '%${keywords}%')`;
       const sql2 = `SELECT * FROM Opens where minclassnm like '%${keywords}%' OR svcstatnm like '%${keywords}%' OR svcnm like '%${keywords}%' OR placenm like '%${keywords}%' OR areanm like '%${keywords}%'`;
-      const data = await this.dbQueryAsync(sql);
-      const data2 = await this.dbQueryAsync(sql2);
+      const data = await dbQueryAsync(sql);
+      const data2 = await dbQueryAsync(sql2);
+      
       return { private: data, public: data2 };
       } 
       if(a.length === 2){   // 키워드 2개일때
-        const sql3 = `SELECT * FROM Places where (sports like '%${keyword}%' OR spotName like '%${keyword}%' OR spotKind like '%${keyword}%' OR address like '%${keyword}%' OR comforts like '%${keyword}%' OR price like '%${keyword}%') AND (sports like '%${keyword2}%' OR spotName like '%${keyword2}%' OR spotKind like '%${keyword2}%' OR address like '%${keyword2}%' OR comforts like '%${keyword2}%' OR price like '%${keyword2}%')`;
+        const sql3 = `SELECT * FROM Places where deletedAt Is NULL AND (sports like '%${keyword}%' OR spotName like '%${keyword}%' OR spotKind like '%${keyword}%' OR address like '%${keyword}%' OR comforts like '%${keyword}%' OR price like '%${keyword}%') AND (sports like '%${keyword2}%' OR spotName like '%${keyword2}%' OR spotKind like '%${keyword2}%' OR address like '%${keyword2}%' OR comforts like '%${keyword2}%' OR price like '%${keyword2}%')`;
         const sql4 = `SELECT * FROM Opens where (minclassnm like '%${keyword}%' OR svcstatnm like '%${keyword}%' OR svcnm like '%${keyword}%' OR placenm like '%${keyword}%' OR areanm like '%${keyword}%') AND (minclassnm like '%${keyword2}%' OR svcstatnm like '%${keyword2}%' OR svcnm like '%${keyword2}%' OR placenm like '%${keyword2}%' OR areanm like '%${keyword2}%')`;
-        const data3 = await this.dbQueryAsync(sql3);
-        const data4 = await this.dbQueryAsync(sql4);
+        const data3 = await dbQueryAsync(sql3);
+        const data4 = await dbQueryAsync(sql4);
         return { private: data3, public: data4 };
       }
-      else {          // 키워드 3개일때
-      const sql5 = `SELECT * FROM Places where (sports like '%${keyword}%' OR spotName like '%${keyword}%' OR spotKind like '%${keyword}%' OR address like '%${keyword}%' OR comforts like '%${keyword}%' OR price like '%${keyword}%') AND (sports like '%${keyword2}%' OR spotName like '%${keyword2}%' OR spotKind like '%${keyword2}%' OR address like '%${keyword2}%' OR comforts like '%${keyword2}%' OR price like '%${keyword2}%') AND (sports like '%${keyword3}%' OR spotName like '%${keyword3}%' OR spotKind like '%${keyword3}%' OR address like '%${keyword3}%' OR comforts like '%${keyword3}%' OR price like '%${keyword3}%')`;
+      else{          // 키워드 3개일때
+      const sql5 = `SELECT * FROM Places where deletedAt Is NULL AND (sports like '%${keyword}%' OR spotName like '%${keyword}%' OR spotKind like '%${keyword}%' OR address like '%${keyword}%' OR comforts like '%${keyword}%' OR price like '%${keyword}%') AND (sports like '%${keyword2}%' OR spotName like '%${keyword2}%' OR spotKind like '%${keyword2}%' OR address like '%${keyword2}%' OR comforts like '%${keyword2}%' OR price like '%${keyword2}%') AND (sports like '%${keyword3}%' OR spotName like '%${keyword3}%' OR spotKind like '%${keyword3}%' OR address like '%${keyword3}%' OR comforts like '%${keyword3}%' OR price like '%${keyword3}%')`;
       const sql6 = `SELECT * FROM Opens where (minclassnm like '%${keyword}%' OR svcstatnm like '%${keyword}%' OR svcnm like '%${keyword}%' OR placenm like '%${keyword}%' OR areanm like '%${keyword}%') AND (minclassnm like '%${keyword2}%' OR svcstatnm like '%${keyword2}%' OR svcnm like '%${keyword2}%' OR placenm like '%${keyword2}%' OR areanm like '%${keyword2}%') AND (minclassnm like '%${keyword3}%' OR svcstatnm like '%${keyword3}%' OR svcnm like '%${keyword3}%' OR placenm like '%${keyword3}%' OR areanm like '%${keyword3}%')`;
-      const data5 = await this.dbQueryAsync(sql5);
-      const data6 = await this.dbQueryAsync(sql6);
+      const data5 = await dbQueryAsync(sql5);
+      const data6 = await dbQueryAsync(sql6);
       return { private: data5, public: data6 };
       }
 

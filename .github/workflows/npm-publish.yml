@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     name: CD_SPOTS
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:

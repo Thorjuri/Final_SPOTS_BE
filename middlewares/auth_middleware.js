@@ -21,21 +21,15 @@ module.exports = async (req, res, next) => {
     }
 
     const myToken = verifyToken(tokenValue);
-    console.log(myToken);
     if (myToken === "jwt expired") {
       // access token 만료
       const userInfo = jwt.decode(tokenValue, process.env.SECRET_KEY);
-      console.log(userInfo);
       const loginId = userInfo.loginId;
       let accKey = userInfo.accKey;
       let refreshToken;
 
       const user = await Users.findOne({ where: { loginId } });
       if (!user) return res.status(412).json({ errormessage: "없는 회원 입니다." });
-      console.log("accKey");
-      console.log(accKey);
-      console.log("user.accKey");
-      console.log(user.accKey);
       if (user.accKey !== accKey)
         return res.status(412).json({ errormessage: "잘못된 접근 입니다." });
       refreshToken = user.refreshToken;

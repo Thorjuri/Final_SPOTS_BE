@@ -12,10 +12,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const errorHandlerMiddleware = require("./middlewares/error_handler_middleware");
 
-
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(
@@ -38,11 +36,16 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(errorHandlerMiddleware);
 
 app.get("/", (req, res) => {
-  res.send("SPOTS 서버 상태 양호😏");
+  res.send("SPOTS 서버 상태 양호😏😏");
 });
 
 socket(http);
 
-http.listen(port, () => {
-  console.log(`${port}번 포트로 서버 실행`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  http.listen(port, () => {
+    console.log(`${port}번 포트로 서버 실행`);
+  });
+};
+
+module.exports = app;
+module.exports = http;
