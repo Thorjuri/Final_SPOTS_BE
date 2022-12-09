@@ -51,35 +51,18 @@ module.exports = (http) => {
   }
 
   io.on("connection", (socket) => {
+    console.log(findUser())
     const roomName = socket.id;
     socket.join(roomName);
     const rooms = findUser();
     rooms.splice(rooms.indexOf(roomName), 1);
+    console.log(rooms)
 
     socket.emit("client_main", roomName);
-    socket.on("on_chat", (obj) => {
-      const convert = JSON.parse(obj);
-      const { roomName, nickname } = convert;
-      const new_roomName = `${roomName} true`
-      const onChat = true
-      const data = { rooms, new_roomName, nickname, onChat };
-      const message = "상담이 곧 시작됩니다. 잠시만 기다려주세요.";
-      const notice = { roomName, nickname, message };
-      socket.emit("admin_roomlist", data);
-      io.sockets.in(roomName).emit("start_chat", notice);
-    })
-    // socket.on("on_chat", (obj) => {
-    //   const convert = JSON.parse(obj);
-    //   const { roomName } = convert;
-    //   const message = "상담이 곧 시작됩니다. 잠시만 기다려주세요.";
-    //   let nickname = "admin";
-    //   const data = { roomName, nickname, message };
-    //   io.sockets.in(roomName).emit("start_chat", data);
-    //   const list = convert;
-    //   socket.emit("admin_roomlist", list);
-    // });
+    socket.emit("admin_roomlist", rooms);
 
     socket.on("admin_enter_room", (room) => {
+      console.log(room)
       socket.join(room);
       const roomName = room;
       const nickname = "admin";
@@ -90,6 +73,7 @@ module.exports = (http) => {
 
     socket.on("chatting", (obj) => {
       const convert = JSON.parse(obj);
+      console.log(convert)
       const { roomName, nickname, value } = convert;
       const data = { roomName, nickname, message: value };
       io.sockets.in(roomName).emit("new_message", data);
