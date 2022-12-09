@@ -3,16 +3,26 @@ const PlacesService = require("../services/placesService");
 class PlacesController {
   placesService = new PlacesService();
 
-
   createPlace = async (req, res, next) => {
     //시설 등록
     try {
+      const { loginId } = res.locals.user;
+      const {
+        x,
+        y,
+        sports,
+        spotName,
+        spotKind,
+        address,
+        comforts,
+        price,
+        desc,
+      } = req.body;
 
-      const {loginId} = res.locals.user;  
-      const { x,y,sports, spotName, spotKind, address, comforts, price, desc } = req.body;
-
-      let image = ''
-        req.hasOwnProperty('file')===false?  image = null : image = req.file.location
+      let image = "";
+      req.hasOwnProperty("file") === false
+        ? (image = null)
+        : (image = req.file.location);
 
       const createPlaces = await this.placesService.createPlace(
         loginId,
@@ -27,18 +37,24 @@ class PlacesController {
         desc,
         image
       );
-     
-     res.status(201).json({ message: "시설 등록이 완료되었습니다.", data : createPlaces});
-    }
-    catch (err) {
-      if(err.code === -1){
-        res.status(400).json({ errormessage: "빈칸을 입력해주세요.", code: -1 });
-      } else if(err.code === -2){
-        res.status(400).json({ errormessage: "이미지를 등록해주세요.", code: -2 });
-      } else if(err.code === -3){
-        res.status(400).json({ errormessage: "이미 등록된 시설입니다.", code: -3 });
+
+      res
+        .status(201)
+        .json({ message: "시설 등록이 완료되었습니다.", data: createPlaces });
+    } catch (err) {
+      if (err.code === -1) {
+        res
+          .status(400)
+          .json({ errormessage: "빈칸을 입력해주세요.", code: -1 });
+      } else if (err.code === -2) {
+        res
+          .status(400)
+          .json({ errormessage: "이미지를 등록해주세요.", code: -2 });
+      } else if (err.code === -3) {
+        res
+          .status(400)
+          .json({ errormessage: "이미 등록된 시설입니다.", code: -3 });
       }
-      // res.status(err.statusCode ||400).json({message: err.message});
     }
   };
 
@@ -55,35 +71,81 @@ class PlacesController {
     }
   };
 
+  // findAllPlace = async (req, res, next) => {        페이지네이션 한 코드
+  //   // 사설 전체 불러오기
+  //   try {
+  //     let countPerPage = req.query.countperpage;
+  //     let pageNo = req.query.pageno;
+  //     const places = await this.placesService.findAllPlace();
+
+  //     if (
+  //       countPerPage == undefined ||
+  //       typeof countPerPage == "undefined" ||
+  //       countPerPage == null
+  //     ) {
+  //       countPerPage = 5;
+  //     } else {
+  //       countPerPage = parseInt(countPerPage);
+  //     }
+  //     if (
+  //       pageNo == undefined ||
+  //       typeof pageNo == "undefined" ||
+  //       pageNo == null
+  //     ) {
+  //       pageNo = 0;
+  //     } else {
+  //       pageNo = parseInt(pageNo);
+  //     }
+
+  //     if (pageNo > 0) {
+  //       // 전체 크기
+  //       let totalCount = places.length;
+  //       // 시작 번호
+  //       let startItemNo = (pageNo - 1) * countPerPage;
+  //       // 종료 번호
+  //       let endItemNo = pageNo * countPerPage - 1;
+  //       // 종료 번호가 전체 크기보다 크면 전체 크기로 변경
+  //       if (endItemNo > totalCount - 1) {
+  //         endItemNo = totalCount - 1;
+  //       }
+  //       let placePageList = [];
+  //       if (startItemNo < totalCount) {
+  //         for (let i = startItemNo; i <= endItemNo; i++) {
+  //           placePageList.push(places[i]);
+  //         }
+  //       }
+  //       res.status(200).json({ data: placePageList });
+  //     } else {
+  //       res.status(200).json({ data: places });
+  //     }
+  //   } catch (err) {
+  //     res.status(err.statusCode || 400).json({ message: err.message });
+  //   }
+  // };
 
   findRecentPlace = async (req, res, next) => {
     // 사설 최신등록 6개만
     try {
-    const Recentplaces = await this.placesService.findRecentPlace();
+      const Recentplaces = await this.placesService.findRecentPlace();
 
-    res.status(200).json({ data: Recentplaces });
-    }
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});  
+      res.status(200).json({ data: Recentplaces });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
 
-
-
-  findAllPlaces = async (req, res, next) => {
+  findAllPlaces = async (req, res, next) => {    //페이지네이션 
     // 사설 + openApi 전체 조회
     try {
-    const places = await this.placesService.findAllPlaces();
+      let countPerPage = req.query.countperpage;
+      let pageNo = req.query.pageno;
+      const places = await this.placesService.findAllPlaces(countPerPage,pageNo);
 
-    res.status(200).json({ data: places });
-    }
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(200).json({ data: places }); 
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-  
-
-
 
   findGetPlaces = async (req, res, next) => {
     // 본인이 등록한 시설만 조회
@@ -91,74 +153,81 @@ class PlacesController {
       const { loginId } = res.locals.user;
       const places = await this.placesService.findGetPlaces(loginId);
 
-    res.status(200).json({ data: places });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(200).json({ data: places });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-
-
-
 
   getSports = async (req, res, next) => {
     // 종목별 조회
     try {
-    const { sports } = req.params;
-    const places = await this.placesService.getSports(sports);
+      const { sports } = req.params;
+      const places = await this.placesService.getSports(sports);
 
-    res.status(200).json({ data: places });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(200).json({ data: places });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-
-
-
 
   getKeyword = async (req, res, next) => {
     // 키워드별 조회
     try {
-    const { keywords } = req.params;
-    const keydata = await this.placesService.getKeyword(keywords);
+      const { keywords } = req.params;
+      const keydata = await this.placesService.getKeyword(keywords);
 
-    res.status(200).json({ data: keydata });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message,public: err.message2,private: err.message3});
+      res.status(200).json({ data: keydata });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({
+        message: err.message,
+        public: err.message2,
+        private: err.message3,
+      });
     }
   };
-
-
-
-
 
   updatePlaces = async (req, res, next) => {
     // 시설정보 수정
     try {
-        const {placesId} = req.params;
-        const {loginId} = res.locals.user;
-        const {x,y,sports,spotName,spotKind,address,comforts,price,desc} = req.body;
-        // let image = ''
-        // req.hasOwnProperty('file')===false?  image = null : image = req.file.location
+      const { placesId } = req.params;
+      const { loginId } = res.locals.user;
+      const {
+        x,
+        y,
+        sports,
+        spotName,
+        spotKind,
+        address,
+        comforts,
+        price,
+        desc,
+      } = req.body;
+      // let image = ''
+      // req.hasOwnProperty('file')===false?  image = null : image = req.file.location
 
-        const updateresult = await this.placesService.updatePlaces(
-            placesId,
-            loginId,
-            x,y,sports,spotName,spotKind,address,comforts,price,desc
-        );
+      const updateresult = await this.placesService.updatePlaces(
+        placesId,
+        loginId,
+        x,
+        y,
+        sports,
+        spotName,
+        spotKind,
+        address,
+        comforts,
+        price,
+        desc
+      );
 
-    res.status(201).json({ message: "시설 정보 수정이 완료 되었습니다", data: updateresult });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(201).json({
+        message: "시설 정보 수정이 완료 되었습니다",
+        data: updateresult,
+      });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-
-
-
-
 
   deletePlaces = async (req, res, next) => {
     // 시설 삭제
@@ -166,66 +235,54 @@ class PlacesController {
       const { placesId } = req.params;
       const { loginId } = res.locals.user;
 
-      const deleteresult = await this.placesService.deletePlaces(placesId, loginId);
+      const deleteresult = await this.placesService.deletePlaces(
+        placesId,
+        loginId
+      );
 
       res.status(201).json({ message: "시설 삭제가 완료 되었습니다" });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-
-
-
-
 
   findAllOpens = async (req, res, next) => {
     // open api 전체 불러오기
 
     try {
-    const places = await this.placesService.findAllOpens();
+      const places = await this.placesService.findAllOpens();
 
-    res.status(200).json({ data: places });
-    
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(200).json({ data: places });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-
-
-
 
   getSportsOpen = async (req, res, next) => {
     // 소분류명 open api 조회
 
     try {
-    const { minclassnm } = req.params;
-    const places = await this.placesService.getSportsOpen(minclassnm);
+      const { minclassnm } = req.params;
+      const places = await this.placesService.getSportsOpen(minclassnm);
 
-    res.status(200).json({ data: places });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(200).json({ data: places });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
   };
-  
-
-
 
   getRegionOpen = async (req, res, next) => {
     // 지역명 open api 조회
 
     try {
-    const { areanm } = req.params;
-    const places = await this.placesService.getRegionOpen(areanm);
+      const { areanm } = req.params;
+      const places = await this.placesService.getRegionOpen(areanm);
 
-    res.status(200).json({ data: places });
-    } 
-    catch (err) {
-      res.status(err.statusCode ||400).json({message: err.message});
+      res.status(200).json({ data: places });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ message: err.message });
     }
-  };  
-};
+  };
+}
 
 module.exports = PlacesController;

@@ -77,12 +77,43 @@ class PlacesService {
     return findRecentPlace;
   };
 
-  findAllPlaces = async () => {
+  findAllPlaces = async (countPerPage,pageNo) => { 
     // 사설 + openApi 전체 조회
+    
+    const findAllPlace = await this.placesRepository.findAllPlaces(); 
+    let privatePageList = [];
+    let publicPageList = [];
 
-    const findAllPlace = await this.placesRepository.findAllPlaces();
+    if (countPerPage == undefined || typeof countPerPage == "undefined" || countPerPage == null) {
+      countPerPage = 5;
+    } else {
+      countPerPage = parseInt(countPerPage);
+    }
+    if (pageNo == undefined || typeof pageNo == "undefined" || pageNo == null) {
+      pageNo = 0;
+    } else {
+      pageNo = parseInt(pageNo);
+    }
 
-    return findAllPlace;
+    if (pageNo > 0) {
+      // 전체 크기
+      let totalCount =  findAllPlace.public.length + findAllPlace.private.length;   
+      // 시작 번호
+      let startItemNo = (pageNo - 1) * countPerPage;
+      // 종료 번호
+      let endItemNo = pageNo * countPerPage - 1;
+      // 종료 번호가 전체 크기보다 크면 전체 크기로 변경
+      if (endItemNo > totalCount - 1) {
+        endItemNo = totalCount - 1;
+      }
+      if (startItemNo < totalCount) {
+        for (let i = startItemNo; i <= endItemNo; i++) {
+          privatePageList.push(findAllPlace.private[i]);
+          publicPageList.push(findAllPlace.public[i]);
+        }
+      }
+    }; 
+    return {private : privatePageList, public : publicPageList};
   };
 
   findGetPlaces = async (loginId) => {
