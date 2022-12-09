@@ -65,7 +65,6 @@ class UsersRepository {
       phone: getUser.phone,
       score: getUser.score,
       point: getUser.point,
-      teamName: getUser.teamName,
       sports: getUser.sports,
       favSports: getUser.favSports,
       profileImg: getUser.profileImg,
