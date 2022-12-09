@@ -3,13 +3,16 @@ const redis = require("redis");
 let redisCli;
 
 class UsersRepository {
+  constructor() {
+    this.Users = Users;
+  }
   // 회원가입
   createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     const profileImg =
       "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
     if (!sports) sports = "[]";
     if (!favSports) favSports = "[]";
-    await Users.create({
+    await this.Users.create({
       loginId,
       password,
       nickname,
@@ -24,31 +27,31 @@ class UsersRepository {
 
   // ID 중복확인
   checkId = async (loginId) => {
-    const checkId = await Users.findOne({ where: { loginId } });
+    const checkId = await this.Users.findOne({ where: { loginId } });
     if (!checkId) return false;
     return checkId;
   };
   // 닉네임 중복확인
   checkNick = async (nickname) => {
-    const checkNick = await Users.findOne({ where: { nickname } });
+    const checkNick = await this.Users.findOne({ where: { nickname } });
     return checkNick;
   };
 
   //휴대폰 중복확인
   checkPhone = async (phone) => {
-    const checkPhone = await Users.findOne({ where: { phone } });
+    const checkPhone = await this.Users.findOne({ where: { phone } });
     return checkPhone;
   };
 
   // id, phone 확인
   checkIdPhone = async (loginId, phone) => {
-    const checkIdPhone = await Users.findOne({ where: { loginId, phone } });
+    const checkIdPhone = await this.Users.findOne({ where: { loginId, phone } });
     if (!checkIdPhone) return false;
     return true;
   };
   // 유저 조회
   getUser = async (loginId) => {
-    const getUser = await Users.findOne({ where: { loginId } });
+    const getUser = await this.Users.findOne({ where: { loginId } });
     return {
       ID: getUser.loginId,
       nickname: getUser.nickname,
@@ -86,13 +89,13 @@ class UsersRepository {
   };
   // 포인트 충전
   plusPoint = async (loginId, point) => {
-    const plusPoint = await Users.increment({ point: point }, { where: { loginId } });
+    const plusPoint = await this.Users.increment({ point: point }, { where: { loginId } });
     return plusPoint;
   };
 
   // 유저 정보 수정
   updateUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
-    const updateUser = await Users.update(
+    const updateUser = await this.Users.update(
       { loginId, password, nickname, gender, phone, sports, favSports },
       { where: { loginId } }
     );
@@ -102,25 +105,25 @@ class UsersRepository {
     if (!profileImg)
       profileImg =
         "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
-    const changeImg = await Users.update({ profileImg: profileImg }, { where: { loginId } });
+    const changeImg = await this.Users.update({ profileImg: profileImg }, { where: { loginId } });
     return changeImg;
   };
 
   // 회원탈퇴
   dropUser = async (loginId) => {
-    await Users.update({ deletedAt: new Date() }, { where: { loginId } });
+    await this.Users.update({ deletedAt: new Date() }, { where: { loginId } });
     return;
   };
   // 회원탈퇴 취소
   cancelDrop = async (loginId) => {
-    await Users.update({ deletedAt: null }, { where: { loginId } });
+    await this.Users.update({ deletedAt: null }, { where: { loginId } });
     return;
   };
 
   //Refresh토큰 업데이트
   updateRefresh = async (refreshToken, user, accKey) => {
-    await Users.update({ refreshToken }, { where: { loginId: user.loginId } });
-    await Users.update({ accKey }, { where: { loginId: user.loginId } });
+    await this.Users.update({ refreshToken }, { where: { loginId: user.loginId } });
+    await this.Users.update({ accKey }, { where: { loginId: user.loginId } });
   };
 }
 
