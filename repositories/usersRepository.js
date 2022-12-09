@@ -1,15 +1,6 @@
 const { Users } = require("../models");
 const redis = require("redis");
-
-const redisClient = redis.createClient({ legacyMode: true });
-redisClient.on("connect", () => {
-  console.info("Redis connected!");
-});
-redisClient.on("error", (err) => {
-  console.error("Redis Client Error", err);
-});
-redisClient.connect().then();
-const redisCli = redisClient.v4;
+let redisCli;
 
 class UsersRepository {
   // 회원가입
@@ -65,18 +56,31 @@ class UsersRepository {
       phone: getUser.phone,
       score: getUser.score,
       point: getUser.point,
-      teamName: getUser.teamName,
       sports: getUser.sports,
       favSports: getUser.favSports,
       profileImg: getUser.profileImg,
     };
   };
 
+  connectRedis = async () => {
+    const redisClient = redis.createClient({ legacyMode: true });
+    redisClient.on("connect", () => {
+      console.info("Redis connected!");
+    });
+    redisClient.on("error", (err) => {
+      console.error("Redis Client Error", err);
+    });
+    redisClient.connect().then();
+    redisCli = redisClient.v4;
+  };
+
   saveCode = async (phone, code) => {
+    this.connectRedis();
     const saveCode = await redisCli.set(phone, code, { EX: 180 });
     return saveCode;
   };
   getCode = async (phone) => {
+    this.connectRedis();
     const getCode = await redisCli.get(phone);
     return getCode;
   };
