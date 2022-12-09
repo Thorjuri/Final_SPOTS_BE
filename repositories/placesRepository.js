@@ -1,4 +1,7 @@
 const { Places, Opens, Reservations } = require("../models");
+
+
+
 require("dotenv").config();
 const mysql2 = require("mysql2"); //mysql 모듈 import
 
@@ -54,7 +57,6 @@ class PlacesRepository {
   // 사설 전체 조회
   findAllPlace = async () => {
     const places = await Places.findAll();
-
     return places;
   };
 
@@ -70,9 +72,11 @@ class PlacesRepository {
 
   // 사설 + openApi 전체 조회
   findAllPlaces = async () => {
+    
     const places = await Places.findAll();
+    
     const opens = await Opens.findAll();
-
+  
     return { private: places, public: opens };
   };
 
