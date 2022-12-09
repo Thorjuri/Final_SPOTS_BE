@@ -38,13 +38,16 @@ class AuthService {
       },
     });
     let loginId = resultGet.data["id"];
+    let profileImg = resultGet.data["properties"]['profile_image']
     if (!loginId) throw { code: -1 };
 
     const user = await this.authRepository.findUser(loginId);
-    if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId };
+    if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId ,profileImg:profileImg };
 
-    const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
-      expiresIn: "30m",
+    const accKey = crypto.randomBytes(2).toString("hex");
+    const getAccKey = await this.authRepository.getAccKey(loginId, accKey)
+    const accessToken = jwt.sign({ loginId: user.loginId, accKey:accKey}, process.env.SECRET_KEY, {
+      expiresIn: "1d",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
@@ -72,12 +75,15 @@ class AuthService {
       },
     });
     let loginId = userInfo.data["id"];
+    let profileImg = userInfo.data["picture"]
     if (!loginId) throw { code: -2 };
 
     const user = await this.authRepository.findUser(loginId);
-    if (!user) return { code: -1, message: "회원가입 필요(구글)", loginId: loginId };
+    if (!user) return { code: -1, message: "회원가입 필요(구글)", loginId: loginId, profileImg:profileImg };
 
-    const accessToken = jwt.sign({ loginId: user.loginId }, process.env.SECRET_KEY, {
+    const accKey = crypto.randomBytes(2).toString("hex");
+    const getAccKey = await this.authRepository.getAccKey(loginId, accKey)
+    const accessToken = jwt.sign({ loginId: user.loginId, accKey:accKey}, process.env.SECRET_KEY, {
       expiresIn: "30m",
     });
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
@@ -92,7 +98,7 @@ class AuthService {
     };
   };
 
-  signup = async (loginId, nickname, gender, phone, sports, favSports, recommendId) => {
+  signup = async (loginId, nickname, gender, phone, sports, favSports, recommendId, profileImg) => {
     const findUser = await this.authRepository.findUser(loginId);
     if (findUser) throw { code: -1 };
 
@@ -119,7 +125,8 @@ class AuthService {
       gender,
       phone,
       sports,
-      favSports
+      favSports,
+      profileImg
     );
     return;
   };

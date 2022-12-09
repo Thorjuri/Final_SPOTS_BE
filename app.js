@@ -41,6 +41,13 @@ app.get("/", (req, res) => {
 
 socket(http);
 
-http.listen(port, () => {
-  console.log(`${port}번 포트로 서버 실행`);
-});
+if (process.env.NODE_ENV !== "test") {
+  http.listen(port, () => {
+    console.log(`${port}번 포트로 서버 실행`);
+  });
+}
+
+module.exports = app;
+module.exports = http;
+
+//     // "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit",

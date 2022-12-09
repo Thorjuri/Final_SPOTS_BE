@@ -1,23 +1,14 @@
 const { Users } = require("../models");
 const redis = require("redis");
-
-const redisClient = redis.createClient({ legacyMode: true });
-redisClient.on("connect", () => {
-  console.info("Redis connected!");
-});
-redisClient.on("error", (err) => {
-  console.error("Redis Client Error", err);
-});
-redisClient.connect().then();
-const redisCli = redisClient.v4;
+let redisCli;
 
 class UsersRepository {
   // 회원가입
   createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     const profileImg =
       "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
-      if(!sports) sports="[]"
-      if(!favSports) favSports="[]"
+    if (!sports) sports = "[]";
+    if (!favSports) favSports = "[]";
     await Users.create({
       loginId,
       password,
@@ -65,18 +56,31 @@ class UsersRepository {
       phone: getUser.phone,
       score: getUser.score,
       point: getUser.point,
-      teamName: getUser.teamName,
       sports: getUser.sports,
       favSports: getUser.favSports,
       profileImg: getUser.profileImg,
     };
   };
 
+  connectRedis = async () => {
+    const redisClient = redis.createClient({ legacyMode: true });
+    redisClient.on("connect", () => {
+      console.info("Redis connected!");
+    });
+    redisClient.on("error", (err) => {
+      console.error("Redis Client Error", err);
+    });
+    redisClient.connect().then();
+    redisCli = redisClient.v4;
+  };
+
   saveCode = async (phone, code) => {
+    this.connectRedis();
     const saveCode = await redisCli.set(phone, code, { EX: 180 });
     return saveCode;
   };
   getCode = async (phone) => {
+    this.connectRedis();
     const getCode = await redisCli.get(phone);
     return getCode;
   };
