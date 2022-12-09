@@ -88,7 +88,7 @@ class PlacesRepository {
   //keyword 조회
   getKeyword = async (keywords) => {
 
-    var db = mysql2.createConnection({
+    const db = mysql2.createConnection({
       //mpsql DB 연결  keywords 할때 sequelize 아니라서 다시 연결
       host: process.env.DB_ENDPOINT,
       user: process.env.DB_USERNAME,
