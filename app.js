@@ -39,19 +39,6 @@ app.get("/", (req, res) => {
   res.send("SPOTS 서버 상태 양호😏😏");
 });
 
-//------------------ chat(socket)
-app.set('view engine', "pug");
-app.set("views", "./src/views");
-app.use('/public',express.static("./src/public"));
-
-app.get('/chat', (req, res)=> {
-    res.render("home")
-});
-
-app.get('/admin', (req, res)=> {
-  res.render("admin")
-});
-
 socket(http);
 
 if (process.env.NODE_ENV !== 'test') {
