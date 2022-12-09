@@ -80,7 +80,7 @@ class PlacesService {
   findAllPlaces = async (countPerPage,pageNo) => { 
     // 사설 + openApi 전체 조회
     
-    const findAllPlace = await this.placesRepository.findAllPlaces();
+    const findAllPlace = await this.placesRepository.findAllPlaces(); 
     let privatePageList = [];
     let publicPageList = [];
 

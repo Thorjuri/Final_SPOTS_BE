@@ -1,7 +1,5 @@
 const { Places, Opens, Reservations } = require("../models");
 
-
-
 require("dotenv").config();
 const mysql2 = require("mysql2"); //mysql 모듈 import
 
