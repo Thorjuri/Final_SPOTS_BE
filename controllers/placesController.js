@@ -134,18 +134,33 @@ class PlacesController {
     }
   };
 
-  findAllPlaces = async (req, res, next) => {    //페이지네이션 
+
+  findAllPlaces = async (req, res, next) => {
     // 사설 + openApi 전체 조회
     try {
-      let countPerPage = req.query.countperpage;
-      let pageNo = req.query.pageno;
-      const places = await this.placesService.findAllPlaces(countPerPage,pageNo);
+    const places = await this.placesService.findAllPlace();
 
-      res.status(200).json({ data: places }); 
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ message: err.message });
+    res.status(200).json({ data: places });
+    }
+    catch (err) {
+      res.status(err.statusCode ||400).json({message: err.message});  
     }
   };
+
+
+
+  // findAllPlaces = async (req, res, next) => {    //페이지네이션 
+  //   // 사설 + openApi 전체 조회
+  //   try {
+  //     let countPerPage = req.query.countperpage;
+  //     let pageNo = req.query.pageno;
+  //     const places = await this.placesService.findAllPlaces(countPerPage,pageNo);
+
+  //     res.status(200).json({ data: places }); 
+  //   } catch (err) {
+  //     res.status(err.statusCode || 400).json({ message: err.message });
+  //   }
+  // };
 
   findGetPlaces = async (req, res, next) => {
     // 본인이 등록한 시설만 조회
