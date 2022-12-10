@@ -48,7 +48,7 @@ module.exports = async (req, res, next) => {
         .json({ code: 1, message: "new access token", myNewToken: `Bearer ${myNewToken}` });
     } else {
       const { loginId } = jwt.verify(tokenValue, process.env.SECRET_KEY);
-      const user = await Users.findOne({ where: { loginId } });
+      const user = await Users.findOne({ where: { loginId }, paranoid: false });
       res.locals.user = user;
       next();
     }

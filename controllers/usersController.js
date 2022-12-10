@@ -172,7 +172,7 @@ class UsersController {
     try {
       const { loginId, password } = req.body;
       const { user, accessToken } = await this.usersService.LoginUser(loginId, password);
-      if (user.deleteAt) {
+      if (user.deletedAt) {
         return res.status(202).json({
           nickname: user.nickname,
           accessToken: `Bearer ${accessToken}`,
@@ -276,7 +276,7 @@ class UsersController {
   // 회원탈퇴 취소
   cancelDrop = async (req, res, next) => {
     try {
-      const { loginId } = res.body;
+      const { loginId } = res.locals.user;
       await this.usersService.cancelDrop(loginId);
       res.status(200).send("회원 탈퇴 취소");
     } catch (err) {

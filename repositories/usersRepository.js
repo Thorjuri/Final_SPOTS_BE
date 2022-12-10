@@ -12,7 +12,7 @@ class UsersRepository {
       "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
     if (!sports) sports = "[]";
     if (!favSports) favSports = "[]";
-    await this.Users.create({
+    const createUser = await this.Users.create({
       loginId,
       password,
       nickname,
@@ -22,12 +22,12 @@ class UsersRepository {
       favSports: favSports,
       profileImg: profileImg,
     });
-    return;
+    return createUser;
   };
 
   // ID 중복확인
   checkId = async (loginId) => {
-    const checkId = await this.Users.findOne({ where: { loginId } });
+    const checkId = await this.Users.findOne({ where: { loginId }, paranoid: false });
     if (!checkId) return false;
     return checkId;
   };
@@ -111,12 +111,12 @@ class UsersRepository {
 
   // 회원탈퇴
   dropUser = async (loginId) => {
-    await this.Users.update({ deletedAt: new Date() }, { where: { loginId } });
+    await this.Users.destroy({ where: { loginId } });
     return;
   };
   // 회원탈퇴 취소
   cancelDrop = async (loginId) => {
-    await this.Users.update({ deletedAt: null }, { where: { loginId } });
+    await this.Users.restore({ where: { loginId } });
     return;
   };
 
