@@ -121,7 +121,8 @@ class UsersRepository {
   };
 
   findReservation = async (nickname) => {
-    const reservation = await Reservations.findOne({ where: { admin: nickname } });
+
+    const reservation = await Reservations.findOne({ where: { admin: nickname } })
     return reservation;
   };
 
