@@ -13,7 +13,7 @@ const {
   getUserResult,
   plusPointInsert,
   plusPointResult,
-} = require("../fixtures/users.fixtures");
+} = require("./no/fixtures/users.fixtures");
 const mockUsers = () => ({
   create: jest.fn(),
   findOne: jest.fn(),
