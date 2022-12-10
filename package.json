@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "nodemon",
-    "test": "cross-env NODE_ENV=test jest --forceExit "
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles "
   },
   "dependencies": {
     "aws-sdk": "^2.1249.0",
