@@ -96,8 +96,7 @@ class UsersController {
       const findId = await this.usersService.findId(phone);
       if (findId.ID[0] === "2" && findId.ID[1] === "5" && findId.ID.length === 10)
         findId.sns = "kakao";
-      else if (findId.ID[0] === "1" && findId.ID[1] === "0" && findId.ID.length === 21)
-        findId.sns = "google";
+      else if (findId.ID[0] === "1" && findId.ID.length === 21) findId.sns = "google";
       else findId.sns = "local";
       return res.status(200).json(findId);
     } catch (err) {
@@ -269,6 +268,7 @@ class UsersController {
       await this.usersService.dropUser(loginId);
       res.status(200).send("회원 탈퇴 성공");
     } catch (err) {
+      if (err.code === -1) return res.status(406).json({ errmessage: "예약을 확인해 주세요" });
       console.log(err);
       res.status(400).json({ errmessage: err });
     }

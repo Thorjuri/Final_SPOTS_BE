@@ -203,6 +203,9 @@ class UsersService {
   };
   // 회원탈퇴
   dropUser = async (loginId) => {
+    const nickname = await this.usersRepository.checkId(loginId);
+    const reservation = await this.usersRepository.findReservation(nickname.nickname);
+    if (reservation) throw { code: -1 };
     await this.usersRepository.dropUser(loginId);
     return;
   };
