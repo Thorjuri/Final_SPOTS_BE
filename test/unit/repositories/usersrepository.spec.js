@@ -1,4 +1,4 @@
-const UsersRepository = require("../repositories/usersRepository");
+const UsersRepository = require("../../../repositories/usersRepository");
 
 const {
   createUserInsert,
@@ -14,7 +14,7 @@ const {
   getUserResult,
   plusPointInsert,
   plusPointResult,
-} = require("../fixtures/users.fixtures.js");
+} = require("../../fixtures/users.fixtures.js");
 
 const mockUsers = () => ({
   create: jest.fn(),
