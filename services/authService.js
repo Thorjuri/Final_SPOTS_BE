@@ -38,17 +38,27 @@ class AuthService {
       },
     });
     let loginId = resultGet.data["id"];
-    let profileImg = resultGet.data["properties"]['profile_image']
+    let profileImg = resultGet.data["properties"]["profile_image"];
     if (!loginId) throw { code: -1 };
 
     const user = await this.authRepository.findUser(loginId);
-    if (!user) return { code: -1, message: "회원가입 필요(카카오)", loginId: loginId ,profileImg:profileImg };
+    if (!user)
+      return {
+        code: -1,
+        message: "회원가입 필요(카카오)",
+        loginId: loginId,
+        profileImg: profileImg,
+      };
 
     const accKey = crypto.randomBytes(2).toString("hex");
-    const getAccKey = await this.authRepository.getAccKey(loginId, accKey)
-    const accessToken = jwt.sign({ loginId: user.loginId, accKey:accKey}, process.env.SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const getAccKey = await this.authRepository.getAccKey(loginId, accKey);
+    const accessToken = jwt.sign(
+      { loginId: user.loginId, accKey: accKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "30m",
+      }
+    );
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
@@ -75,17 +85,22 @@ class AuthService {
       },
     });
     let loginId = userInfo.data["id"];
-    let profileImg = userInfo.data["picture"]
+    let profileImg = userInfo.data["picture"];
     if (!loginId) throw { code: -2 };
 
     const user = await this.authRepository.findUser(loginId);
-    if (!user) return { code: -1, message: "회원가입 필요(구글)", loginId: loginId, profileImg:profileImg };
+    if (!user)
+      return { code: -1, message: "회원가입 필요(구글)", loginId: loginId, profileImg: profileImg };
 
     const accKey = crypto.randomBytes(2).toString("hex");
-    const getAccKey = await this.authRepository.getAccKey(loginId, accKey)
-    const accessToken = jwt.sign({ loginId: user.loginId, accKey:accKey}, process.env.SECRET_KEY, {
-      expiresIn: "30m",
-    });
+    const getAccKey = await this.authRepository.getAccKey(loginId, accKey);
+    const accessToken = jwt.sign(
+      { loginId: user.loginId, accKey: accKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "30m",
+      }
+    );
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });

@@ -136,7 +136,6 @@ class UsersService {
   // 로그인
   LoginUser = async (loginId, password) => {
     const user = await this.usersRepository.checkId(loginId);
-    //console.log(user);
     if (!user) {
       throw { code: -1 };
     }
@@ -149,7 +148,7 @@ class UsersService {
       { loginId: user.loginId, accKey: accKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "1d",
+        expiresIn: "30m",
       }
     );
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
