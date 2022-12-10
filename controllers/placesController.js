@@ -138,7 +138,7 @@ class PlacesController {
   findAllPlaces = async (req, res, next) => {
     // 사설 + openApi 전체 조회
     try {
-    const places = await this.placesService.findAllPlace();
+    const places = await this.placesService.findAllPlaces();
 
     res.status(200).json({ data: places });
     }
