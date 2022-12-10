@@ -121,8 +121,7 @@ class UsersRepository {
   };
 
   findReservation = async (nickname) => {
-
-    const reservation = await Reservations.findOne({ where: { admin: nickname } })
+    const reservation = await Reservations.findOne({ where: { admin: nickname } });
     return reservation;
   };
 
@@ -132,7 +131,7 @@ class UsersRepository {
       { refreshToken },
       { where: { loginId: user.loginId }, paranoid: false }
     );
-    await this.Users.update({ accKey }, { where: { loginId: user.loginId, paranoid: false } });
+    await this.Users.update({ accKey }, { where: { loginId: user.loginId }, paranoid: false });
   };
 }
 
