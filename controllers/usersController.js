@@ -150,10 +150,18 @@ class UsersController {
   };
   // sms
   sendSms = async (req, res, next) => {
-    const { phone } = req.body;
-    const sendSms = await this.usersService.sendSms(phone);
-    if (!sendSms) return res.status(400).json({ errormessage: "전송 실패" });
-    res.status(200).json({ message: "메세지 전송" });
+    try {
+      const { phone } = req.body;
+      const checkPhone = await this.usersService.checkPhone(phone);
+      if (!checkPhone) throw { code: -1 };
+      const sendSms = await this.usersService.sendSms(phone);
+      if (!sendSms) return res.status(400).json({ errormessage: "전송 실패" });
+      res.status(200).json({ message: "메세지 전송" });
+    } catch (err) {
+      if (err.code === -1) return res.status(406).json({ errormessage: "없는 번호" });
+      console.log(err);
+      res.status(400).json({ errmessage: err });
+    }
   };
   checkSms = async (req, res, next) => {
     try {
