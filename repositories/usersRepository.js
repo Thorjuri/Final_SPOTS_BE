@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Reservations } = require("../models");
 const redis = require("redis");
 let redisCli;
 
@@ -33,13 +33,13 @@ class UsersRepository {
   };
   // 닉네임 중복확인
   checkNick = async (nickname) => {
-    const checkNick = await this.Users.findOne({ where: { nickname } });
+    const checkNick = await this.Users.findOne({ where: { nickname }, paranoid: false });
     return checkNick;
   };
 
   //휴대폰 중복확인
   checkPhone = async (phone) => {
-    const checkPhone = await this.Users.findOne({ where: { phone } });
+    const checkPhone = await this.Users.findOne({ where: { phone }, paranoid: false });
     return checkPhone;
   };
 
@@ -120,10 +120,18 @@ class UsersRepository {
     return;
   };
 
+  findReservation = async (nickname) => {
+    const reservation = await Reservations.findAll({ where: { admin: nickname } });
+    return reservation;
+  };
+
   //Refresh토큰 업데이트
   updateRefresh = async (refreshToken, user, accKey) => {
-    await this.Users.update({ refreshToken }, { where: { loginId: user.loginId } });
-    await this.Users.update({ accKey }, { where: { loginId: user.loginId } });
+    await this.Users.update(
+      { refreshToken },
+      { where: { loginId: user.loginId }, paranoid: false }
+    );
+    await this.Users.update({ accKey }, { where: { loginId: user.loginId, paranoid: false } });
   };
 }
 
