@@ -71,7 +71,10 @@
 <br>
 
 ![site map](https://user-images.githubusercontent.com/112181770/206945783-e6a15ff9-da03-4fdb-a306-3c76ac19432b.png)<br>
- - (준비중)
+
+![화면-캡쳐-001](https://user-images.githubusercontent.com/112181770/207041456-004386df-29bf-4490-b775-0a3d0c4114bf.png)<br>
+
+![화면-캡쳐-002](https://user-images.githubusercontent.com/112181770/207041483-175994ef-28ae-48c4-95df-06c11012c805.png)
 
 <br>
 <hr>
