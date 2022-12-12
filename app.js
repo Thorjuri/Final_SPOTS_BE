@@ -13,7 +13,11 @@ const Router = require("./routes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const errorHandlerMiddleware = require("./middlewares/error_handler_middleware");
-
+app.use(helmet.frameguard());
+app.use(helmet.hidePoweredBy());
+app.use(helmet.hsts());
+app.use(helmet.referrerPolicy());
+app.use(helmet.xssFilter());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -28,7 +32,6 @@ app.use(
     credential: "true",
   })
 );
-app.use(helmet());
 
 app.options("*", cors());
 
