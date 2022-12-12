@@ -95,14 +95,18 @@
 <br>
 
 ![dependency](https://user-images.githubusercontent.com/112181770/206945884-3cf6a2f5-2a30-4751-92f6-1b529b3243b6.png)<br>
-- (준비중)
+
+![dependency](https://user-images.githubusercontent.com/112181770/207027229-3bb98bb3-6bc1-4a51-b8c2-24c9a3c7d1e5.png)
+
 
 <br>
 <hr>
 <br>
 
 ![dir sturcture](https://user-images.githubusercontent.com/112181770/206945893-dc70b918-31ed-40b6-87bc-97aac849ec78.png)<br>
-- (준비중)
+
+![dir structure](https://user-images.githubusercontent.com/112181770/207027259-0cb35782-85f6-4af2-98eb-2997284f42a9.png)
+
 
 <br>
 <hr>
