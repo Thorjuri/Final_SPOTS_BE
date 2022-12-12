@@ -31,6 +31,7 @@
 <br>
 <br>
 ![004](https://user-images.githubusercontent.com/112181770/206945397-a42c1a3a-b4de-41e6-a1db-141a1b131028.png)<br>
+<br>
 
 ![2 service](https://user-images.githubusercontent.com/112181770/206945675-4b6f417f-859a-4866-b66e-f4d5e2d38cc0.png)<br>
 ![whats spots](https://user-images.githubusercontent.com/112181770/206988463-95fc9551-074d-4053-97f0-9023732bbe4f.png)<br>
@@ -90,10 +91,9 @@
 
 ![func unit](https://user-images.githubusercontent.com/112181770/206945871-24e36ed8-9f6f-478e-924e-139554837b6f.png)
 
-![기능단위](https://user-images.githubusercontent.com/112181770/206988288-616ae315-cda0-40a5-9947-8545733399ac.png)
+![_최종_SPOTS-중간-발표-자료-007](https://user-images.githubusercontent.com/112181770/207047429-29cb3d99-1f0b-42b5-ad5e-8287d35e8192.png)
 
 
-<br>
 <hr>
 <br>
 
@@ -108,7 +108,8 @@
 
 ![dir sturcture](https://user-images.githubusercontent.com/112181770/206945893-dc70b918-31ed-40b6-87bc-97aac849ec78.png)<br>
 
-![dir structure](https://user-images.githubusercontent.com/112181770/207027259-0cb35782-85f6-4af2-98eb-2997284f42a9.png)
+![Directory-structure-001](https://user-images.githubusercontent.com/112181770/207044730-b049961b-86b4-4e51-b089-a7b63cd2efc3.png)
+
 
 
 <br>
