@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(helmet());
-app.use(compression());
+// app.use(compression());
 app.use(
   cors({
     origin: "*", // 모든 출처 허용 옵션. true 를 써도 된다.
