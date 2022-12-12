@@ -9,13 +9,14 @@ const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
 const GRANT_TYPE = "authorization_code";
 const CLIENT_id = process.env.CLIENT_id;
 // const REDIRECT_URL = "http://localhost:3000/auth/kakao/callback";
-const REDIRECT_URL = "https://spots-fe.vercel.app/auth/kakao/callback";
+const REDIRECT_URL = "https://www.spots.co.kr/auth/kakao/callback";
+
 
 const GOOGLE_GRANT_TYPE = "authorization_code";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 // const GOOGLE_REDIRECT_URI = "http://localhost:3000/auth/google/callback";
-const GOOGLE_REDIRECT_URI = "https://spots-fe.vercel.app/auth/google/callback";
+const GOOGLE_REDIRECT_URI = "https://www.spots.co.kr/auth/google/callback";
 
 class AuthService {
   authRepository = new AuthRepository();
