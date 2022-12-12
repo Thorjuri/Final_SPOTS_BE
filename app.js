@@ -3,6 +3,8 @@ const Http = require("http");
 const app = express();
 const http = Http.createServer(app);
 const socket = require("./socket");
+const helmet = require("helmet");
+const compression = require("compression");
 const port = 3000;
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
@@ -15,7 +17,8 @@ const errorHandlerMiddleware = require("./middlewares/error_handler_middleware")
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use(helmet());
+app.use(compression());
 app.use(
   cors({
     origin: "*", // 모든 출처 허용 옵션. true 를 써도 된다.
