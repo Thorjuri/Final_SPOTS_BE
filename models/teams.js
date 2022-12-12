@@ -1,70 +1,79 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class Teams extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models) {
-            // Teams.hasMany(models.Users, {
-            //     foreignKey: 'teamName',
-            //     targetKey: 'teamName',
-            // });
-        }
+  class Teams extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // Teams.hasMany(models.Users, {
+      //     foreignKey: 'teamName',
+      //     targetKey: 'teamName',
+      // });
+      this.belongsTo(models.Users, { foreignKey: "nickcname" });
+      this.hasMany(models.Reservations, {
+        as: "Reservations",
+        foreignKey: "admin",
+      });
     }
-    Teams.init(
-        {
-            teamId: {
-                primaryKey: true,
-                autoIncrement: true,
-                type: DataTypes.INTEGER,
-            },
-            teamName: {
-                type: DataTypes.STRING,
-                // unique: true,
-                allowNull: false,
-            },
-            sports: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            admin: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            member: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            image: {
-                type: DataTypes.STRING,
-                allowNull: true,
-            },
-            score: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: 0
-            },
-            wins: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: 0
-            },
-            lose: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: 0
-            }
-
+  }
+  Teams.init(
+    {
+      teamId: {
+        primaryKey: true,
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
+      },
+      teamName: {
+        type: DataTypes.STRING,
+        // unique: true,
+        allowNull: false,
+      },
+      sports: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      admin: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "nickname",
         },
-        {
-            sequelize,
-            modelName: 'Teams',
-            timestamps: false,
-            paranoid: false,
-        }
-    );
-    return Teams;
+        onDelete: "cascade",
+      },
+      member: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      score: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      wins: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      lose: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Teams",
+      timestamps: false,
+      paranoid: false,
+    }
+  );
+  return Teams;
 };
