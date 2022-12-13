@@ -56,7 +56,7 @@ class TeamsService {
         };
         
         if(image === null) {
-            image = 'https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png'
+            image = 'https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1670971029930_spots_main-02_%C3%AB%C2%8C%C2%80%C3%AC%C2%A7%C2%80%201.png'
         };
 
         const data = await this.teamsRepository.createTeam(
