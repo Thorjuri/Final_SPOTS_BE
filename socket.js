@@ -51,13 +51,11 @@ module.exports = (http) => {
   }
 
   io.on("connection", (socket) => {
-    console.log(findUser())
+    console.log("---현재 접속자---", findUser())
     const roomName = socket.id;
     socket.join(roomName);
     const rooms = findUser();
     rooms.splice(rooms.indexOf(roomName), 1);
-    console.log(rooms)
-
     socket.emit("client_main", roomName);
     socket.emit("admin_roomlist", rooms);
 
@@ -82,6 +80,7 @@ module.exports = (http) => {
     socket.on("disconnecting", () => {
       //disconnecting = 연결 종료 직전**
       const nickname = socket.id.slice(0, 5);
+      console.log("---퇴장 후 잔여 접속자---", findUser())
       const message = `${nickname} 님이 퇴장하셨습니다.`;
       const roomName = socket.id;
       io.sockets.in(roomName).emit("left_notice", message); // 연결 종료 시(직전에) 해당 room 전체에 메세지

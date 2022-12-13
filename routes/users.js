@@ -19,6 +19,6 @@ router.get("/me", auth_middleware, usersController.getUser);
 router.patch("/me", auth_middleware, usersController.updateUser);
 router.patch("/profileImg", auth_middleware, upload.single("image"), usersController.changeImg);
 router.patch("/drop", auth_middleware, usersController.dropUser);
-router.patch("/cancelDrop", usersController.cancelDrop);
+router.patch("/cancelDrop", auth_middleware, usersController.cancelDrop);
 
 module.exports = router;

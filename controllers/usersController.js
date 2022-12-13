@@ -96,8 +96,7 @@ class UsersController {
       const findId = await this.usersService.findId(phone);
       if (findId.ID[0] === "2" && findId.ID[1] === "5" && findId.ID.length === 10)
         findId.sns = "kakao";
-      else if (findId.ID[0] === "1" && findId.ID[1] === "0" && findId.ID.length === 21)
-        findId.sns = "google";
+      else if (findId.ID[0] === "1" && findId.ID.length === 21) findId.sns = "google";
       else findId.sns = "local";
       return res.status(200).json(findId);
     } catch (err) {
@@ -151,10 +150,18 @@ class UsersController {
   };
   // sms
   sendSms = async (req, res, next) => {
-    const { phone } = req.body;
-    const sendSms = await this.usersService.sendSms(phone);
-    if (!sendSms) return res.status(400).json({ errormessage: "전송 실패" });
-    res.status(200).json({ message: "메세지 전송" });
+    try {
+      const { phone } = req.body;
+      const checkPhone = await this.usersService.checkPhone(phone);
+      if (!checkPhone) throw { code: -1 };
+      const sendSms = await this.usersService.sendSms(phone);
+      if (!sendSms) return res.status(400).json({ errormessage: "전송 실패" });
+      res.status(200).json({ message: "메세지 전송" });
+    } catch (err) {
+      if (err.code === -1) return res.status(406).json({ errormessage: "없는 번호" });
+      console.log(err);
+      res.status(400).json({ errmessage: err });
+    }
   };
   checkSms = async (req, res, next) => {
     try {
@@ -172,7 +179,7 @@ class UsersController {
     try {
       const { loginId, password } = req.body;
       const { user, accessToken } = await this.usersService.LoginUser(loginId, password);
-      if (user.deleteAt) {
+      if (user.deletedAt) {
         return res.status(202).json({
           nickname: user.nickname,
           accessToken: `Bearer ${accessToken}`,
@@ -269,6 +276,7 @@ class UsersController {
       await this.usersService.dropUser(loginId);
       res.status(200).send("회원 탈퇴 성공");
     } catch (err) {
+      if (err.code === -1) return res.status(406).json({ errmessage: "예약을 확인해 주세요" });
       console.log(err);
       res.status(400).json({ errmessage: err });
     }
@@ -276,7 +284,7 @@ class UsersController {
   // 회원탈퇴 취소
   cancelDrop = async (req, res, next) => {
     try {
-      const { loginId } = res.body;
+      const { loginId } = res.locals.user;
       await this.usersService.cancelDrop(loginId);
       res.status(200).send("회원 탈퇴 취소");
     } catch (err) {

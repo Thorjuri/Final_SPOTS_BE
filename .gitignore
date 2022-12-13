@@ -8,8 +8,5 @@ nodemon.json
 /loadtest.yaml
 /before.json
 /before.json.html
-/reservationsSuper.test.js
-loadtest.yaml
-before.json
-before.json.html
+__tests__/reservationsSuper.test.js
 reservationsSuper.test.js
