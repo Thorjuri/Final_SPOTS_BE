@@ -21,7 +21,7 @@ module.exports = {
     sports: ["football", "tennis"],
     favSports: ["swim", "running", "golf", "health"],
     profileImg:
-      "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png",
+      "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1670935755055_spots2.png",
     updatedAt: "2022-12-08T16:13:55.056Z",
     createdAt: "2022-12-08T16:13:55.056Z",
   },
