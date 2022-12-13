@@ -27,15 +27,15 @@ class ReservationsService {
                 throw err;
             };
 
-            if (checkMatchs.data.length === 1) {
-                if(checkMatchs.data[0].isDouble !== isDouble) {  //예외처리3
+            if (checkMatchs.length === 1) {
+                if(checkMatchs[0].isDouble !== isDouble) {  //예외처리3
                     const err = new Error(`reservationsService Error`);
                     err.status = 400;
                     err.message = '단/복식은 상대팀과 일치해야 합니다.';
                     err.code = -3;
                     throw err;    
                 };
-                if(checkMatchs.data[0].member !== member) {  //예외처리4
+                if(checkMatchs[0].member !== member) {  //예외처리4
                     const err = new Error(`reservationsService Error`);
                     err.status = 400;
                     err.message = '인원 수가 상대팀과 일치해야 합니다.';
