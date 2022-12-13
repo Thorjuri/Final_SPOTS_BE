@@ -16,10 +16,10 @@ router.get('/register/:place/:date', authMiddleware, wrapAsyncController(reserva
 // 3. 나의 매치 조회
 router.get('/me', authMiddleware, wrapAsyncController(reservationsController.getMyMatch));
 
-// '매칭 전' 임박순 6건 매칭
+// 4. 홈 마감 임박순 6건 조회
 router.get('/register', wrapAsyncController(reservationsController.getAllMatch))
 
-// 5. 장소별-날짜별 매칭 전/후 조회
+// 5. 장소별-날짜별-매칭여부 별 조회
 router.get('/register/result/:place/:date', authMiddleware, wrapAsyncController(reservationsController.getMatchResult))
 
 // 6. 매치 예약 취소

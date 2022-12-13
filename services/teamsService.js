@@ -43,10 +43,10 @@ class TeamsService {
             err.code = -1
             throw err;
         };
+
         const allTeams = await this.teamsRepository.getAllTeams();
-        const checkName = allTeams.map((val)=>{
-            return val.teamName
-        });
+        const checkName = allTeams.map((val)=> val.teamName );
+
         if (checkName.indexOf(teamName) >= 0) {
             const err = new Error(`teamsService Error`);
             err.status = 400;
@@ -54,7 +54,14 @@ class TeamsService {
             err.code = -2
             throw err;
         };
-        const data = await this.teamsRepository.createTeam(nickname, teamName, sports, member, image);
+        
+        if(image === null) {
+            image = 'https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png'
+        };
+
+        const data = await this.teamsRepository.createTeam(
+            nickname, teamName, sports, member, image
+            );
         return data;
     };
 
@@ -68,18 +75,25 @@ class TeamsService {
                 err.code = -1
                 throw err;
             };    
-            if(!newAdmin) { newAdmin = nickname};
+            if(!newAdmin) {
+                newAdmin = nickname
+            };
+
         const checkUser = await this.teamsRepository.checkUser(newAdmin);
+
             if (!checkUser) {
                 const err = new Error(`teamsService Error`);
                 err.status = 400;
                 err.message = 'admin은 가입한 회원에게만 위임할 수 있습니다.';
                 err.code = -1
                 throw err;
-            };    
-            if(!newMember) { newMember = checkAdmin.member};
+            };   
+            if(!newMember) {
+                newMember = checkAdmin.member
+            };
+
         const data = await this.teamsRepository.updateTeam(teamName, newAdmin, newMember);
-        return data;
+    return data;
     };
 
     // 팀 삭제
