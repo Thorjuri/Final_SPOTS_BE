@@ -67,12 +67,23 @@ class TeamsRepository {
 
     //팀 정보 수정
     updateTeam = async(teamName, newAdmin, newMember)=> {
-        await Teams.update({ admin : newAdmin, member : newMember}, { where : { teamName }});
-        await Reservations.update({ admin: newAdmin, member: newMember }, { where: { teamName, result: '경기 전'}});
+        await Teams.update({ 
+            admin : newAdmin, member : newMember
+        }, { 
+            where : { teamName }
+        });
+        await Reservations.update({ 
+            admin: newAdmin, member: newMember 
+        }, { 
+            where: { teamName, result: '경기 전' }
+        });
         const updateTeam = await Teams.findOne({ where : { teamName }});
-        const updateMatch = await Reservations.findAll({ where : { teamName, result: '경기 전'}});
+        const updateMatch = await Reservations.findAll({ 
+            where : { teamName, result: '경기 전'}
+        });
         return {updateTeam, message: `변경된 매치 내역은 총 ${updateMatch.length}건 입니다`};
     };
+    
     
     //팀 삭제
     deleteTeam = async(nickname, teamId)=> {

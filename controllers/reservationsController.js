@@ -7,7 +7,9 @@ class ReservationsController {
   createMatch = async (req, res) => {
     const { nickname } = res.locals.user; //admin
     const { matchId, place, teamName, member, date, isDouble, price, email } = req.body;
-    const data = await this.reservationsService.createMatch(nickname, matchId, place, teamName, member, date, isDouble, price, email);
+    const data = await this.reservationsService.createMatch(
+      nickname, matchId, place, teamName, member, date, isDouble, price, email
+      );
     res.status(201).send(data);
   };
 
@@ -25,13 +27,13 @@ class ReservationsController {
     res.status(200).send(data);
   };
 
-  // '매칭 전' 임박순 6건 매칭
+// 홈 마감 임박순 6건 조회
   getAllMatch = async (req, res) => {
     const data = await this.reservationsService.getAllMatch();
     res.status(200).send(data);
   };
 
-  // 장소별-날짜별 매칭 전/후 조회
+  // 장소별-날짜별-매칭여부 별 조회
   getMatchResult = async (req, res) => {
     const { place, date } = req.params;
     const data = await this.reservationsService.getMatchResult(place, date);

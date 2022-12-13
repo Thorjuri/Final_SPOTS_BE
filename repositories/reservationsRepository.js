@@ -1,148 +1,151 @@
+const { DataPipeline } = require('aws-sdk');
 const { Reservations, Users, Teams, Places } = require('../models');
 require("dotenv").config();
 
 class ReservationsRepository {
 
     // 현재 보유 포인트조회
-    checkPoint = async(nickname)=> {
-        const data = await Users.findOne({
-            attributes: ['point'],
-            where : { nickname }
+    checkPoint = async (nickname)=> {
+        const data = await Users.findOne({ 
+            attributes: ['point'], 
+            where: { nickname } 
         });
         return data;
     };
 
-    // 포인트 결제 (포인트 차감)
-    createPayment = async(nickname, price)=> {
+    // 포인트 결제 
+    createPayment = async (nickname, price)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point - price;
-        await Users.update({ point : newPoints}, { where : { nickname }});
+        await Users.update({ 
+            point : newPoints
+        }, { 
+            where: { nickname }
+        });
         return newPoints;
-    }
+    };
+    
     // 매칭 성사 여부 업데이트
-    updateMatch = async(matchId)=> {
-        const data = await Reservations.findAll({ attributes : ["matchId"] });
-        const counts = data.filter((val) => { return val.matchId === matchId });
+    updateMatch = async (matchId)=> {
+        const data = await Reservations.findAll({ attributes: ["matchId"] });
+        const counts = data.filter((val) => val.matchId === matchId );
         if(counts.length >= 2){
-            const results = await Reservations.update({ result : "매칭 완료" }, { where : { matchId } })
-            return results
-        } 
-    }
+            const results = await Reservations.update({ 
+                result: "매칭 완료" 
+            }, { 
+                where: { matchId } 
+            });
+            return results;
+        }; 
+    };
 
     //매치 예약 신청
-    createMatch = async(nickname, matchId, place, teamName, member, date, isDouble, price)=> {
-        const admin = nickname
-        const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트를 반환함
-        await Reservations.create({ admin, matchId, place, teamName, member, date, isDouble, price }); //매칭 등록
-        await this.updateMatch(matchId)
-        const data = await Reservations.findOne({ where : { matchId, teamName, place}})
+    createMatch = async (nickname, matchId, place, teamName, member, date, isDouble, price)=> {
+        const admin = nickname;
+        const payment = await this.createPayment(nickname, price); //결제 후 잔여 포인트
+        await Reservations.create({ 
+            admin, matchId, place, teamName, member, date, isDouble, price 
+        }); 
+        await this.updateMatch(matchId);
+        const data = await Reservations.findOne({ where: { matchId, teamName, place }});
         return {data, message : `매치 등록 완료. 결제 후 잔여 포인트:  ${payment} 포인트`};
     };
 
     // 팀 조회
-    checkTeam = async(teamName)=> {
-        const data = await Teams.findOne({ where : { teamName }});
+    checkTeam = async (teamName)=> {
+        const data = await Teams.findOne({ where: { teamName }});
         return data;
     };
 
     // 매치 조회(By MatchId)
-    checkMatchById = async(matchId)=> {
-        const data = await Reservations.findAll({ where: { matchId}});
-        return {data: data, message : "매치 조회 완료"};
+    checkMatchById = async (matchId)=> {
+        const data = await Reservations.findAll({ where: { matchId }});
+        return data;
     };
 
     // 매치 조회(By teamName)
-    checkMatchByTeam = async(teamName)=> {
-        const data = await Reservations.findAll({ where : { teamName }});
+    checkMatchByTeam = async (teamName)=> {
+        const data = await Reservations.findAll({ where: { teamName }});
         return data;
     };
 
     // 매치 조회(By Place)
-    checkMatchByPlace = async(place, date)=> {
+    checkMatchByPlace = async (place, date)=> {
         const data = await Reservations.findAll({ 
-            where : {place, date},
-            order: [['matchId']]
+            where: {place, date}, 
+            order: [['matchId']] 
         });
         return {data, message: `조회된 매치 신청: ${data.length}건`};
     };
 
-    // 나의 매치 조회
-    getMyMatch = async(admin)=> { 
-        const myMatches = await Reservations.findAll({ where : { admin }});
-        let noneMatchTotal = [];
-        let doneMatchTotal = [];
-        let aMatch = {};
-        for(let i = 0; i < myMatches.length; i++){
-            let placeData = await Places.findOne({ where : { spotName : myMatches[i].place } });
-            let teamData = await Teams.findOne({ where : { teamName : myMatches[i].teamName } });
-            let whole = await Reservations.findAll({ where: { matchId: myMatches[i].matchId } });
-            let wholeTeam = whole.map((val)=> {return val.teamName});  //매칭전: 본인의 팀 정보만
-
-                if(myMatches[i].result === "매칭 전"){
-                    aMatch = {matchData: myMatches[i], teamData, placeData};
-                    noneMatchTotal.push(aMatch);
-                }else if (myMatches[i].result === "매칭 완료") { //매칭완료: 상대팀 팀정보 함께
-                    wholeTeam.splice(wholeTeam.indexOf(myMatches[i].teamName), 1);
-                    let opponent = await Teams.findOne({ where : { teamName : wholeTeam[0]}});
-                    aMatch = {matchData: myMatches[i], teamData, placeData, opponent};
-                    doneMatchTotal.push(aMatch);
-                };
-        };
-        return {noneMatchTotal, doneMatchTotal};
+    // 장소 조회
+    getPlace = async (spotName)=> {
+        const data = await Places.findOne({ where: { spotName } }); //장소정보
+        return data;
     };
 
-    //'매칭 전' 임박순 6건의 팀
-    getTeamInfoSix = async(arr)=> {
+    // 나의 매치내역 조회
+    getMyMatch = async (admin)=> { 
+        const data = await Reservations.findAll({ where: { admin }});
+        return data;
+    };
+
+    //홈 마감 임박순 6건 - 팀
+    getTeamInfoSix = async (arr)=> {
         const teamInfoSix = await Promise.all(arr.map((val)=> {
-            let data = Teams.findOne({ where : { teamName : val.teamName}});
+            let data = Teams.findOne({ where: { teamName: val.teamName }});
             return data;
         }));
         return teamInfoSix;
     };
 
-    //'매칭 전' 임박순 6건의 장소
-    getPlaceInfoSix = async(arr)=> {
+    //홈 마감 임박순 6건 - 장소
+    getPlaceInfoSix = async (arr)=> {
         const placeSix = await Promise.all(arr.map((val)=> {
-            let data = Places.findOne({ where : { spotName : val.place }});
+            let data = Places.findOne({ where: { spotName: val.place }});
             return data;
         }));
         return placeSix;
     };
 
-    // '매칭 전' 임박순 6건 매칭
-    getAllMatch = async()=> {
+    // 홈 마감 임박순 6건 조회
+    getAllMatch = async ()=> {
         const data = await Reservations.findAll({
             order: [["date"]],     
-            where: { result: "매칭 전"} 
+            where: { result: "매칭 전" } 
         });
         return data;
     };
 
-    // 장소별-날짜별 매칭 전/후 조회
-    getMatchResult = async(place, date)=> {
-        const noneMatching = await Reservations.findAll({ where : { place, date, result : "매칭 전" }});
-        const doneMatching = await Reservations.findAll({ where : { place, date, result : "매칭 완료" }});
-        return { noneMatching, doneMatching }
+    // 장소별-날짜별-매칭여부 별 조회
+    getMatchResult = async (place, date)=> {
+        const noneMatching = await Reservations.findAll({ 
+            where: { place, date, result: "매칭 전" }
+        });
+        const doneMatching = await Reservations.findAll({ 
+            where: { place, date, result: "매칭 완료" }
+        });
+        return { noneMatching, doneMatching };
     };
 
     // 100% 취소
-    cancleSuccess = async(matchId, teamName, place, price, nickname)=> {
+    cancleSuccess = async (matchId, teamName, place, price, nickname)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point + price;
-        await Reservations.update({ result: "매칭 전"}, { where: { matchId, place }})
-        await Reservations.destroy({ where : { matchId, teamName, place}});
-        await Users.update({ point: newPoints }, { where : { nickname }})
-        return {message : '예약 취소 및 포인트 반환 완료'}
+        await Reservations.update({ result: "매칭 전" }, { where: { matchId, place }});
+        await Reservations.destroy({ where: { matchId, teamName, place}});
+        await Users.update({ point: newPoints }, { where: { nickname }});
+        return { message: '예약 취소 및 포인트 반환 완료' };
     };
 
     // 조건부 취소
-    cancleConditional = async(matchId, teamName, place, price, nickname)=> {
+    cancleConditional = async (matchId, teamName, place, price, nickname)=> {
         const points = await this.checkPoint(nickname);
         const newPoints = points.point + price*0.9;
-        await Reservations.update({ result: "매칭 전"}, { where: { matchId, place }})
-        await Reservations.destroy({ where : { matchId, teamName, place}});
-        await Users.update({ point: newPoints }, { where : { nickname }})
-        return {message : '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)'}
+        await Reservations.update({ result: "매칭 전"}, { where: { matchId, place }});
+        await Reservations.destroy({ where: { matchId, teamName, place}});
+        await Users.update({ point: newPoints }, { where: { nickname }});
+        return { message: '예약 취소 및 포인트 반환 완료 (취소 수수로 10% 차감)' };
     };
 };
 

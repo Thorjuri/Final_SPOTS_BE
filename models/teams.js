@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         {
             sequelize,
             modelName: 'Teams',
-            timestamps: false,
+            timestamps: true,
             paranoid: false,
         }
     );
