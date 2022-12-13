@@ -9,7 +9,7 @@ class UsersRepository {
   // 회원가입
   createUser = async (loginId, password, nickname, gender, phone, sports, favSports) => {
     const profileImg =
-      "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
+      "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1670935755055_spots2.png";
     if (!sports) sports = "[]";
     if (!favSports) favSports = "[]";
     const createUser = await this.Users.create({
@@ -104,7 +104,7 @@ class UsersRepository {
   changeImg = async (loginId, profileImg) => {
     if (!profileImg)
       profileImg =
-        "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1669128469071_spots2.png";
+        "https://woosungbucket.s3.ap-northeast-2.amazonaws.com/original/1670935755055_spots2.png";
     const changeImg = await this.Users.update({ profileImg: profileImg }, { where: { loginId } });
     return changeImg;
   };
