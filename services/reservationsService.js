@@ -89,11 +89,11 @@ class ReservationsService {
         const matchData = await this.reservationsRepository.getMyMatch(admin);
 
         const allMyMatches = matchData.filter((val)=> { //지난날짜 필터링
-            let matchDay = new Date(val.date)
-            let today = new Date()
-            matchDay.setHours(0, 0, 0, 0)
-            today.setHours(0, 0, 0, 0)
-            return matchDay >= today
+            const matchDay = new Date(val.date);
+            const today = new Date();
+            matchDay.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            return matchDay >= today;
         });
 
         let noneMatchTotal = []; 
@@ -137,15 +137,17 @@ class ReservationsService {
     getAllMatch = async ()=>{
         const matches = await this.reservationsRepository.getAllMatch();
         const isMatches = matches.filter((val)=> val.matchId[13] === "i" );
-        let result = [];
-        for(let i = 0; i < isMatches.length; i++){
-            let matchDate = isMatches[i].matchId.slice(20, 35);
-            let nowDate = Date().slice(0, 15);
-            let matchDay = new Date(matchDate) ;
-            let today = new Date(nowDate);
-            let dayDiff = await this.getDateDiff(matchDay, today);
-            if (dayDiff > 0){ result.push(isMatches[i]) };
-        };
+
+        const result = isMatches.filter((val)=> {
+            const matchDay = new Date(val.date)
+            const matchTime = val.matchId.slice(0, 2)
+            const today = new Date()
+            const nowTime = today.getHours()
+            matchDay.setHours(matchTime, 0, 0, 0)
+            today.setHours(nowTime, 0, 0, 0)
+            return matchDay > today
+        });
+
         const isMatchesSix = result.splice(0, 6);
         const teamsInfo = await this.reservationsRepository.getTeamInfoSix(isMatchesSix);
         const placesInfo = await this.reservationsRepository.getPlaceInfoSix(isMatchesSix);
@@ -189,7 +191,7 @@ class ReservationsService {
         const reservation = reservations.filter((val)=> {
             return val.teamName === teamName
         });
-        const price = reservation[0].price;
+            //admin 체크
             if(reservation[0].admin !== nickname){
                 const err = new Error(`reservationsService Error`);
                 err.status = 403;
@@ -198,36 +200,20 @@ class ReservationsService {
                 throw err;
             };
 
-        //신청 날짜
-        const register = reservation[0].createdAt;
-        const dayRegister = register.getDate();
-        const monthRegister = register.getMonth()+1;
-
-        //경기 날짜
-        const dates = reservation[0].date;
-        const matchDate = new Date(dates);
-        const dayMatch = matchDate.getDate();
-        const monthMatch = matchDate.getMonth()+1;
-        
-        //현재 날짜
-        const now = new Date;
-        const dayNow = now.getDate();
-        const monthNow = now.getMonth()+1;
-
-        //날짜 차이
-        const diffMatch = await this.getDateDiff(matchDate, now);
+        const register = new Date(reservation[0].createdAt).toLocaleDateString()
+        const matchDate = new Date(reservation[0].date).toLocaleDateString()
+        const today = new Date().toLocaleDateString()
 
             // 경기 당일 취소
-            if(monthMatch === monthNow && dayMatch === dayNow){
+            if(matchDate === today){
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '경기 당일 취소는 불가능합니다.';
                 err.code = -1;
                 throw err;
             };
-        
             // 경기일자 이후 취소
-            if (diffMatch <= 0) {
+            if (matchDate < today) {
                 const err = new Error(`reservationsService Error`);
                 err.status = 400;
                 err.message = '취소 가능 기간이 아닙니다.';
@@ -235,19 +221,22 @@ class ReservationsService {
                 throw err;
             };
 
-            // 신청 당일 취소
-            if(monthRegister === monthNow && dayRegister === dayNow){
-                const cancleSuccessData = this.cancleSuccess(
+            const price = reservation[0].price;
+
+            if(register === today){
+                const cancleSuccessData = this.cancleSuccess(  // 신청 당일 취소
                     matchId, teamName, place, price, nickname
                 );
                 return cancleSuccessData;
-            };
-
-            // 신청 익일 ~ 경기 전일 취소 
-                const cancleConditionalData = this.cancleConditional(
+            }else{
+                const cancleConditionalData = this.cancleConditional(  // 신청 익일 ~ 경기 전일 취소 
                     matchId, teamName, place, price, nickname
                 );
                 return cancleConditionalData;
+            }
+
+            
+                
     };
 };
 
