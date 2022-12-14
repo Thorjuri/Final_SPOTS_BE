@@ -83,15 +83,24 @@ class ReservationsService {
         return data;
     };
 
-    //나의 매치 조회(테스트)
+    //나의 매치 조회
     getMyMatch = async (nickname)=> {
         const admin = nickname;
-        const allMyMatches = await this.reservationsRepository.getMyMatch(admin);
+        const matchData = await this.reservationsRepository.getMyMatch(admin);
+
+        const allMyMatches = matchData.filter((val)=> { //지난날짜 필터링
+            let matchDay = new Date(val.date)
+            let today = new Date()
+            matchDay.setHours(0, 0, 0, 0)
+            today.setHours(0, 0, 0, 0)
+            return matchDay >= today
+        });
+
         let noneMatchTotal = []; 
         let doneMatchTotal = []; 
         let aMatch = {};
 
-        for(let i = 0; i < allMyMatches.length; i++){
+        for(let i = 0; i < allMyMatches.length; i++){ //매치 별 팀, 장소
             let placeData = await this.reservationsRepository.getPlace(
                 allMyMatches[i].place
                 );
