@@ -127,12 +127,6 @@ class ReservationsService {
         return { noneMatchTotal, doneMatchTotal };
     };
 
-    // 기간 차 계산
-    getDateDiff = async (d1, d2) => {     
-        const diffDate = d1.getTime() - d2.getTime();
-        return diffDate / (1000 * 60 * 60 * 24); 
-    };
-
     // 홈 마감 임박순 6건 조회
     getAllMatch = async ()=>{
         const matches = await this.reservationsRepository.getAllMatch();
